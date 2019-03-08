@@ -1,5 +1,6 @@
 import Dashboard from "./../layouts/Dashboard/Dashboard";
 
+
 let indexRoutes = [{
     path: "/",
     name: "Home",

@@ -1,48 +1,35 @@
 {
-  "name": "pomodoro",
-  "version": "1.0.0",
-  "description": "This is the web front end for project in CS6301.",
-  "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.config.js --open"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LazyIce/Pomodoro.git"
-  },
-  "author": "pomodoro react",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LazyIce/Pomodoro/issues"
-  },
-  "homepage": "https://github.com/LazyIce/Pomodoro#readme",
-  "devDependencies": {
-    "css-loader": "^2.1.1",
-    "file-loader": "^3.0.1",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.3.3333",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
-  },
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@types/react": "^16.8.7",
-    "@types/react-dom": "^16.8.2",
-    "@types/react-redux": "^7.0.2",
-    "@types/react-router": "^4.4.4",
+    "@types/jest": "24.0.10",
+    "@types/node": "11.10.5",
+    "@types/react": "16.8.7",
+    "@types/react-bootstrap": "^0.32.17",
+    "@types/react-dom": "16.8.2",
     "@types/react-router-dom": "^4.3.1",
-    "@types/react-router-redux": "^5.0.18",
-    "boostrap": "^2.0.0",
+    "bootstrap": "^4.3.1",
     "react": "^16.8.4",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.4",
-    "react-redux": "^6.0.1",
-    "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-router-redux": "^4.0.8"
-  }
+    "react-scripts": "2.1.8",
+    "typescript": "3.3.3333"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import indexRoutes from './routes/index'
 
+import "bootstrap/dist/css/bootstrap.css";
+
 render(
     <BrowserRouter>
         <Switch>
