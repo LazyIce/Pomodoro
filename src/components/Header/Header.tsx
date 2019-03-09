@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Navbar } from "react-bootstrap";
+import { Nav, Navbar, Container } from "react-bootstrap";
 
 import HeaderLinks from "./HeaderLinks";
 
@@ -10,14 +10,14 @@ class Header extends React.Component<Props, State> {
     render() {
         return (
             <Navbar>
-                <Navbar.Collapse>
+                <Container fluid>
                     <Navbar.Brand>
-                        <a href="/dashboard">Dashboard</a>
+                        Dashboard
                     </Navbar.Brand>
-                </Navbar.Collapse>
-                <Navbar.Collapse>
-                    <HeaderLinks />
-                </Navbar.Collapse>
+                    <Nav>
+                        <HeaderLinks />
+                    </Nav>
+                </Container>
             </Navbar>
         )
     }

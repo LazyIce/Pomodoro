@@ -1,28 +1,34 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-
 import HeaderLinks from "./../Header/HeaderLinks";
 
 import dashboardRoutes from "./../../routes/dashboard";
 
-interface Props {}
+import logo from "./../../assets/img/logo.png";
 
+interface Props {
+    location: any
+}
 interface State {
     width: number
 }
 
 class Sidebar extends React.Component<Props, State> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             width: window.innerWidth
         }
     }
 
+    activeRoute(routeName: string) {
+        return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    }
+
     updateDimensions() {
         this.setState({
             width: window.innerWidth
-        })
+        });
     }
 
     componentDidMount() {
@@ -36,10 +42,10 @@ class Sidebar extends React.Component<Props, State> {
                 <div className="logo">
                     <a href="#" className="simple-text logo-mini">
                         <div className="logo-img">
-                            <img src="./../../assets/img/logo.png" alt="logo_image" />
+                            <img src={logo} alt="logo_image" />
                         </div>
                     </a>
-                    <a href="#" className="simple-text logo-normal">
+                    <a href="/dashboard" className="simple-text logo-normal">
                         Pomodoro
                     </a> 
                 </div>
@@ -49,7 +55,7 @@ class Sidebar extends React.Component<Props, State> {
                         {dashboardRoutes.map((prop, key) => {
                             if (!prop.redirect)
                                 return (
-                                    <li className="active" key={key}>
+                                    <li className={this.activeRoute(prop.path)} key={key}>
                                         <NavLink to={prop.path} className="nav-link" activeClassName="active">
                                             <i className={prop.icon} />
                                             <p>{prop.name}</p>

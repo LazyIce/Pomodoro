@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import indexRoutes from './routes/index'
 
 import "bootstrap/dist/css/bootstrap.css";
+import "./assets/scss/index.scss";
+import "./assets/css/pe-icon-7-stroke.css";
 
 render(
     <BrowserRouter>

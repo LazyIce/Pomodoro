@@ -21,14 +21,21 @@ class TableList extends React.Component<Props, State> {
                                     <Table striped hover>
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
                                                 <th>Email</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>John</td>
+                                                <td>Smith</td>
                                                 <td>john21@gatech.edu</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rose</td>
+                                                <td>Smith</td>
+                                                <td>rose21@gatech.edu</td>
                                             </tr>
                                         </tbody>
                                     </Table>

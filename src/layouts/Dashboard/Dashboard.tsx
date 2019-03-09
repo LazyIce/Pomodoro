@@ -7,7 +7,9 @@ import Sidebar from "./../../components/Sidebar/Sidebar";
 
 import dashboardRoutes from "./../../routes/dashboard";
 
-interface Props {}
+interface Props {
+    location: any
+}
 
 interface State {}
 
