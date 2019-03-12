@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import indexRoutes from './routes/index'
+import indexRoutes from './routes/index';
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./assets/scss/index.scss";
