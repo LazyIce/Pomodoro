@@ -1,10 +1,10 @@
-import Dashboard from "./../layouts/Dashboard/Dashboard";
+import Boostrap from "./../layouts/Bootstrap/Bootstrap";
 
 
 let indexRoutes = [{
-    path: "/",
-    name: "Home",
-    component: Dashboard
+    path: "/login",
+    name: "Login",
+    component: Boostrap
 }];
 
 export default indexRoutes;
