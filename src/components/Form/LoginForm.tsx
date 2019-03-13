@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Form, Button } from "react-bootstrap";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-interface Props {
-    type: string
+interface Props extends RouteComponentProps {
+    type: string,
 }
 interface State {}
 
@@ -11,15 +12,20 @@ class LoginForm extends React.Component<Props, State> {
         super(props);
     }
 
+    handleSubmit(e: any) {
+        e.preventDefault();
+        this.props.history.push("/dashboard");
+    }
+
     render() {
         return (
-            <Form>
+            <Form onSubmit={ (e: any) => this.handleSubmit(e) }>
                 <Form.Group>
-                    <Form.Label>{this.props.type == "admin" ? "Admin Name" : "Email Address"}</Form.Label>
+                    <Form.Label>{this.props.type == "admin" ? "Admin Name:" : "Email Address:"}</Form.Label>
                     <Form.Control type={this.props.type == "admin" ? "input" : "email"} placeholder={this.props.type == "admin" ? "Enter your admin name" : "Enter your email"} />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Password:</Form.Label>
                     <Form.Control type="password" placeholder="Passowrd" />
                 </Form.Group>
                 <Form.Group>
@@ -31,4 +37,4 @@ class LoginForm extends React.Component<Props, State> {
     }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
