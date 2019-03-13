@@ -14,7 +14,11 @@ class LoginForm extends React.Component<Props, State> {
 
     handleSubmit(e: any) {
         e.preventDefault();
-        this.props.history.push("/dashboard");
+        
+        if (this.props.type == "admin")
+            this.props.history.push("/admin");
+        else
+            this.props.history.push("/dashboard")
     }
 
     render() {
