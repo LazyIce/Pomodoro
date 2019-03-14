@@ -10,30 +10,17 @@ interface Props {
     location: any
 }
 interface State {
-    width: number
 }
 
 class Sidebar extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            width: window.innerWidth
         }
     }
 
     activeRoute(routeName: string) {
         return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-    }
-
-    updateDimensions() {
-        this.setState({
-            width: window.innerWidth
-        });
-    }
-
-    componentDidMount() {
-        this.updateDimensions();
-        window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     render() {
@@ -51,7 +38,6 @@ class Sidebar extends React.Component<Props, State> {
                 </div>
                 <div className="sidebar-wrapper">
                     <ul className="nav">
-                        {this.state.width <= 991 ? <HeaderLinks /> : null}
                         {dashboardRoutes.map((prop, key) => {
                             if (!prop.redirect)
                                 return (

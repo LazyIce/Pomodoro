@@ -17,8 +17,8 @@ interface State {
 class LoginForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-
-        // this.props.dispatch(userActions.logout());
+        //@ts-ignore
+        this.props.dispatch(userActions.logout());
 
         this.state = {
             username: '',
@@ -32,7 +32,8 @@ class LoginForm extends React.Component<Props, State> {
 
     handleChange(e: any) {
         const { name, value } = e.target;
-        // this.setState({ [name]: value });
+        //@ts-ignore
+        this.setState({ [name]: value });
     }
 
     handleSubmit(e: any) {
@@ -40,9 +41,10 @@ class LoginForm extends React.Component<Props, State> {
 
         this.setState({ submitted: true });
         const { username, password } = this.state;
-        // const { dispatch } = this.props;
+        //@ts-ignore
+        const { dispatch } = this.props;
         if (username && password) {
-            // dispatch(userActions.login(username, password));
+            dispatch(userActions.login(username, password));
         }
     }
 
@@ -54,13 +56,13 @@ class LoginForm extends React.Component<Props, State> {
                 <Form.Group>
                     <Form.Label>{this.props.type == "admin" ? "Admin Name:" : "Email Address:"}</Form.Label>
                     <Form.Control type={this.props.type == "admin" ? "input" : "email"} placeholder={this.props.type == "admin" ? "Enter your admin name" : "Enter your email"} name="username" value={username} onChange={this.handleChange} required />
-                    <Form.Control.Feedback>{submitted && !username && "Username is required"}</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group>
-                    <Form.Label>Password:</Form.Label>
-                    <Form.Control type="password" placeholder="Passowrd" name="password" value={password} onChange={this.handleChange} required />
-                    <Form.Control.Feedback>{submitted && !username && "Password is required"}</Form.Control.Feedback>
-                </Form.Group>
+                {this.props.type == "admin" ? 
+                    <Form.Group>
+                        <Form.Label>Password:</Form.Label>
+                        <Form.Control type="password" placeholder="Passowrd" name="password" value={password} onChange={this.handleChange} required />
+                    </Form.Group> : null
+                }
                 <Form.Group>
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
