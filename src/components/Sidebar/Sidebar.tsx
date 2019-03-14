@@ -1,9 +1,9 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 
-import dashboardRoutes from "./../../routes/dashboard";
-
 import logo from "./../../assets/img/logo.png";
+import adminRoutes from "../../routes/admin";
+import userRoutes from "../../routes/user";
 
 interface Props {
     location: any
@@ -37,18 +37,33 @@ class Sidebar extends React.Component<Props, State> {
                 </div>
                 <div className="sidebar-wrapper">
                     <ul className="nav">
-                        {dashboardRoutes.map((prop, key) => {
-                            if (!prop.redirect)
-                                return (
-                                    <li className={this.activeRoute(prop.path)} key={key}>
-                                        <NavLink to={prop.path} className="nav-link" activeClassName="active">
-                                            <i className={prop.icon} />
-                                            <p>{prop.name}</p>
-                                        </NavLink>
-                                    </li>
-                                )
-                            return null;
-                        })}
+                        {
+                            localStorage.getItem("user") == "admin" ?
+                            adminRoutes.map((prop, key) => {
+                                if (!prop.redirect)
+                                    return (
+                                        <li className={this.activeRoute(prop.path)} key={key}>
+                                            <NavLink to={prop.path} className="nav-link" activeClassName="active">
+                                                <i className={prop.icon} />
+                                                <p>{prop.name}</p>
+                                            </NavLink>
+                                        </li>
+                                    )
+                                return null;
+                            }) :
+                            userRoutes.map((prop, key) => {
+                                if (!prop.redirect)
+                                    return (
+                                        <li className={this.activeRoute(prop.path)} key={key}>
+                                            <NavLink to={prop.path} className="nav-link" activeClassName="active">
+                                                <i className={prop.icon} />
+                                                <p>{prop.name}</p>
+                                            </NavLink>
+                                        </li>
+                                    )
+                                return null;
+                            })
+                        }
                     </ul>
                 </div>
             </div>

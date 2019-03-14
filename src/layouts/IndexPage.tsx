@@ -5,7 +5,8 @@ import Header from "./../components/Header/Header";
 import Footer from "./../components/Footer/Footer";
 import Sidebar from "./../components/Sidebar/Sidebar";
 
-import dashboardRoutes from "../routes/dashboard";
+import userRoutes from "./../routes/user";
+import adminRoutes from "../routes/admin";
 
 interface Props {
     location: any
@@ -25,13 +26,23 @@ class IndexPage extends React.Component<Props, State> {
                 <div id="main-panel" className="main-panel" ref="mainPanel">
                     <Header {...this.props} />
                     <Switch>
-                        {dashboardRoutes.map((prop, key) => {
-                            if (prop.redirect)
-                                return <Redirect from={prop.path} to={prop.to} key={key} />;
-                            return (
-                                <Route path={prop.path} component={prop.component} key={key} />
-                            );
-                        })}
+                        {
+                            localStorage.getItem("user") == "admin" ? 
+                            userRoutes.map((prop, key) => {
+                                if (prop.redirect)
+                                    return <Redirect from={prop.path} to={prop.to} key={key} />;
+                                return (
+                                    <Route path={prop.path} component={prop.component} key={key} />
+                                );
+                            }) :
+                            adminRoutes.map((prop, key) => {
+                                if (prop.redirect)
+                                    return <Redirect from={prop.path} to={prop.to} key={key} />;
+                                return (
+                                    <Route path={prop.path} component={prop.component} key={key} />
+                                );
+                            })
+                        }
                     </Switch>
                     <Footer />
                 </div>
