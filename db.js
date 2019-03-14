@@ -1,3 +1,4 @@
+//@ts-ignore
 module.exports = function() {
   let data = { 
     admin: {},
@@ -6,8 +7,7 @@ module.exports = function() {
   };
 
   data.admin = {
-    name: 'admin',
-    password: 'admin'
+    name: 'admin'
   };
 
   for (var i = 1; i <= 20; i++) {

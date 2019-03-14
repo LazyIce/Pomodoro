@@ -1,7 +1,5 @@
-import Dashboard from "../views/Dashboard";
-import TableList from "../views/TableList";
 import UserProfile from "../views/UserProfile";
-import Projects from "../views/Projects";
+import Projects from "../views/Project";
 
 const dashboardRoutes = [
   {
@@ -16,19 +14,7 @@ const dashboardRoutes = [
     icon: "pe-7s-note2",
     component: Projects
   },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "pe-7s-graph",
-    component: Dashboard
-  },
-  {
-    path: "/table",
-    name: "Table List",
-    icon: "pe-7s-note2",
-    component: TableList
-  },
-  { redirect: true, path: "/", to: "/dashboard", name: "Dashboard" }
+  { redirect: true, path: "/", to: "/projects", name: "Project" }
 ];
 
 export default dashboardRoutes;

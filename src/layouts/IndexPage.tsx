@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import Header from "./../../components/Header/Header";
-import Footer from "./../../components/Footer/Footer";
-import Sidebar from "./../../components/Sidebar/Sidebar";
+import Header from "./../components/Header/Header";
+import Footer from "./../components/Footer/Footer";
+import Sidebar from "./../components/Sidebar/Sidebar";
 
-import dashboardRoutes from "./../../routes/dashboard";
+import dashboardRoutes from "../routes/dashboard";
 
 interface Props {
     location: any
@@ -13,7 +13,7 @@ interface Props {
 
 interface State {}
 
-class Dashboard extends React.Component<Props, State> {
+class IndexPage extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
     }
@@ -40,4 +40,4 @@ class Dashboard extends React.Component<Props, State> {
     }
 }
 
-export default Dashboard;
+export default IndexPage;

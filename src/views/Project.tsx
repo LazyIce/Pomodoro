@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
-import Card from "./../components/Card/Card";
+import Card from "../components/Card/Card";
 import { connect } from 'react-redux';
 
-import ProjectList from "./../components/Form/ProjectList"
+import ProjectList from "../components/Form/ProjectList"
 
 function mapStateToProps(store: any) {
     return {
@@ -37,7 +37,7 @@ interface State {
     new_project_name: string
 }
 
-class Projects extends React.Component<Props, State>{
+class Project extends React.Component<Props, State>{
     constructor(props: Props) {
         super(props);
         
@@ -211,4 +211,4 @@ class Projects extends React.Component<Props, State>{
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Projects);
+export default connect(mapStateToProps, mapDispatchToProps)(Project);

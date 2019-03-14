@@ -1,6 +1,5 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import HeaderLinks from "./../Header/HeaderLinks";
 
 import dashboardRoutes from "./../../routes/dashboard";
 
@@ -32,7 +31,7 @@ class Sidebar extends React.Component<Props, State> {
                             <img src={logo} alt="logo_image" />
                         </div>
                     </a>
-                    <a href="/dashboard" className="simple-text logo-normal">
+                    <a href="/" className="simple-text logo-normal">
                         Pomodoro
                     </a> 
                 </div>

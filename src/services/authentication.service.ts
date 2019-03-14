@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const userService = {
+export const authenticationService = {
     login,
     logout
 };
 
-function login(username: string, password: string) {
+function login(username: string) {
     return axios.get('http://localhost:3003/users').then(res => {
         let user = res.data;
         localStorage.setItem('user', JSON.stringify(user));

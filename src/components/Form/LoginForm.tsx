@@ -1,17 +1,14 @@
 import * as React from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { userActions } from "./../../actions/user.action";
+import { userActions } from "../../actions/authentication.action";
  
 interface Props {
-    type: string,
-    loggingIn: boolean
+    type: string
 }
 
 interface State {
-    username: string,
-    password: string,
-    submitted: boolean
+    username: string
 }
 
 class LoginForm extends React.Component<Props, State> {
@@ -21,9 +18,7 @@ class LoginForm extends React.Component<Props, State> {
         this.props.dispatch(userActions.logout());
 
         this.state = {
-            username: '',
-            password: '',
-            submitted: false
+            username: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -39,30 +34,22 @@ class LoginForm extends React.Component<Props, State> {
     handleSubmit(e: any) {
         e.preventDefault();
 
-        this.setState({ submitted: true });
-        const { username, password } = this.state;
+        const { username } = this.state;
         //@ts-ignore
         const { dispatch } = this.props;
-        if (username && password) {
-            dispatch(userActions.login(username, password));
+        if (username) {
+            dispatch(userActions.login(username));
         }
     }
 
     render() {
-        const { loggingIn } = this.props;
-        const { username, password, submitted } = this.state;
+        const { username } = this.state;
         return (
             <Form onSubmit={ this.handleSubmit }>
                 <Form.Group>
                     <Form.Label>{this.props.type == "admin" ? "Admin Name:" : "Email Address:"}</Form.Label>
                     <Form.Control type={this.props.type == "admin" ? "input" : "email"} placeholder={this.props.type == "admin" ? "Enter your admin name" : "Enter your email"} name="username" value={username} onChange={this.handleChange} required />
                 </Form.Group>
-                {this.props.type == "admin" ? 
-                    <Form.Group>
-                        <Form.Label>Password:</Form.Label>
-                        <Form.Control type="password" placeholder="Passowrd" name="password" value={password} onChange={this.handleChange} required />
-                    </Form.Group> : null
-                }
                 <Form.Group>
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>

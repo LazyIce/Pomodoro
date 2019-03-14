@@ -5,8 +5,8 @@ import { Router, Route } from "react-router-dom";
 import { history } from "./helpers/history"; 
 import { PrivateRoute } from "./routes/index";
 import { store } from "./helpers/store";
-import Bootstrap from "./layouts/Bootstrap/Bootstrap";
-import Dashboard from "./layouts/Dashboard/Dashboard";
+import Bootstrap from "./layouts/Bootstrap";
+import IndexPage from "./layouts/IndexPage";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./assets/scss/index.scss";
@@ -16,7 +16,7 @@ render(
     <Provider store={store}>
         <Router history={history}>
                 <div>
-                    <PrivateRoute exact path="/" component={Dashboard} />
+                    <PrivateRoute exact path="/" component={IndexPage} />
                     <Route path="/login" component={Bootstrap} />
                 </div>
         </Router>

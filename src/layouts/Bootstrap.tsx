@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactCanvasNest from "react-canvas-nest";
 
-import Login from "./../../views/Login";
+import Login from "./../views/Login";
 
 class Bootstrap extends React.Component {
     render() {
