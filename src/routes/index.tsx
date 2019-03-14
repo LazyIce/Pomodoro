@@ -1,22 +1,10 @@
-import Bootstrap from "./../layouts/Bootstrap/Bootstrap";
-import Dashboard from "./../layouts/Dashboard/Dashboard";
+import * as React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
-let indexRoutes = [
-    {
-        path: "/",
-        name: "default",
-        component: Bootstrap
-    },
-    {
-        path: "/login",
-        name: "Login",
-        component: Bootstrap
-    },
-    {
-        path: "/dashboard",
-        name: "Dashboard",
-        component: Dashboard
-    }
-];
-
-export default indexRoutes;
+export const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        localStorage.getItem('user')
+            ? <Component {...props} />
+            : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+    )} />
+)
