@@ -1,19 +1,26 @@
-import Dashboard from "./../views/Dashboard";
-import TableList from "./../views/TableList";
-import UserProfile from "./../views/UserProfile";
+import Dashboard from "../views/Dashboard";
+import TableList from "../views/TableList";
+import UserProfile from "../views/UserProfile";
+import Projects from "../views/Projects";
 
 const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "pe-7s-graph",
-    component: Dashboard
-  },
   {
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
     component: UserProfile
+  },
+  {
+    path: "/projects",
+    name: "Projects",
+    icon: "pe-7s-note2",
+    component: Projects
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: "pe-7s-graph",
+    component: Dashboard
   },
   {
     path: "/table",
