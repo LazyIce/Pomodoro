@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Nav } from "react-bootstrap";
 import { connect } from "react-redux";
-import { userActions } from "../../actions/authentication.action";
+import { authenticationActions } from "../../actions/authentication.action";
 
 class HeaderLinks extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class HeaderLinks extends React.Component {
         e.preventDefault();
         //@ts-ignore
         const { dispatch } = this.props;
-        dispatch(userActions.logout());
+        dispatch(authenticationActions.logout());
     }
 
     render() {

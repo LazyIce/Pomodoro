@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {apiConstants} from "./../constants/api.constant";
 
 export const authenticationService = {
     login,
@@ -7,7 +8,7 @@ export const authenticationService = {
 
 function login(username: string, type: string) {
     if (type == "admin") {
-        return axios.get('http://localhost:3003/admin?q=' + username)
+        return axios.get(apiConstants.BASE_URL + '/admin?q=' + username)
             .then(
                 res => {
                     if (res.data.length == 0) {
@@ -21,7 +22,7 @@ function login(username: string, type: string) {
                 }
             )
     } else {
-        return axios.get('http://localhost:3003/users?q=' + username)
+        return axios.get(apiConstants.BASE_URL + '/users?q=' + username)
             .then(
                 res => {
                     if (res.data.length == 0) {

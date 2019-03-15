@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import Card from "../components/Card/Card";
 import { connect } from 'react-redux';
 
-import ProjectList from "../components/Form/ProjectList"
+import ProjectList from "../components/List/ProjectList"
 
 function mapStateToProps(store: any) {
     return {
@@ -16,9 +16,8 @@ function mapStateToProps(store: any) {
 function mapDispatchToProps(dispatch: any){
     return {
         actions: {
-            create: (new_project_name: string)=>{dispatch({namespace: 'Projects', type:'CREATE', value: {new_project_name: new_project_name} })},
-            // edit: (id: number)=>{dispatch({namespace: 'Projects', type:'EDIT', value: {id: id}})},
-            delete: (id: number)=>{dispatch({namespace: 'Projects', type:'DELETE', value: {id: id}})}   
+            create: (new_project_name: string)=>{dispatch({type:'PROJECT_CREATE', value: {new_project_name: new_project_name} })},
+            delete: (id: number)=>{dispatch({type:'PROJECT_DELETE', value: {id: id}})}   
         }
     }
 }

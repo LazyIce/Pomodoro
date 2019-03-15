@@ -5,10 +5,10 @@ function UserList(props: any){
     return(
         <tr key={props.user.id}>
             <td>{props.user.id}</td>
-            <td>{props.user.first_name}</td>
-            <td>{props.user.last_name}</td>
+            <td>{props.user.firstName}</td>
+            <td>{props.user.lastName}</td>
             <td>{props.user.email}</td>
-            <td>{props.user.related_projects}</td>
+            <td>{props.user.projects.length}</td>
             <td>
                 <Button onClick={props.edit_button} variant="warning">
                     edit

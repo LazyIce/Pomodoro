@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { userActions } from "../../actions/authentication.action";
+import { authenticationActions } from "../../actions/authentication.action";
  
 interface Props {
     type: string
@@ -15,7 +15,7 @@ class LoginForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         //@ts-ignore
-        this.props.dispatch(userActions.logout());
+        this.props.dispatch(authenticationActions.logout());
 
         this.state = {
             username: ''
@@ -40,7 +40,7 @@ class LoginForm extends React.Component<Props, State> {
         //@ts-ignore
         const { dispatch } = this.props;
         if (username) {
-            dispatch(userActions.login(username, type));
+            dispatch(authenticationActions.login(username, type));
         }
     }
 
