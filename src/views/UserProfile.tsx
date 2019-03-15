@@ -197,7 +197,7 @@ class UserProfile extends React.Component<Props, State>{
                     <Button variant="secondary" onClick={this.EditModalClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={()=>{this.props.dispatch(userActions.updateUser(this.state)); this.EditModalClose();}}>
+                    <Button variant="primary" onClick={()=>{this.props.dispatch(userActions.updateUser({firstName: this.state.edit_user_first_name, lastName: this.state.edit_user_last_name, id: this.state.edit_id})); this.EditModalClose();}}>
                         Edit
                     </Button>
                 </Modal.Footer>

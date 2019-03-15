@@ -1,6 +1,5 @@
 import { userConstants } from "./../constants/user.constants";
 import { userService } from "./../services/user.service";
-import { request } from "https";
 
 export const userActions = {
     getAllUsers,
@@ -36,9 +35,9 @@ function addUser(user) {
 
 function updateUser(user) {
     return dispatch =>  {
-        userService.putUserByUserId(user.fisrtName, user.lastName, user.id)
+        userService.putUserByUserId(user.firstName, user.lastName, user.id)
             .then(
-                user => dispatch(success(user))
+                user => dispatch(success(user.data))
             );
     };
 
