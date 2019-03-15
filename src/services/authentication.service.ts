@@ -31,6 +31,7 @@ function login(username: string, type: string) {
                     } else {
                         let user = res.data[0];
                         localStorage.setItem("user", user.email);
+                        localStorage.setItem("id", user.id)
                         return user;
                     }
                 }

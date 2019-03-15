@@ -2,30 +2,13 @@ import * as React from "react";
 import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import Card from "../components/Card/Card";
 import { connect } from 'react-redux';
+import { projectActions } from './../actions/project.action';
 
 import ProjectList from "../components/List/ProjectList"
 
-function mapStateToProps(store: any) {
-    return {
-        states:{
-            projects : store.Projects
-        }
-    };
-}
-
-function mapDispatchToProps(dispatch: any){
-    return {
-        actions: {
-            create: (new_project_name: string)=>{dispatch({type:'PROJECT_CREATE', value: {new_project_name: new_project_name} })},
-            delete: (id: number)=>{dispatch({type:'PROJECT_DELETE', value: {id: id}})}   
-        }
-    }
-}
-
-
 interface Props {
-    states: any,
-    actions: any
+    project,
+    dispatch
 }
 
 // In page states only, like managing showing a modal and its content. Has nothing to do with redux's state
@@ -44,13 +27,9 @@ class Project extends React.Component<Props, State>{
         this.DelModalClose = this.DelModalClose.bind(this);
         this.DelModal = this.DelModal.bind(this);
         
-        
-        
         this.CreateModalShow = this.CreateModalShow.bind(this);
         this.CreateModalClose = this.CreateModalClose.bind(this);
         this.CreateModal = this.CreateModal.bind(this);
-        
-
         
         this.state={
             delete_show: false,
@@ -80,7 +59,7 @@ class Project extends React.Component<Props, State>{
         }
         else{
             //otherwise delete directly.
-            this.props.actions.delete(project.id);
+            this.props.dispatch(projectActions.deleteProject(Number(localStorage.getItem("id")), project.id));
         }
     }
 
@@ -89,14 +68,14 @@ class Project extends React.Component<Props, State>{
         if(this.state.delete_show){
             this.DelModalClose();
         }
-        this.props.actions.delete(project.id);
+        this.props.dispatch(projectActions.deleteProject(Number(localStorage.getItem("id")), project.id))
     }
 
     DelModal(){
         // console.log("Hi!")
         // console.log(this.state.delete_index)
         // console.log(this.props.states.projects.project_list.length)
-        if (this.state.delete_index < this.props.states.projects.project_list.length) {
+        if (this.state.delete_index < this.props.project.items.length) {
             return(
                 <Modal show={this.state.delete_show} onHide={this.DelModalClose}>
                 <Modal.Header closeButton>
@@ -105,13 +84,13 @@ class Project extends React.Component<Props, State>{
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    This project {this.props.states.projects.project_list[this.state.delete_index].project_name} has a pomodoro associate with it. Are you sure to delete the project?
+                    This project {this.props.project.items[this.state.delete_index].projectName} has a pomodoro associate with it. Are you sure to delete the project?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.DelModalClose}>
                         No
                     </Button>
-                    <Button variant="primary" onClick={() => this.DelProject(this.props.states.projects.project_list[this.state.delete_index])}>
+                    <Button variant="primary" onClick={() => this.DelProject(this.props.project.items[this.state.delete_index])}>
                         Yes
                     </Button>
                 </Modal.Footer>
@@ -149,7 +128,7 @@ class Project extends React.Component<Props, State>{
                     <Button variant="secondary" onClick={this.CreateModalClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={()=>{this.props.actions.create(this.state.new_project_name); this.CreateModalClose();}}>
+                    <Button variant="primary" onClick={()=>{this.props.dispatch(projectActions.addProject(Number(localStorage.getItem("id")), this.state.new_project_name)); this.CreateModalClose();}}>
                         Create
                     </Button>
                 </Modal.Footer>
@@ -158,6 +137,8 @@ class Project extends React.Component<Props, State>{
     }
 
     render(){
+        //@ts-ignore
+        const { project } = this.props;
         return (
             <div>
                 <Container fluid>
@@ -185,12 +166,12 @@ class Project extends React.Component<Props, State>{
                                             </thead>
                                             <tbody>
                                                 {
-                                                    this.props.states.projects.project_list.map((project: any, key: number)=>{
+                                                    project.items &&   
+                                                    project.items.map((project: any, key: number)=>{
                                                         return(
                                                             <ProjectList 
                                                             project={project} key={key} 
                                                             delete_button={() => this.DelButton(project, key)}
-                                                            // edit_button={() => this.props.actions.edit(project.id)} 
                                                             />
                                                         )})
                                                 }
@@ -209,5 +190,11 @@ class Project extends React.Component<Props, State>{
     }
 }
 
+function mapStateToProps(state: any) {
+    const { project } = state;
+    return {
+        project
+    };
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Project);
+export default connect(mapStateToProps)(Project);

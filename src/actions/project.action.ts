@@ -36,11 +36,11 @@ function deleteProject(userId: number, projectId: number) {
     return dispatch =>  {
         projectService.deleteUserProject(userId, projectId)
             .then(
-                user => {
-                    dispatch(success(user.data))
+                res => {
+                    dispatch(success(res.data))
                 }
             );
     };
 
-    function success(user) { return { type: projectConstants.PROJECT_CREATE_SUCCESS, user} }
+    function success(project) { return { type: projectConstants.PROJECT_CREATE_SUCCESS, project} }
 }
