@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from "react-redux";
 import { Router, Route } from "react-router-dom";
 import { history } from "./helpers/history"; 
-import { PrivateRoute } from "./routes/index";
+import { PrivateRoute } from "./routes/indexRoutes";
 import { store } from "./helpers/store";
 import Bootstrap from "./layouts/Bootstrap";
 import IndexPage from "./layouts/IndexPage";
@@ -16,7 +16,8 @@ render(
     <Provider store={store}>
         <Router history={history}>
                 <div>
-                    <PrivateRoute exact path="/dashboard" component={IndexPage} />
+                    <PrivateRoute exact path="/" component={IndexPage} />
+                    <PrivateRoute path="/dashboard" component={IndexPage} />
                     <Route path="/login" component={Bootstrap} />
                 </div>
         </Router>

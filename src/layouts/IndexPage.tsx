@@ -5,8 +5,8 @@ import Header from "./../components/Header/Header";
 import Footer from "./../components/Footer/Footer";
 import Sidebar from "./../components/Sidebar/Sidebar";
 
-import userRoutes from "./../routes/user";
-import adminRoutes from "../routes/admin";
+import userRoutes from "../routes/userRoutes";
+import adminRoutes from "../routes/adminRoutes";
 
 interface Props {
     location: any
@@ -28,14 +28,14 @@ class IndexPage extends React.Component<Props, State> {
                     <Switch>
                         {
                             localStorage.getItem("user") == "admin" ? 
-                            userRoutes.map((prop, key) => {
+                            adminRoutes.map((prop, key) => {
                                 if (prop.redirect)
                                     return <Redirect from={prop.path} to={prop.to} key={key} />;
                                 return (
                                     <Route path={prop.path} component={prop.component} key={key} />
                                 );
                             }) :
-                            adminRoutes.map((prop, key) => {
+                            userRoutes.map((prop, key) => {
                                 if (prop.redirect)
                                     return <Redirect from={prop.path} to={prop.to} key={key} />;
                                 return (

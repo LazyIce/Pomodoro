@@ -2,8 +2,8 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 
 import logo from "./../../assets/img/logo.png";
-import adminRoutes from "../../routes/admin";
-import userRoutes from "../../routes/user";
+import adminRoutes from "../../routes/adminRoutes";
+import userRoutes from "../../routes/userRoutes";
 
 interface Props {
     location: any
