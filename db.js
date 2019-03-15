@@ -6,9 +6,11 @@ module.exports = function() {
     projects: []
   };
 
-  data.admin = {
-    name: 'admin'
-  };
+  data.admin = [
+    {
+      name: 'admin'
+    }
+  ];
 
   for (var i = 1; i <= 20; i++) {
     data.users.push({

@@ -1,9 +1,15 @@
 .login-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
+
+    .alert {
+        width: 25vw;
+        margin-bottom: 10vh;
+    }
 
     .login-wrapper {
         width: 25vw;

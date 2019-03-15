@@ -1,4 +1,5 @@
-import { authenticationConstants } from "../constants/authentication.constant"
+import { authenticationConstants } from "../constants/authentication.constant";
+import { alertActions } from "./alert.action";
 import { history } from "../helpers/history";
 import { authenticationService } from "../services/authentication.service";
 
@@ -11,12 +12,14 @@ function login(username: string, type: string) {
     return dispatch => {
         authenticationService.login(username, type)
             .then(
-                user => { 
-                    dispatch(success(user));
-                    history.push('/dashboard');
-                },
-                error => {
-                    dispatch(failure(error));
+                res => { 
+                    if (typeof res == "object") {
+                        dispatch(success(res));
+                        history.push('/dashboard');
+                    } else {
+                        dispatch(failure(res));
+                        dispatch(alertActions.error(res));
+                    }
                 }
             );
     };
