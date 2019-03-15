@@ -75,7 +75,7 @@ class Project extends React.Component<Props, State>{
         // console.log("Hi!")
         // console.log(this.state.delete_index)
         // console.log(this.props.states.projects.project_list.length)
-        if (this.state.delete_index < this.props.project.items.length) {
+        if (this.props.project.items && this.state.delete_index < this.props.project.items.length) {
             return(
                 <Modal show={this.state.delete_show} onHide={this.DelModalClose}>
                 <Modal.Header closeButton>
@@ -108,6 +108,10 @@ class Project extends React.Component<Props, State>{
       
     CreateModalShow() {
         this.setState({ create_show: true });
+    }
+
+    componentDidMount() {
+        console.log(localStorage.getItem("id"));
     }
 
     CreateModal(){
