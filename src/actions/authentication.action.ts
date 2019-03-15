@@ -7,13 +7,13 @@ export const userActions = {
     logout
 };
 
-function login(username: string) {
+function login(username: string, type: string) {
     return dispatch => {
-        authenticationService.login(username)
+        authenticationService.login(username, type)
             .then(
                 user => { 
                     dispatch(success(user));
-                    history.push('/');
+                    history.push('/dashboard');
                 },
                 error => {
                     dispatch(failure(error));
@@ -27,5 +27,6 @@ function login(username: string) {
 
 function logout() {
     authenticationService.logout();
+    history.push('/login');
     return { type: authenticationConstants.LOGOUT };
 }

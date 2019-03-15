@@ -2,12 +2,12 @@ import UserProfile from "../views/UserProfile";
 
 const adminRoutes = [
     {
-      path: "/user",
-      name: "User Profile",
+      path: "/dashboard",
+      name: "UserProfile",
       icon: "pe-7s-user",
       component: UserProfile
     },
-    { redirect: true, path: "/", to: "/user", name: "UserProfile" }
+    { redirect: true, path: "/", to: "/dashboard", name: "UserProfile" }
 ]
 
 export default adminRoutes;

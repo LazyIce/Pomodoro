@@ -1,5 +1,5 @@
 {
     "/admin/show": "/admin",
-    "/users/:id/show": "/users/:id",
+    "/users/:email/show": "/users/:email",
     "/projects/:id/show": "/projects/:id"
 }

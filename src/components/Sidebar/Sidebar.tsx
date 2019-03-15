@@ -38,7 +38,7 @@ class Sidebar extends React.Component<Props, State> {
                 <div className="sidebar-wrapper">
                     <ul className="nav">
                         {
-                            localStorage.getItem("user") == "admin" ?
+                            localStorage.getItem("user") != "admin" ?
                             adminRoutes.map((prop, key) => {
                                 if (!prop.redirect)
                                     return (

@@ -34,11 +34,13 @@ class LoginForm extends React.Component<Props, State> {
     handleSubmit(e: any) {
         e.preventDefault();
 
+        const { type } = this.props
+
         const { username } = this.state;
         //@ts-ignore
         const { dispatch } = this.props;
         if (username) {
-            dispatch(userActions.login(username));
+            dispatch(userActions.login(username, type));
         }
     }
 

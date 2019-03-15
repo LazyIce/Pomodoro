@@ -16,7 +16,7 @@ render(
     <Provider store={store}>
         <Router history={history}>
                 <div>
-                    <PrivateRoute exact path="/" component={IndexPage} />
+                    <PrivateRoute exact path="/dashboard" component={IndexPage} />
                     <Route path="/login" component={Bootstrap} />
                 </div>
         </Router>
