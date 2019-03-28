@@ -1,6 +1,6 @@
 // API calls under users/
 import axios from 'axios';
-import {apiConstants} from "../constants/api.constant";
+import { BASE_URL } from "../shared/baseUrl";
 
 export const projectService = {
     getUserAllProjects,
@@ -10,41 +10,41 @@ export const projectService = {
     deleteUserProject
 };
 
-function getUserAllProjects(userId: number) { 
+function getUserAllProjects(userId: number) {
     // get projects for a user
-    return axios.get(apiConstants.BASE_URL + '/users/' + userId + '/projects').then(res=> {
+    return axios.get(BASE_URL + '/users/' + userId + '/projects').then(res => {
         return res;
     })
 }
-function addUserProject(userId: number, projectname: string) { 
+function addUserProject(userId: number, projectname: string) {
     // create project for user
-    return axios.post(apiConstants.BASE_URL + '/users/' + userId + '/projects', {
+    return axios.post(BASE_URL + '/users/' + userId + '/projects', {
         id: 0,
         projectname: projectname,
         userId: userId
-    }).then(res=> {
+    }).then(res => {
         return res;
     })
 }
-function getUserProject(userId: number, projectId: number) { 
+function getUserProject(userId: number, projectId: number) {
     // Get project by ID for a given user
-    return axios.get(apiConstants.BASE_URL + '/users/' + userId + '/projects/' + projectId).then(res=> {
+    return axios.get(BASE_URL + '/users/' + userId + '/projects/' + projectId).then(res => {
         return res;
     })
 }
-function putUserProject(userId: number, projectId: number, projectname: string) { 
+function putUserProject(userId: number, projectId: number, projectname: string) {
     // Get project by ID for a given user
-    return axios.put(apiConstants.BASE_URL + '/users/' + userId + '/projects/' + projectId, {
+    return axios.put(BASE_URL + '/users/' + userId + '/projects/' + projectId, {
         id: 0,
         projectname: projectname,
         userId: userId
-    }).then(res=> {
+    }).then(res => {
         return res;
     })
 }
-function deleteUserProject(userId: number, projectId: number) { 
+function deleteUserProject(userId: number, projectId: number) {
     // Get project by ID for a given user
-    return axios.delete(apiConstants.BASE_URL + '/users/' + userId + '/projects/' + projectId).then(res=> {
+    return axios.delete(BASE_URL + '/users/' + userId + '/projects/' + projectId).then(res => {
         return res;
     })
 }

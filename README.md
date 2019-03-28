@@ -5,6 +5,8 @@ You have installed yarn or npm in your local machine globally.
 
 Here we recommend to use yarn.
 
+If you want to run our client with your backend, just change the 'BASE_URL' in the /src/constants/api.constant.ts. 
+
 ## Available Scripts
 In the project directory, you can run:
 

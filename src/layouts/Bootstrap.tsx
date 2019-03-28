@@ -4,7 +4,7 @@ import { Alert } from "react-bootstrap";
 
 import { history } from "./../helpers/history";
 import { connect } from "react-redux";
-import { alertActions } from "./../actions/alert.action";
+import { alertActions } from "../redux/actionCreators/alert.action"
 
 import Login from "./../views/Login";
 
@@ -23,7 +23,7 @@ class Bootstrap extends React.Component {
         const { alert } = this.props;
         return (
             <div className="login-container">
-                <ReactCanvasNest className = 'canvasNest' config = {{ count: 100, pointColor: ' 255, 255, 255 ', lineColor: '0, 0, 0', follow: false }} />
+                <ReactCanvasNest className='canvasNest' config={{ count: 100, pointColor: ' 255, 255, 255 ', lineColor: '0, 0, 0', follow: false }} />
                 {alert.message && <Alert className="alert" variant="danger">{alert.message}</Alert>}
                 <div className="login-wrapper">
                     <Login />

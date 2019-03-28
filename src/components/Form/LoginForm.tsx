@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { authenticationActions } from "../../actions/authentication.action";
- 
+import { authenticationActions } from "../../redux/actionCreators/authentication.action";
+
 interface Props {
     type: string
 }
@@ -47,7 +47,7 @@ class LoginForm extends React.Component<Props, State> {
     render() {
         const { username } = this.state;
         return (
-            <Form onSubmit={ this.handleSubmit }>
+            <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                     <Form.Label>{this.props.type == "admin" ? "Admin Name:" : "Email Address:"}</Form.Label>
                     <Form.Control type={this.props.type == "admin" ? "input" : "email"} placeholder={this.props.type == "admin" ? "Enter your admin name" : "Enter your email"} name="username" value={username} onChange={this.handleChange} required />

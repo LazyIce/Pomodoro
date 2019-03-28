@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Nav } from "react-bootstrap";
 import { connect } from "react-redux";
-import { authenticationActions } from "../../actions/authentication.action";
+import { authenticationActions } from "../../redux/actionCreators/authentication.action";
 
 class HeaderLinks extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ class HeaderLinks extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick (e: any) {
+    handleClick(e: any) {
         e.preventDefault();
         //@ts-ignore
         const { dispatch } = this.props;

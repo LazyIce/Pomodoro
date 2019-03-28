@@ -7,7 +7,12 @@ const userRoutes = [
     icon: "pe-7s-note2",
     component: Project
   },
-  { redirect: true, path: "/", to: "/dashboard", name: "Project" }
+  {
+    redirect: true,
+    path: "/",
+    to: "/dashboard",
+    name: "Project"
+  }
 ];
 
 export default userRoutes;

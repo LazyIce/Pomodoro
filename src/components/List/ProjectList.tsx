@@ -1,23 +1,37 @@
-import * as React from "react";
-import { Button } from "react-bootstrap";
+import * as React from 'react';
+import { Button } from 'react-bootstrap';
 
-function ProjectList(props: any){
-    return(
-        <tr key={props.project.id}>
-            <td>{props.project.id}</td>
-            <td>{props.project.project_name}</td>
-            <td>{props.project.number_sessions}</td>
-            <td>{props.project.total_pomodoro}</td>
-            <td>
-                <Button  onClick={props.delete_button} variant="secondary">
-                    Delete
-                </Button>
-                {/* <Button onClick={props.edit_button} variant="secondary">
+function ProjectList(props: any) {
+   return (
+      <tr>
+         <td>{props.index + 1}</td>
+         <td>{props.project.projectname}</td>
+
+         {/* <td>{props.project.number_sessions}</td>
+            <td>{props.project.total_pomodoro}</td> */}
+         <td>{props.project.sessions ? props.project.sessions.length : 0}</td>
+         <td>{getPomodoroCount(props.project.sessions)}</td>
+         <td>
+            <Button onClick={props.delete_button} variant="secondary">
+               Delete
+            </Button>
+            {/* <Button onClick={props.edit_button} variant="secondary">
                     edit
                 </Button> */}
-            </td>
-        </tr>
-    );
+         </td>
+      </tr>
+   );
+}
+function getPomodoroCount(sessions) {
+   let counter = 0;
+   if (sessions) {
+      sessions.forEach(session => {
+         if (session.counter) {
+            counter = counter + session.counter;
+         }
+      });
+   }
+   return counter;
 }
 
 export default ProjectList;
