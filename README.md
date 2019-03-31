@@ -1,36 +1,25 @@
-This is the front end of the pomodoro web application for CS6301 Advanced Software Engineering. 
+# PTTWeb1
 
-## Prerequisite:
-You have installed yarn or npm in your local machine globally. 
+### Run Dummy server
 
-Here we recommend to use yarn.
+The server lives in the dummy_node_server folder. Go to this folder and use the following commands to run the server:
 
-If you want to run our client with your backend, just change the 'BASE_URL' in the /src/constants/api.constant.ts. 
+1. Install node modules `npm install`
+2. Run `node app.js`
 
-## Available Scripts
-In the project directory, you can run:
+### Run PTT Application
 
-### `yarn install`
-Downloading the dependacies.
+Go to PTTWeb1 to run the application
 
-### `yarn start`
+1. Install node modules by running `npm install`
+2. Modify BASE URL in shared/baseUrl.js
+3. Run the dummy server as explained above
+4. Run `npm start` to start the application
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Note to Developers about PTT app
 
-### `yarn test`
+All the code related to redux, which we use to manage state, lives in `src/redux`. To create new a action, define action in `redux/actionTypes/[action.file.name]`, create methods related to action in `redux/actionCreator/[action.file.name]` and define the reducer for the action in `redux/reducer/[action.file.name]`. For each action, you need to define its corresponding states in `redux/actionCreator/[action.file.name]`.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To call actions in the view, used mapToDispatch to map actions to component property.
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. 
-
+These are some standard and we should follow them.

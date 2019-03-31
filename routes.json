@@ -1,6 +1,0 @@
-{
-    "/admin": "/admin",
-    "/users/:email": "/users/:email",
-    "/users/:userId": "/users/:userId",
-    "/users/:userId/projects/:projectId/show": "/users/:userId/projects/:projectId"
-}

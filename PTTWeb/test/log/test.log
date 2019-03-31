@@ -1,0 +1,27 @@
+2019-03-30 14:45:44,398 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
+2019-03-30 14:45:44,414 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
+2019-03-30 14:45:44,427 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
+2019-03-30 23:48:55,147 - framework - INFO - find input: Enter your admin name
+2019-03-30 23:48:55,941 - framework - INFO - type into input: admin
+2019-03-30 23:48:56,156 - framework - INFO - find button: Submit
+2019-03-30 23:48:56,602 - framework - INFO - click button
+2019-03-30 23:48:56,649 - framework - INFO - curURL is: http://localhost:3000/dashboard
+2019-03-30 23:48:56,698 - framework - INFO - current username isadmin
+2019-03-30 23:49:00,055 - framework - INFO - find input: username
+2019-03-30 23:49:00,936 - framework - INFO - type into input: admin1
+2019-03-30 23:49:01,167 - framework - INFO - find button: Submit
+2019-03-30 23:49:01,585 - framework - INFO - click button
+2019-03-30 23:49:01,695 - framework - INFO - curURL is: http://localhost:3000/login
+2019-03-30 23:49:01,942 - framework - INFO - check alert is: Admin name is wrong!
+2019-03-30 23:55:11,445 - framework - INFO - find input: Enter your admin name
+2019-03-30 23:55:12,143 - framework - INFO - type into input: admin
+2019-03-30 23:55:12,357 - framework - INFO - find button: Submit
+2019-03-30 23:55:12,812 - framework - INFO - click button
+2019-03-30 23:55:12,844 - framework - INFO - curURL is: http://localhost:3000/dashboard
+2019-03-30 23:55:12,897 - framework - INFO - current username isadmin
+2019-03-30 23:55:16,161 - framework - INFO - find input: username
+2019-03-30 23:55:16,970 - framework - INFO - type into input: admin1
+2019-03-30 23:55:17,180 - framework - INFO - find button: Submit
+2019-03-30 23:55:17,595 - framework - INFO - click button
+2019-03-30 23:55:17,698 - framework - INFO - curURL is: http://localhost:3000/login
+2019-03-30 23:55:17,937 - framework - INFO - check alert is: Admin name is wrong!
