@@ -19,6 +19,25 @@ export const project = (
       return { ...state, list: state.list.concat(project) };
     }
 
+    case projectConstants.PROJECT_CREATE_FAILED: {
+			return { ...state, errMess: action.payload }
+		}
+ 
+    case projectConstants.PROJECT_UPDATE_SUCCESS: {
+			let updated_list = _.map(state.list, (u) => {
+				if (u.id == action.payload.id) {
+					u.projectname = action.payload.projectname;
+				}
+				return u
+			})
+			return { ...state, list: updated_list }
+
+    }
+    
+    case projectConstants.PROJECT_UPDATE_FAILED: {
+			return { ...state, errMess: action.payload }
+		}
+
     case projectConstants.PROJECT_DELETE_SUCCESS: {
       let updated_list = _.filter(state.list, function(p) {
         return p.id != action.payload.id;

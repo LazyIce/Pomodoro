@@ -1,3 +1,4 @@
+import time
 import unittest
 from utils.myselenium import MySelenium
 from utils.config import Config
@@ -32,6 +33,7 @@ class TestUserAddProject(unittest.TestCase):
         # Click create new user button to show modal
         create_project_button = driver.find_element_by_id("create_project_button")
         create_project_button.click()
+        time.sleep(1)
 
         # Check CreateModal is pop up
         create_modal = self.selenium.is_element_exist("id", "create_project_modal")
@@ -39,42 +41,30 @@ class TestUserAddProject(unittest.TestCase):
         # Type in project name
         create_project_name = driver.find_element_by_id("create_project_name")
 
-        name = self.project_name
-
-        create_project_name.send_keys(name)
+        create_project_name.send_keys(self.project_name)
 
         # click "create" button
         confirm_create_project_button = driver.find_element_by_id("confirm_create_project_button")
         confirm_create_project_button.click()
+        time.sleep(1)
 
         # look for the user just generated
-        new_project_name = self.selenium.is_element_exist("xpath", "//tr[td[contains(text(), '{}')]]".format(name))
+        new_project_name = self.selenium.is_element_exist("xpath", "//tr[td[contains(text(), '{}')]]".format(self.project_name))
 
         self.assertTrue(new_project_name)
 
     def test_user_add_project_with_exist_name(self):
         driver = self.driver
 
-        # Click create new user button to show modal
-        create_new_user_button = driver.find_element_by_id("create_project_button")
-        create_new_user_button.click()
+        # Add first project
+        user_add_project(self)
 
-        # Check CreateModal is pop up
-        create_modal = self.selenium.is_element_exist("id", "create_project_modal")
-        self.assertTrue(create_modal)
-
-        # Type in project name
-        create_project_name = driver.find_element_by_id("create_project_name")
-
-        name = "project233"
-
-        create_project_name.send_keys(name)
-
-        # click "create" button
-        confirm_create_project_button = driver.find_element_by_id("confirm_create_project_button")
-        confirm_create_project_button.click()
-
-        # check alert
+        time.sleep(1)
+        
+        # Test add another project with same name
+        user_add_project(self)
+        
+        # check error_msg
         is_error_modal = self.selenium.is_element_exist("id", "error_modal")
         self.assertTrue(is_error_modal)
         if is_error_modal:

@@ -13,7 +13,7 @@ function UserList(props: any) {
       </td>
       <td>
         <Button onClick={props.edit_button} variant="warning">
-          edit
+          Edit
         </Button>
         <Button onClick={props.delete_button} variant="secondary">
           Delete

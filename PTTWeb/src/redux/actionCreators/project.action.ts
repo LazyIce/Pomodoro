@@ -22,7 +22,8 @@ export const addProject = (userId: number, projectname: string) => async dispatc
       let res = await projectService.addUserProject(userId, projectname);
       return dispatch(addProjectHelper(res.data));
    } catch (e) {
-      console.log(e);
+      console.log(e.message);
+      dispatch(addProjectFail(e.message))
    }
 };
 
@@ -32,6 +33,35 @@ export const addProjectHelper = project => {
       payload: project
    };
 };
+
+
+export const addProjectFail = status => ({
+   type: projectConstants.PROJECT_CREATE_FAILED,
+   payload: status
+ });
+
+
+export const putProject = ({projectname, userId, projectId}) => dispatch => {
+   return projectService
+   .putUserProject(userId, projectId, projectname)
+   .then((res: any) => {
+      dispatch(updateProject(res.data));
+   })
+   .catch(error => {
+      console.log(error.message)
+      dispatch(updateProjectFailed(error.message))
+   })
+}
+
+export const updateProject = project => ({
+   type: projectConstants.PROJECT_UPDATE_SUCCESS,
+   payload: project
+});
+
+export const updateProjectFailed = error => ({
+   type: projectConstants.PROJECT_UPDATE_FAILED,
+   payload: error
+});
 
 export const deleteProject = (userId: number, projectId: number) => async dispatch => {
    try {

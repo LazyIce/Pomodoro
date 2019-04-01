@@ -12,10 +12,10 @@ function ProjectList(props: any) {
          <td>{props.project.sessions ? props.project.sessions.length : 0}</td>
          <td>{getPomodoroCount(props.project.sessions)}</td>
          <td>
-            <Button onClick={props.edit_button} variant="warning">
-               edit
+            <Button id={"edit_"+props.index} onClick={props.edit_button} variant="warning">
+               Edit
             </Button>
-            <Button onClick={props.delete_button} variant="secondary">
+            <Button id={"delete_"+props.index} onClick={props.delete_button} variant="secondary">
                Delete
             </Button>
          </td>

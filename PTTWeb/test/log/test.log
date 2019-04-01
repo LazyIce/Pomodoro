@@ -1,27 +1,89 @@
-2019-03-30 14:45:44,398 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
-2019-03-30 14:45:44,414 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
-2019-03-30 14:45:44,427 - framework - INFO - <selenium.webdriver.remote.webelement.WebElement (session="e30e8de31d44f481b2a4ce603d98dd55", element="0.371814420637544-8")>
-2019-03-30 23:48:55,147 - framework - INFO - find input: Enter your admin name
-2019-03-30 23:48:55,941 - framework - INFO - type into input: admin
-2019-03-30 23:48:56,156 - framework - INFO - find button: Submit
-2019-03-30 23:48:56,602 - framework - INFO - click button
-2019-03-30 23:48:56,649 - framework - INFO - curURL is: http://localhost:3000/dashboard
-2019-03-30 23:48:56,698 - framework - INFO - current username isadmin
-2019-03-30 23:49:00,055 - framework - INFO - find input: username
-2019-03-30 23:49:00,936 - framework - INFO - type into input: admin1
-2019-03-30 23:49:01,167 - framework - INFO - find button: Submit
-2019-03-30 23:49:01,585 - framework - INFO - click button
-2019-03-30 23:49:01,695 - framework - INFO - curURL is: http://localhost:3000/login
-2019-03-30 23:49:01,942 - framework - INFO - check alert is: Admin name is wrong!
-2019-03-30 23:55:11,445 - framework - INFO - find input: Enter your admin name
-2019-03-30 23:55:12,143 - framework - INFO - type into input: admin
-2019-03-30 23:55:12,357 - framework - INFO - find button: Submit
-2019-03-30 23:55:12,812 - framework - INFO - click button
-2019-03-30 23:55:12,844 - framework - INFO - curURL is: http://localhost:3000/dashboard
-2019-03-30 23:55:12,897 - framework - INFO - current username isadmin
-2019-03-30 23:55:16,161 - framework - INFO - find input: username
-2019-03-30 23:55:16,970 - framework - INFO - type into input: admin1
-2019-03-30 23:55:17,180 - framework - INFO - find button: Submit
-2019-03-30 23:55:17,595 - framework - INFO - click button
-2019-03-30 23:55:17,698 - framework - INFO - curURL is: http://localhost:3000/login
-2019-03-30 23:55:17,937 - framework - INFO - check alert is: Admin name is wrong!
+2019-03-31 17:48:36,303 - framework - INFO - type 'admin' into input
+2019-03-31 17:48:37,041 - framework - INFO - click submit button
+2019-03-31 17:48:38,051 - framework - INFO - curURL is: http://localhost:3000/dashboard
+2019-03-31 17:48:38,076 - framework - INFO - current username isadmin
+2019-03-31 17:48:44,851 - framework - INFO - type 'admin1' into input
+2019-03-31 17:48:45,378 - framework - INFO - click submit button
+2019-03-31 17:48:46,466 - framework - INFO - curURL is: http://localhost:3000/login
+2019-03-31 17:48:46,570 - framework - INFO - alert pops up
+2019-03-31 17:48:46,782 - framework - INFO - check alert_msg is: Admin name is wrong!
+2019-03-31 17:48:52,361 - framework - INFO - click the create new user button
+2019-03-31 17:48:53,374 - framework - INFO - create user modal pops up
+2019-03-31 17:48:54,581 - framework - INFO - input first name: Jeffrey
+2019-03-31 17:48:54,581 - framework - INFO - input last name: Ray
+2019-03-31 17:48:54,582 - framework - INFO - input email: richardvilla@gmail.com
+2019-03-31 17:48:54,657 - framework - INFO - click submit button
+2019-03-31 17:48:55,675 - framework - INFO - create user successfully
+2019-03-31 17:48:55,722 - framework - INFO - check the first name: Jeffrey
+2019-03-31 17:48:55,722 - framework - INFO - check the last name: Ray
+2019-03-31 17:49:00,879 - framework - INFO - click the create new user button
+2019-03-31 17:49:01,896 - framework - INFO - create user modal pops up
+2019-03-31 17:49:02,830 - framework - INFO - input first name: Cathy
+2019-03-31 17:49:02,830 - framework - INFO - input last name: Solis
+2019-03-31 17:49:02,830 - framework - INFO - input email: shaun46@hotmail.com
+2019-03-31 17:49:02,905 - framework - INFO - click submit button
+2019-03-31 17:49:03,966 - framework - INFO - click the create new user button
+2019-03-31 17:49:04,976 - framework - INFO - create user modal pops up
+2019-03-31 17:49:05,875 - framework - INFO - input first name: Cathy
+2019-03-31 17:49:05,875 - framework - INFO - input last name: Solis
+2019-03-31 17:49:05,876 - framework - INFO - input email: shaun46@hotmail.com
+2019-03-31 17:49:05,960 - framework - INFO - click submit button
+2019-03-31 17:49:06,979 - framework - INFO - error modal pops up
+2019-03-31 17:49:16,305 - framework - INFO - create a user for editting
+2019-03-31 17:49:16,403 - framework - INFO - click edit button
+2019-03-31 17:49:17,421 - framework - INFO - edit modal pops up
+2019-03-31 17:49:17,977 - framework - INFO - change first name: Steven to Rodney
+2019-03-31 17:49:17,977 - framework - INFO - change last name: Cruz to Robertson
+2019-03-31 17:49:19,057 - framework - INFO - click confirm button
+2019-03-31 17:49:19,108 - framework - INFO - edit first name to: Rodney
+2019-03-31 17:49:19,108 - framework - INFO - edit last name to: Robertson
+2019-03-31 17:49:27,717 - framework - INFO - create a user for deleting
+2019-03-31 17:49:27,789 - framework - INFO - click the delete button
+2019-03-31 17:49:28,809 - framework - INFO - delete modal doesn't pop up
+2019-03-31 17:49:28,820 - framework - INFO - delete the user successfully
+2019-03-31 17:49:35,199 - framework - INFO - create a user for deleting
+2019-03-31 17:49:42,891 - framework - INFO - create a project for the user
+2019-03-31 17:49:47,409 - framework - INFO - click the delete button
+2019-03-31 17:49:48,427 - framework - INFO - delete modal pops up
+2019-03-31 17:49:48,500 - framework - INFO - click the confirm button
+2019-03-31 17:49:49,518 - framework - INFO - delete the user successfully
+2019-03-31 17:49:56,412 - framework - INFO - create a user for deleting
+2019-03-31 17:50:03,451 - framework - INFO - create a project for the user
+2019-03-31 17:50:08,060 - framework - INFO - click the delete button
+2019-03-31 17:50:09,074 - framework - INFO - delete modal pops up
+2019-03-31 17:50:09,147 - framework - INFO - click the cancel button
+2019-03-31 17:50:10,161 - framework - INFO - cancel deleting the user
+2019-03-31 17:50:18,383 - framework - INFO - find user tab: User
+2019-03-31 17:50:18,769 - framework - INFO - click the tab
+2019-03-31 17:50:19,986 - framework - INFO - find input: Enter your email
+2019-03-31 17:50:22,049 - framework - INFO - type into input: shaunbradford@yahoo.com
+2019-03-31 17:50:22,294 - framework - INFO - find button: Submit
+2019-03-31 17:50:22,756 - framework - INFO - click button
+2019-03-31 17:50:23,764 - framework - INFO - curURL is: http://localhost:3000/dashboard
+2019-03-31 17:50:23,793 - framework - INFO - current username isshaunbradford@yahoo.com
+2019-03-31 17:50:26,979 - framework - INFO - find user tab: User
+2019-03-31 17:50:27,645 - framework - INFO - click the tab
+2019-03-31 17:50:30,916 - framework - INFO - type into input: millerjustin@gmail.com
+2019-03-31 17:50:31,126 - framework - INFO - find button: Submit
+2019-03-31 17:50:31,478 - framework - INFO - click button
+2019-03-31 17:50:32,584 - framework - INFO - curURL is: http://localhost:3000/login
+2019-03-31 17:50:32,885 - framework - INFO - check alert is: User does not exist!
+2019-03-31 17:51:07,072 - framework - INFO - create a user for deleting
+2019-03-31 17:51:14,993 - framework - INFO - create a project for the user
+2019-03-31 17:51:16,063 - framework - INFO - click edit button
+2019-03-31 17:51:17,076 - framework - INFO - edit modal pops up
+2019-03-31 17:51:17,312 - framework - INFO - change project name: oxtaDRAG to ELehwfOqKI
+2019-03-31 17:51:18,411 - framework - INFO - click confirm button
+2019-03-31 17:51:18,425 - framework - INFO - edit project name to: ELehwfOqKI
+2019-03-31 17:51:25,641 - framework - INFO - create a user for deleting
+2019-03-31 17:51:33,220 - framework - INFO - create a project for the user
+2019-03-31 17:51:34,531 - framework - INFO - create another project for the user
+2019-03-31 17:51:35,597 - framework - INFO - click edit button
+2019-03-31 17:51:36,611 - framework - INFO - edit modal pops up
+2019-03-31 17:51:36,817 - framework - INFO - change project name: MXJunfpEiV to AFMcyzralL
+2019-03-31 17:51:37,899 - framework - INFO - click confirm button
+2019-03-31 17:51:45,932 - framework - INFO - create a user for deleting
+2019-03-31 17:51:53,823 - framework - INFO - create a project for the user
+2019-03-31 17:51:54,882 - framework - INFO - click the delete button
+2019-03-31 17:51:55,897 - framework - INFO - delete modal doesn't pop up
+2019-03-31 17:51:55,908 - framework - INFO - delete the user successfully

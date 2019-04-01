@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import { connect } from 'react-redux';
-import { fetchAllProject, addProject, deleteProject, clearErrorMessage } from '../redux/actionCreators/project.action';
+import { fetchAllProject, addProject, putProject, deleteProject, clearErrorMessage } from '../redux/actionCreators/project.action';
 
 import ProjectList from '../components/List/ProjectList';
 
@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
    addProject: (userId, projectname) => {
       dispatch(addProject(userId, projectname));
    },
+   putProject: ({projectname, userId, projectId}) => {
+      dispatch(putProject({projectname, userId, projectId}));
+   },
    deleteProject: (userId, projectId) => {
       dispatch(deleteProject(userId, projectId));
    },
@@ -32,6 +35,7 @@ interface Props {
    projectlist: any;
    fetchAllProject: any;
    addProject: any;
+   putProject: any;
    deleteProject: any;
    clearErrorMessage: any;
    projectErrMess: any;
@@ -43,6 +47,12 @@ interface State {
    delete_index: number;
    create_show: boolean;
    new_project_name: string;
+
+   edit_show: boolean;
+   edit_index: number;
+   edit_user_id: number,
+   edit_project_id: number,
+   edit_project_name: string;
 }
 
 class Project extends React.Component<Props, State> {
@@ -60,12 +70,23 @@ class Project extends React.Component<Props, State> {
       this.CreateModalClose = this.CreateModalClose.bind(this);
       this.CreateModal = this.CreateModal.bind(this);
 
+      this.EditModalShow = this.EditModalShow.bind(this);
+      this.EditModalClose = this.EditModalClose.bind(this);
+      this.EditModal = this.EditModal.bind(this);
+
+
       this.state = {
          delete_show: false,
          delete_index: 0,
 
          create_show: false,
-         new_project_name: ''
+         new_project_name: '',
+
+         edit_show: false,
+         edit_index: 0,
+         edit_user_id: 0,
+         edit_project_id: 0,
+         edit_project_name: ''
       };
    }
    componentDidMount() {
@@ -197,6 +218,7 @@ class Project extends React.Component<Props, State> {
                   onClick={() => {
                      this.props.addProject(Number(localStorage.getItem('id')), this.state.new_project_name);
                      this.CreateModalClose();
+                     this.setState({ new_project_name: '' });
                   }}
                >
                   Create
@@ -205,6 +227,74 @@ class Project extends React.Component<Props, State> {
          </Modal>
       );
    }
+
+   EditModalClose() {
+      this.setState({ edit_show: false });
+   }
+
+   EditModalShow() {
+      console.log("Hi3!")
+      this.setState({ edit_show: true });
+   }
+
+   EditButton(project: any, key: number) {
+      console.log("Hi2!")
+      this.setState({
+         edit_index: key,
+         edit_user_id: project.userId,
+         edit_project_id: project.id,
+         edit_project_name: project.projectname
+      });
+      this.EditModalShow();
+   }
+
+   EditModal() {
+      if (this.props.projectlist && this.state.delete_index < this.props.projectlist.length) {
+         return (
+            <Modal id="edit_modal" show={this.state.edit_show} onHide={this.EditModalClose}>
+               <Modal.Header closeButton>
+                  <Modal.Title>Edit this project</Modal.Title>
+               </Modal.Header>
+               <Modal.Body>
+                  <Row>
+                     <Col>Project Name</Col>
+                     <Col>
+                        <input
+                           id="edit_project_name"
+                           value={this.state.edit_project_name}
+                           onChange={(e: any) => {
+                              this.setState({ edit_project_name: e.target.value });
+                           }}
+                        />
+                     </Col>
+                  </Row>
+               </Modal.Body>
+               <Modal.Footer>
+                  <Button variant="secondary" onClick={this.EditModalClose}>
+                     Cancel
+                  </Button>
+                  <Button
+                     id="confirm_edit"
+                     variant="primary"
+                     onClick={() => {
+                        this.props.putProject({
+                           projectname: this.state.edit_project_name,
+                           userId: this.state.edit_user_id,
+                           projectId: this.state.edit_project_id
+                        });
+                        this.EditModalClose();
+                     }}
+                  >
+                     Edit
+                  </Button>
+               </Modal.Footer>
+            </Modal>
+         );
+      } else {
+         return <div />;
+      }
+   }
+
 
    render() {
       return (
@@ -245,6 +335,7 @@ class Project extends React.Component<Props, State> {
                                              key={index}
                                              index={index}
                                              delete_button={() => this.DelButton(project, index)}
+                                             edit_button={() => this.EditButton(project, index)}
                                           />
                                        );
                                     })}
@@ -259,6 +350,7 @@ class Project extends React.Component<Props, State> {
             <this.DelModal />
             <this.CreateModal />
             <this.ErrModal />
+            <this.EditModal />
          </div>
       );
    }
