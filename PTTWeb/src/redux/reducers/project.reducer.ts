@@ -5,12 +5,13 @@ export const project = (
   state = {
     isLoading: false,
     errMess: null,
-    list: []
+    list: [],
+    report: {}
   },
   action: any
 ) => {
   switch (action.type) {
-    case projectConstants.GET_ALL_PROJECT_SUCCESS: {
+    case projectConstants.GET_ALL_PROJECTS_SUCCESS: {
       return { ...state, list: action.payload };
     }
 
@@ -48,6 +49,10 @@ export const project = (
 
     case projectConstants.PROJECT_CLEAR_ERROR_MESSAGE: {
 			return { ...state, errMess: null}
+    }
+
+    case projectConstants.GET_PROJECT_REPORT_SUCCESS: {
+			return { ...state, report: action.payload}
     }
     
     default:

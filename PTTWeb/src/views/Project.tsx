@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import { connect } from 'react-redux';
-import { fetchAllProject, addProject, putProject, deleteProject, clearErrorMessage } from '../redux/actionCreators/project.action';
+import { fetchAllProjects, addProject, putProject, deleteProject, clearErrorMessage} from '../redux/actionCreators/project.action';
 
 import ProjectList from '../components/List/ProjectList';
 
@@ -14,8 +14,8 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-   fetchAllProject: userId => {
-      dispatch(fetchAllProject(userId));
+   fetchAllProjects: userId => {
+      dispatch(fetchAllProjects(userId));
    },
    addProject: (userId, projectname) => {
       dispatch(addProject(userId, projectname));
@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
 
 interface Props {
    projectlist: any;
-   fetchAllProject: any;
+   fetchAllProjects: any;
    addProject: any;
    putProject: any;
    deleteProject: any;
@@ -90,7 +90,7 @@ class Project extends React.Component<Props, State> {
       };
    }
    componentDidMount() {
-      this.props.fetchAllProject(Number(localStorage.getItem('id')));
+      this.props.fetchAllProjects(Number(localStorage.getItem('id')));
    }
 
    // Error modal
@@ -129,18 +129,14 @@ class Project extends React.Component<Props, State> {
    }
 
    DelButton(project: any, key: number) {
-      //Check if there is pomodoro associated with the project
-      //console.log(project.total_pomodoro);
-
-      // TODO -- we need to figure out how to find if a project has time logged to it or not
-      // if (project.sessions && project.sessions.length != 0) {
-      //    //if there is pomodoro, popup the confirmation for user
-      //    this.setState({ delete_index: key });
-      //    this.DelModalShow();
-      // } else {
-      //otherwise delete directly.
+      
+      if (project.report.sessions && project.report.sessions.length != 0) {
+         //if there is pomodoro, popup the confirmation for user
+         this.setState({ delete_index: key });
+         this.DelModalShow();
+      } else {
       this.props.deleteProject(project.userId, project.id);
-      // }
+      }
    }
 
    DelProject(project: any) {
@@ -159,7 +155,7 @@ class Project extends React.Component<Props, State> {
                   <Modal.Title>Confirmation</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  This project {this.props.projectlist[this.state.delete_index].projectname} has a pomodoro
+                  This project {this.props.projectlist[this.state.delete_index].projectname} has sessions
                   associate with it. Are you sure to delete the project?
                </Modal.Body>
                <Modal.Footer>

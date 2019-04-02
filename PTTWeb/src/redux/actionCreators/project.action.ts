@@ -1,21 +1,32 @@
 import { projectConstants } from '../actionTypes/project.constant';
 import { projectService } from '../../services/project.service';
 
-export const fetchAllProject = (userId: number) => async dispatch => {
-   try {
-      let res = await projectService.getUserAllProjects(userId);
-      return dispatch(fetchAllProjectHelper(res.data));
-   } catch (e) {
-      console.log(e);
-   }
-};
-
-export const fetchAllProjectHelper = projects => {
-   return {
-      type: projectConstants.GET_ALL_PROJECT_SUCCESS,
-      payload: projects
+export const fetchAllProjects = function(userId: number) {
+   return async function(dispatch) {
+      try {
+         let res: any = await projectService.getUserAllProjects(userId);
+         let projectlist = res.data;
+   
+         let project_ids = projectlist.map(project => project.id);
+         for (const id of project_ids) {
+            let p = await projectService.getProjectReport(userId, id);
+            projectlist.forEach(function(project) {
+               if (project.id == id) {
+               project.report = p.data;
+               }
+            });
+         }
+         return dispatch(addAllProjects(projectlist));
+      } catch (e) {
+         console.log(e);
+      }
    };
 };
+
+export const addAllProjects = (projects: any) => ({
+   type: projectConstants.GET_ALL_PROJECTS_SUCCESS,
+   payload: projects
+});
 
 export const addProject = (userId: number, projectname: string) => async dispatch => {
    try {
@@ -90,3 +101,19 @@ export const clearErrorMessage = function() {
      }
    };
  };
+
+ export const fetchProjectReport = (userId: number, projectId: number) => async dispatch => {
+   try {
+      let res = await projectService.getProjectReport(userId, projectId);
+      return dispatch(fetchProjectReportHelper(res.data));
+   } catch (e) {
+      console.log(e);
+   }
+};
+
+export const fetchProjectReportHelper = sessions => {
+   return {
+      type: projectConstants.GET_PROJECT_REPORT_SUCCESS,
+      payload: sessions
+   };
+};

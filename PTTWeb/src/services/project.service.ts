@@ -7,7 +7,8 @@ export const projectService = {
     addUserProject,
     getUserProject,
     putUserProject,
-    deleteUserProject
+    deleteUserProject,
+    getProjectReport
 };
 
 function getUserAllProjects(userId: number) {
@@ -46,5 +47,12 @@ function deleteUserProject(userId: number, projectId: number) {
     // Get project by ID for a given user
     return axios.delete(BASE_URL + '/users/' + userId + '/projects/' + projectId).then(res => {
         return res;
+    })
+}
+
+function getProjectReport(userId: number, projectId: number) {
+    // Get project report by userID and projectID 
+    return axios.get(BASE_URL + '/users/' + userId + '/projects/' + projectId + '/report').then(res => {
+        return res; 
     })
 }

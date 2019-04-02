@@ -6,11 +6,8 @@ function ProjectList(props: any) {
       <tr>
          <td>{props.index + 1}</td>
          <td>{props.project.projectname}</td>
-
-         {/* <td>{props.project.number_sessions}</td>
-            <td>{props.project.total_pomodoro}</td> */}
-         <td>{props.project.sessions ? props.project.sessions.length : 0}</td>
-         <td>{getPomodoroCount(props.project.sessions)}</td>
+         <td>{props.project.report.sessions ? props.project.report.sessions.length : 0}</td>
+         <td>{props.project.report.completedPomodoros ? props.project.report.completedPomodoros : 0}</td>
          <td>
             <Button id={"edit_"+props.index} onClick={props.edit_button} variant="warning">
                Edit
@@ -21,18 +18,6 @@ function ProjectList(props: any) {
          </td>
       </tr>
    );
-}
-
-function getPomodoroCount(sessions) {
-   let counter = 0;
-   if (sessions) {
-      sessions.forEach(session => {
-         if (session.counter) {
-            counter = counter + session.counter;
-         }
-      });
-   }
-   return counter;
 }
 
 export default ProjectList;
