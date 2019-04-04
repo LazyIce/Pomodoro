@@ -1,4 +1,5 @@
 import Project from "../views/Project";
+import Pomodoro from "../views/Pomodoro";
 
 const userRoutes = [
   {
@@ -6,6 +7,12 @@ const userRoutes = [
     name: "Projects",
     icon: "pe-7s-note2",
     component: Project
+  },
+  {
+    path: "/pomodoro",
+    name: "Pomodoro",
+    icon: "pe-7s-plus",
+    component: Pomodoro
   },
   {
     redirect: true,

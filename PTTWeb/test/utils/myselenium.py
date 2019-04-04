@@ -1,6 +1,8 @@
 import os
 import platform
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 from selenium.common.exceptions import NoSuchElementException     
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -9,16 +11,20 @@ from utils.config import DRIVER_PATH
 
 class MySelenium:
 	def __init__(self, browser):
+		chrome_options = Options()
+		chrome_options.add_argument("--headless")
+		chrome_options.add_argument("--window-size=1920x1080")
+
 		system = platform.system()
 		if browser == 'Firefox':
 			driver = webdriver.Firefox()
 		elif browser == 'Chrome':
 			if system == 'Windows':
-				driver = webdriver.Chrome(os.path.join(DRIVER_PATH, 'chromedriver_win32', 'chromedriver'))
+				driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.path.join(DRIVER_PATH, 'chromedriver_win32', 'chromedriver'))
 			elif system == 'Darwin':
-				driver = webdriver.Chrome(os.path.join(DRIVER_PATH, 'chromedriver_mac', 'chromedriver'))
+				driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.path.join(DRIVER_PATH, 'chromedriver_mac', 'chromedriver'))
 			else:
-				driver = webdriver.Chrome(os.path.join(DRIVER_PATH, 'chromedriver_linux', 'chromedriver'))
+				driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.path.join(DRIVER_PATH, 'chromedriver_linux', 'chromedriver'))
 		else:
 			raise NameError('Only support firefox and Chrome')
 		self.driver = driver
