@@ -21,6 +21,9 @@ const mapStateToProps = (state: any) => {
  const mapDispatchToProps = dispatch => ({
     fetchAllProjects: userId => {
        dispatch(fetchAllProjects(userId));
+    },
+    clearErrorMessage: () =>{
+        dispatch(clearErrorMessage());
     }
  });
 
@@ -28,6 +31,7 @@ interface Props {
     projectlist: any,
     projectErrMess: any,
     fetchAllProjects: any,
+    clearErrorMessage: any
 };
 
 interface State {
@@ -46,7 +50,9 @@ interface State {
     continue_show: boolean,
     stop_show: boolean,
     active: boolean,
-    counter: number
+    counter: number,
+
+    error_message: any
 };
 
 class Pomodoro extends React.Component<Props, State>{
@@ -122,6 +128,11 @@ class Pomodoro extends React.Component<Props, State>{
     //-----------------------------------
     //Three functions representing the action of user on create modal
     CreateSubmit(){
+        var time = moment().format('YYYY-MM-DDTHH:mmZ');
+        console.log(time);
+        this.setState({
+            start_time: time
+        })
         if(this.state.associated_id != -1){
             this.CreateSession();
         }
@@ -139,7 +150,7 @@ class Pomodoro extends React.Component<Props, State>{
     }
 
     //-----------------------------------
-    //Three functions to continues create new pomodoros when one is completed
+    //Four functions to continues create new pomodoros when one is completed
     ContinueModal(){
         return (
             <Modal id="continue_modal" show={this.state.continue_show} onHide={this.ContinueOver}>
@@ -174,6 +185,15 @@ class Pomodoro extends React.Component<Props, State>{
                         }}/>
                     second(s)
                 </Row>
+                
+                <Row>
+                    <Col># of pomodoro completed</Col>
+                    <Col>{this.state.counter}</Col>
+                </Row>
+                <Row>
+                    <Col>Session Start time</Col>
+                    <Col>{this.state.start_time}</Col>
+                </Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button id="continue_cancel_button" variant="secondary" onClick={(this.ContinueOver)}>
@@ -196,6 +216,22 @@ class Pomodoro extends React.Component<Props, State>{
         this.setState({
             continue_show: false
         })
+    }
+
+    ModalSessionInformation(){
+        return(
+            <div>
+            <Row>
+                <Col>Number of pomodoro completed</Col>
+                <Col>{this.state.counter}</Col>
+            </Row>
+            <Row>
+                <Col>Session Start time</Col>
+                <Col>{this.state.start_time}</Col>
+            </Row>
+
+            </div>
+        );
     }
     
     //-----------------------------------
@@ -224,6 +260,14 @@ class Pomodoro extends React.Component<Props, State>{
                 </Modal.Header>
                 <Modal.Body>
                     Are you going to include the runtime of current incomplete pomodoro?
+                    <Row>
+                        <Col># of pomodoro completed</Col>
+                        <Col>{this.state.counter}</Col>
+                    </Row>
+                    <Row>
+                        <Col>Session Start time</Col>
+                        <Col>{this.state.start_time}</Col>
+                    </Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -291,6 +335,60 @@ class Pomodoro extends React.Component<Props, State>{
     }
 
     //-----------------------------------
+    //functions for the modal to represent the error in HTTP Request
+    ProjectErrorModal(){
+        return(
+            <Modal show={this.props.projectErrMess != null} onHide={this.ProjectErrorModalClose}>
+                <Modal.Header>
+                    Error happened in fetching all projects
+                </Modal.Header>
+                <Modal.Body>
+                    {this.props.projectErrMess}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        id="project_error_button"
+                        variant="primary"
+                        onClick={this.ProjectErrorModalClose}>
+                    Ok
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+    ProjectErrorModalClose(){
+        this.props.clearErrorMessage();
+    }
+
+    PomodoroErrorModal(){
+        return (
+            <Modal show={this.state.error_message != null} onHide={this.PomodoroErrorModalClose}>
+                <Modal.Header>
+                    There is an error in pomodoro part
+                </Modal.Header>
+
+                <Modal.Body>
+                    {this.state.error_message}
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button id="pomodoro_error_button" onClick={this.PomodoroErrorModalClose} variant="primary">
+                        Ok
+                    </Button>
+                </Modal.Footer>
+
+            </Modal>
+        )
+    }
+
+    PomodoroErrorModalClose(){
+        this.setState({
+            error_message: null
+        })
+    }
+
+    //-----------------------------------
     //Three functions for tracking time
     TimeClear(){
         this.setState({
@@ -334,7 +432,6 @@ class Pomodoro extends React.Component<Props, State>{
             seconds --;
             total_seconds --;
             //console.log("here");
-            //console.log("here");
             if(seconds < 0){
                 seconds += 60;
                 minutes -= 1;
@@ -363,28 +460,33 @@ class Pomodoro extends React.Component<Props, State>{
         }
     }
 
-
     //Two actions that will deal with API
     CreateSession(){
-        var time = moment().format('YYYY-MM-DDTHH:mmZ');
-        console.log(time);
-        this.setState({
-            start_time: time
-        })
-        sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, time).then((res)=>{
+        sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.start_time).then((res)=>{
             console.log(res.data);
             this.setState({
                 active_session_id: res.data.id
             });
         })
+        .catch((error) =>{
+            console.log(error.message)
+            this.setState({
+                error_message: error.message
+            })
+        })
     }  
 
     UpdateSession(){
         console.log(this.state.counter);
-        //var temp = new Date();
-        //var time = temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDay() + "T" + temp.getHours() + ":" + temp.getMinutes();
-        sessionService.updateUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.active_session_id, this.state.start_time, this.state.end_time, this.state.counter).then((res)=>{
+        sessionService.updateUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.active_session_id, this.state.start_time, this.state.end_time, this.state.counter)
+        .then((res)=>{
             console.log(res.data);
+        })
+        .catch((error) =>{
+            console.log(error.message)
+            this.setState({
+                error_message: error.message
+            })
         });
     }
 
@@ -418,6 +520,11 @@ class Pomodoro extends React.Component<Props, State>{
         this.CreatePomodoro = this.CreatePomodoro.bind(this);
         this.Countdown = this.Countdown.bind(this);
 
+        this.ProjectErrorModal = this.ProjectErrorModal.bind(this);
+        this.ProjectErrorModalClose = this.ProjectErrorModalClose.bind(this);
+        this.PomodoroErrorModal = this.PomodoroErrorModal.bind(this);
+        this.PomodoroErrorModalClose = this.PomodoroErrorModalClose.bind(this);
+
         this.state = {
             seconds: 0,
             minutes: 0,
@@ -434,7 +541,9 @@ class Pomodoro extends React.Component<Props, State>{
             continue_show: false,
             stop_show: false,
             active: false,
-            counter: 0
+            counter: 0,
+
+            error_message: null
         };
         //@ts-ignore
         this.interval;
@@ -494,6 +603,8 @@ class Pomodoro extends React.Component<Props, State>{
                <this.CreateModal></this.CreateModal>
                <this.ContinueModal></this.ContinueModal>
                <this.StopModal></this.StopModal>
+               <this.ProjectErrorModal></this.ProjectErrorModal>
+               <this.PomodoroErrorModal></this.PomodoroErrorModal>
             </div>
         )
     }

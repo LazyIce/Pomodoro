@@ -229,12 +229,10 @@ class Project extends React.Component<Props, State> {
    }
 
    EditModalShow() {
-      console.log("Hi3!")
       this.setState({ edit_show: true });
    }
 
    EditButton(project: any, key: number) {
-      console.log("Hi2!")
       this.setState({
          edit_index: key,
          edit_user_id: project.userId,

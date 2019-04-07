@@ -5,8 +5,7 @@ export const project = (
   state = {
     isLoading: false,
     errMess: null,
-    list: [],
-    report: {}
+    list: []
   },
   action: any
 ) => {
@@ -23,7 +22,7 @@ export const project = (
     case projectConstants.PROJECT_CREATE_FAILED: {
 			return { ...state, errMess: action.payload }
 		}
- 
+
     case projectConstants.PROJECT_UPDATE_SUCCESS: {
 			let updated_list = _.map(state.list, (u) => {
 				if (u.id == action.payload.id) {
@@ -34,7 +33,7 @@ export const project = (
 			return { ...state, list: updated_list }
 
     }
-    
+
     case projectConstants.PROJECT_UPDATE_FAILED: {
 			return { ...state, errMess: action.payload }
 		}
@@ -43,7 +42,6 @@ export const project = (
       let updated_list = _.filter(state.list, function(p) {
         return p.id != action.payload.id;
       });
-
       return { ...state, list: updated_list };
     }
 
@@ -54,7 +52,7 @@ export const project = (
     case projectConstants.GET_PROJECT_REPORT_SUCCESS: {
 			return { ...state, report: action.payload}
     }
-    
+
     default:
       return state;
   }

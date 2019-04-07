@@ -31,6 +31,7 @@ export const addAllProjects = (projects: any) => ({
 export const addProject = (userId: number, projectname: string) => async dispatch => {
    try {
       let res = await projectService.addUserProject(userId, projectname);
+      res.data.report = {}
       return dispatch(addProjectHelper(res.data));
    } catch (e) {
       console.log(e.message);
