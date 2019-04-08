@@ -50,9 +50,20 @@ function deleteUserProject(userId: number, projectId: number) {
     })
 }
 
-function getProjectReport(userId: number, projectId: number) {
+function getProjectReport(userId: number, projectId: number, body: any) {
+    // let from = body.from instanceof Date ? body.from : new Date('1960-01-01T03:24:00');
+    // let to = body.to instanceof Date ? body.to : new Date()
+    // let completedPomo = body.completedPomo ? body.completedPomo : true
+    // let hoursWorked = body.hoursWorked ? body.hoursWorked : true
     // Get project report by userID and projectID 
-    return axios.get(BASE_URL + '/users/' + userId + '/projects/' + projectId + '/report').then(res => {
-        return res; 
+    return axios.get(BASE_URL + '/users/' + userId + '/projects/' + projectId + '/report', {
+        params: {
+            from: body.from,
+            to: body.to,
+            includeCompletedPomodoros: body.completedPomo,
+            includeTotalHoursWorkedOnProject: body.hoursWorked
+        }
+    }).then(res => {
+        return res;
     })
 }

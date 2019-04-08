@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Row, Col, Button, Modal} from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 
 import { connect } from 'react-redux';
@@ -13,19 +13,19 @@ import OptionList from '../components/List/OptionList';
 
 const mapStateToProps = (state: any) => {
     return {
-       projectlist: state.project.list,
-       projectErrMess: state.project.errMess
+        projectlist: state.project.list,
+        projectErrMess: state.project.errMess
     };
- };
- 
- const mapDispatchToProps = dispatch => ({
+};
+
+const mapDispatchToProps = dispatch => ({
     fetchAllProjects: userId => {
-       dispatch(fetchAllProjects(userId));
+        dispatch(fetchAllProjects(userId));
     },
-    clearErrorMessage: () =>{
+    clearErrorMessage: () => {
         dispatch(clearErrorMessage());
     }
- });
+});
 
 interface Props {
     projectlist: any,
@@ -45,59 +45,60 @@ interface State {
     start_time: String,
     end_time: String,
     total_hours: number,
-    
+
     create_show: boolean,
     continue_show: boolean,
     stop_show: boolean,
     active: boolean,
     counter: number,
+    is_break: boolean,
 
     error_message: any
 };
 
 class Pomodoro extends React.Component<Props, State>{
-    
+
     //-----------------------------------
     //Three functions for modals to create new pomodoro
-    CreateModal(){
+    CreateModal() {
         return <Modal id="create_modal" show={this.state.create_show} onHide={this.CreateModalClose}>
             <Modal.Header>
                 <Modal.Title>Remaining time in current Active Pomodoro</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row>
-                    <input 
+                    <input
                         id="create_hours"
                         value={this.state.hours}
-                        onChange={(e: any) =>{
-                            this.setState({hours: e.target.value% 100});
-                        }}/>
+                        onChange={(e: any) => {
+                            this.setState({ hours: e.target.value % 100 });
+                        }} />
                     hour(s)
                 </Row>
                 <Row>
                     <input
                         id="create_minutes"
                         value={this.state.minutes}
-                        onChange={(e: any) =>{
-                            this.setState({minutes: e.target.value % 100});
-                        }}/>
+                        onChange={(e: any) => {
+                            this.setState({ minutes: e.target.value % 100 });
+                        }} />
                     minute(s)
                 </Row>
                 <Row>
                     <input
                         id="create_second"
                         value={this.state.seconds}
-                        onChange={(e: any) =>{
-                            this.setState({seconds: e.target.value % 100});
-                        }}/>
+                        onChange={(e: any) => {
+                            this.setState({ seconds: e.target.value % 100 });
+                        }} />
                     second(s)
                 </Row>
                 <Row>
                     <select id="project_select_box" value={this.state.associated_id} onChange={this.ChangeSelect} >
                         <option value={-1}> No association </option>
-                        {this.props.projectlist.map((project: any, index: number) =>{
+                        {this.props.projectlist.map((project: any, index: number) => {
                             return (
-                                <OptionList project={project} />
+                                <OptionList project={project} key={index}/>
                             );
                         })}
                     </select>
@@ -108,18 +109,18 @@ class Pomodoro extends React.Component<Props, State>{
                     Cancel
                 </Button>
                 <Button id="create_confirm_button" variant="primary" onClick={this.CreateSubmit}
-                disabled={this.state.hours == 0 && this.state.minutes==0 && this.state.seconds==0}> Submit </Button>
+                    disabled={this.state.hours == 0 && this.state.minutes == 0 && this.state.seconds == 0}> Submit </Button>
             </Modal.Footer>
         </Modal>
     }
 
-    CreateModalShow(){
+    CreateModalShow() {
         this.setState({
             create_show: true
         });
     }
 
-    CreateModalClose(){
+    CreateModalClose() {
         this.setState({
             create_show: false,
         });
@@ -127,23 +128,23 @@ class Pomodoro extends React.Component<Props, State>{
 
     //-----------------------------------
     //Three functions representing the action of user on create modal
-    CreateSubmit(){
+    CreateSubmit() {
         var time = moment().format('YYYY-MM-DDTHH:mmZ');
         console.log(time);
         this.setState({
             start_time: time
         })
-        if(this.state.associated_id != -1){
+        if (this.state.associated_id != -1) {
             this.CreateSession();
         }
-        this.CreatePomodoro();
+        this.CreatePomodoro(false);
         this.CreateModalClose();
     }
-    CreateCancel(){
+    CreateCancel() {
         this.TimeClear();
         this.CreateModalClose();
     }
-    ChangeSelect(e: any){
+    ChangeSelect(e: any) {
         this.setState({
             associated_id: e.target.value
         })
@@ -151,108 +152,103 @@ class Pomodoro extends React.Component<Props, State>{
 
     //-----------------------------------
     //Four functions to continues create new pomodoros when one is completed
-    ContinueModal(){
+    ContinueModal() {
         return (
             <Modal id="continue_modal" show={this.state.continue_show} onHide={this.ContinueOver}>
                 <Modal.Header>
                     Are you going to append a new pomodoro. If so, set time and click Yes. If not, click No
                 </Modal.Header>
                 <Modal.Body>
-                <Row>
-                    <input 
-                        id="continue_hours"
-                        value={this.state.hours}
-                        onChange={(e: any) =>{
-                            this.setState({hours: e.target.value% 100});
-                        }}/>
-                    hour(s)
+                    <Row>
+                        <input
+                            id="continue_hours"
+                            value={this.state.hours}
+                            onChange={(e: any) => {
+                                this.setState({ hours: e.target.value % 100 });
+                            }} />
+                        hour(s)
                 </Row>
-                <Row>
-                    <input
-                        id="continue_minutes"
-                        value={this.state.minutes}
-                        onChange={(e: any) =>{
-                            this.setState({minutes: e.target.value % 100});
-                        }}/>
-                    minute(s)
+                    <Row>
+                        <input
+                            id="continue_minutes"
+                            value={this.state.minutes}
+                            onChange={(e: any) => {
+                                this.setState({ minutes: e.target.value % 100 });
+                            }} />
+                        minute(s)
                 </Row>
-                <Row>
-                    <input
-                        id="continue_second"
-                        value={this.state.seconds}
-                        onChange={(e: any) =>{
-                            this.setState({seconds: e.target.value % 100});
-                        }}/>
-                    second(s)
+                    <Row>
+                        <input
+                            id="continue_second"
+                            value={this.state.seconds}
+                            onChange={(e: any) => {
+                                this.setState({ seconds: e.target.value % 100 });
+                            }} />
+                        second(s)
                 </Row>
-                
-                <Row>
-                    <Col># of pomodoro completed</Col>
-                    <Col>{this.state.counter}</Col>
-                </Row>
-                <Row>
-                    <Col>Session Start time</Col>
-                    <Col>{this.state.start_time}</Col>
-                </Row>
+
+                    <Row>
+                        <Col># of pomodoro completed</Col>
+                        <Col>{this.state.counter}</Col>
+                    </Row>
+                    <Row>
+                        <Col>Session Start time</Col>
+                        <Col>{this.state.start_time}</Col>
+                    </Row>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button id="continue_take_a_break" variant="outline-primary" onClick={this.ContinueBreak}>
+                        Take a 5min break
+                    </Button>
                     <Button id="continue_cancel_button" variant="secondary" onClick={(this.ContinueOver)}>
                         No
                     </Button>
-                    <Button id="continue_confirm_button" variant="primary" onClick={this.Continue} disabled={this.state.hours == 0 && this.state.minutes==0 && this.state.seconds==0}>
+                    <Button id="continue_confirm_button" variant="primary" onClick={this.Continue} disabled={this.state.hours == 0 && this.state.minutes == 0 && this.state.seconds == 0}>
                         Yes
                     </Button>
                 </Modal.Footer>
             </Modal>
         )
     }
-    ContinueModalShow(){
+    ContinueModalShow() {
         this.setState({
             continue_show: true
         });
     }
 
-    ContinueModalClose(){
+    ContinueModalClose() {
         this.setState({
             continue_show: false
         })
     }
 
-    ModalSessionInformation(){
-        return(
-            <div>
-            <Row>
-                <Col>Number of pomodoro completed</Col>
-                <Col>{this.state.counter}</Col>
-            </Row>
-            <Row>
-                <Col>Session Start time</Col>
-                <Col>{this.state.start_time}</Col>
-            </Row>
-
-            </div>
-        );
-    }
-    
     //-----------------------------------
     //two functions representing two actions user chooses
-    Continue(){
+    Continue() {
         this.ContinueModalClose();
-        this.CreatePomodoro();
+        this.CreatePomodoro(false);
     }
 
-    ContinueOver(){
+    ContinueOver() {
         this.ContinueModalClose();
-        if(this.state.associated_id != -1){
+        if (this.state.associated_id != -1) {
             this.UpdateSession();
         }
         this.TimeClear();
         //console.log(this.state.associated_id);
     }
 
+    ContinueBreak(){
+        console.log("here");
+        this.setState({
+            continue_show: false,
+        });
+        this.CreatePomodoro(true);
+    }
+    
     //--------------------------------
     //Three functions to control the stop modal
-    StopModal(){
+    StopModal() {
         return (
             <Modal id="stop_modal" show={this.state.stop_show} onHide={this.StopModalClose}>
                 <Modal.Header>
@@ -286,13 +282,13 @@ class Pomodoro extends React.Component<Props, State>{
             </Modal>
         )
     }
-    StopModalShow(){
+    StopModalShow() {
         this.setState({
             stop_show: true
         })
     }
 
-    StopModalClose(){
+    StopModalClose() {
         this.setState({
             stop_show: false
         })
@@ -301,9 +297,9 @@ class Pomodoro extends React.Component<Props, State>{
 
     //-----------------------------------
     //Two functions representing different action of user in StopModal
-    StopCancel(){
+    StopCancel() {
         this.StopModalClose();
-        if(this.state.associated_id != -1){
+        if (this.state.associated_id != -1) {
             this.UpdateSession();
         }
         this.TimeClear();
@@ -314,14 +310,14 @@ class Pomodoro extends React.Component<Props, State>{
             counter: 0
         })
     }
-    StopConfirm(){
+    StopConfirm() {
         this.StopModalClose();
         var time = moment().format('YYYY-MM-DDTHH:mmZ');
         this.setState({
             end_time: time
         });
 
-        if(this.state.associated_id != -1){
+        if (this.state.associated_id != -1) {
             this.UpdateSession();
         }
         this.TimeClear();
@@ -336,8 +332,8 @@ class Pomodoro extends React.Component<Props, State>{
 
     //-----------------------------------
     //functions for the modal to represent the error in HTTP Request
-    ProjectErrorModal(){
-        return(
+    ProjectErrorModal() {
+        return (
             <Modal show={this.props.projectErrMess != null} onHide={this.ProjectErrorModalClose}>
                 <Modal.Header>
                     Error happened in fetching all projects
@@ -350,18 +346,18 @@ class Pomodoro extends React.Component<Props, State>{
                         id="project_error_button"
                         variant="primary"
                         onClick={this.ProjectErrorModalClose}>
-                    Ok
+                        Ok
                     </Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 
-    ProjectErrorModalClose(){
+    ProjectErrorModalClose() {
         this.props.clearErrorMessage();
     }
 
-    PomodoroErrorModal(){
+    PomodoroErrorModal() {
         return (
             <Modal show={this.state.error_message != null} onHide={this.PomodoroErrorModalClose}>
                 <Modal.Header>
@@ -382,7 +378,7 @@ class Pomodoro extends React.Component<Props, State>{
         )
     }
 
-    PomodoroErrorModalClose(){
+    PomodoroErrorModalClose() {
         this.setState({
             error_message: null
         })
@@ -390,7 +386,7 @@ class Pomodoro extends React.Component<Props, State>{
 
     //-----------------------------------
     //Three functions for tracking time
-    TimeClear(){
+    TimeClear() {
         this.setState({
             hours: 0,
             minutes: 0,
@@ -399,44 +395,52 @@ class Pomodoro extends React.Component<Props, State>{
         });
     }
 
-    CreatePomodoro(){
+    CreatePomodoro(something: boolean){
         var temp_seconds = this.state.seconds;
         var temp_minutes = this.state.minutes;
         var temp_hours = this.state.hours;
-        if(temp_seconds >= 60){
-            temp_seconds -= 60;
-            temp_minutes += 1;
+        if(something){
+            temp_hours = 0;
+            temp_minutes = 5;
+            temp_seconds = 0;
         }
-        if(temp_minutes >= 60){
-            temp_minutes -= 60;
-            temp_hours += 1;
+        else{
+            if(temp_seconds >= 60){
+                temp_seconds -= 60;
+                temp_minutes += 1;
+            }
+            if(temp_minutes >= 60){
+                temp_minutes -= 60;
+                temp_hours += 1;
+            }
         }
         this.setState({
             active: true,
             total_seconds: temp_hours * 3600 + temp_minutes * 60 + temp_seconds,
             hours: temp_hours,
             minutes: temp_minutes,
-            seconds: temp_seconds
+            seconds: temp_seconds,
+            is_break: something,
         });
 
         //@ts-ignore
         this.interval = setInterval(this.Countdown, 1000);
     }
 
-    Countdown(){
-        if(this.state.active){
+    Countdown() {
+        if (this.state.active) {
             var seconds = this.state.seconds;
             var minutes = this.state.minutes;
             var hours = this.state.hours;
             var total_seconds = this.state.total_seconds;
-            seconds --;
-            total_seconds --;
+            seconds--;
+            total_seconds--;
             //console.log("here");
-            if(seconds < 0){
+            if (seconds < 0) {
                 seconds += 60;
                 minutes -= 1;
             }
-            if(minutes < 0){
+            if (minutes < 0) {
                 minutes += 60;
                 hours -= 1;
             }
@@ -446,48 +450,58 @@ class Pomodoro extends React.Component<Props, State>{
                 minutes: minutes,
                 total_seconds: total_seconds
             });
-            if(total_seconds <= 0){
+            if (total_seconds <= 0) {
                 //@ts-ignore
                 clearInterval(this.interval);
                 var time = moment().format('YYYY-MM-DDTHH:mmZ');
-                this.setState({
-                    end_time: time,
-                    counter: this.state.counter + 1,
-                    active: false
-                });
+                if(this.state.is_break){
+                    this.setState({
+                        end_time: time,
+                        active: false,
+                        is_break: false,
+                    })
+                }
+                else{
+                    this.setState({
+                        end_time: time,
+                        counter: this.state.counter + 1,
+                        active: false,
+                        is_break: false
+                    });
+                }
                 this.ContinueModalShow();
             }
         }
     }
 
     //Two actions that will deal with API
-    CreateSession(){
-        sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.start_time).then((res)=>{
+    CreateSession() {
+        sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.start_time).then((res) => {
             console.log(res.data);
             this.setState({
                 active_session_id: res.data.id
             });
         })
-        .catch((error) =>{
-            console.log(error.message)
-            this.setState({
-                error_message: error.message
+            .catch((error) => {
+                console.log(error.message)
+                this.setState({
+                    error_message: error.message
+                })
             })
-        })
-    }  
+    }
 
-    UpdateSession(){
+    UpdateSession() {
         console.log(this.state.counter);
         sessionService.updateUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.active_session_id, this.state.start_time, this.state.end_time, this.state.counter)
-        .then((res)=>{
-            console.log(res.data);
-        })
-        .catch((error) =>{
-            console.log(error.message)
-            this.setState({
-                error_message: error.message
+            .then((res) => {
+                console.log(res.data);
             })
-        });
+            .catch((error) => {
+                console.log(error.message)
+                this.setState({
+                    error_message: error.message
+                })
+            });
     }
 
     constructor(props: Props) {
@@ -505,11 +519,12 @@ class Pomodoro extends React.Component<Props, State>{
 
         this.Continue = this.Continue.bind(this);
         this.ContinueOver = this.ContinueOver.bind(this);
+        this.ContinueBreak = this.ContinueBreak.bind(this);
 
         this.StopModal = this.StopModal.bind(this);
         this.StopModalShow = this.StopModalShow.bind(this);
         this.StopModalClose = this.StopModalClose.bind(this);
-        
+
         this.StopConfirm = this.StopConfirm.bind(this);
         this.StopCancel = this.StopCancel.bind(this);
 
@@ -532,7 +547,7 @@ class Pomodoro extends React.Component<Props, State>{
             total_seconds: 0,
             associated_id: -1,
             active_session_id: -1,
-            
+
             start_time: "",
             end_time: "",
             total_hours: 0,
@@ -542,6 +557,7 @@ class Pomodoro extends React.Component<Props, State>{
             stop_show: false,
             active: false,
             counter: 0,
+            is_break: false,
 
             error_message: null
         };
@@ -550,45 +566,65 @@ class Pomodoro extends React.Component<Props, State>{
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.fetchAllProjects(Number(localStorage.getItem('id')));
     }
 
-    render(){
+    render() {
         return (
-            <div>
-               <Container fluid>
-                  <Row>
-                     <Col md={12}>
-                        <Card
-                           title="Pomodoros"
-                           category="You can create and track your Pomodoro Here"
-                           ctTableFullWidth
-                           ctTableResponsive
-                           content={
-                              <div>
-                                  <Row>
-                                      <Col>
-                                        <Button
-                                            id="create_pomodoro_button"
-                                            variant="primary"
-                                            onClick={this.CreateModalShow}
-                                            disabled={this.state.active}
-                                            className="col">
-                                            Create a New Pomodoro
+            <div className="content">
+                <Container fluid>
+                    <Row>
+                        <Col md={12}>
+                            <Card
+                                title="Pomodoros"
+                                ctTableFullWidth
+                                ctTableResponsive
+                                content={
+                                    <div>
+                                        <Row>
+                                            <Col>
+                                                <Button
+                                                    id="create_pomodoro_button"
+                                                    variant="primary"
+                                                    onClick={this.CreateModalShow}
+                                                    disabled={this.state.active}
+                                                    className="col">
+                                                    Create a New Pomodoro
                                             </Button>
-                                        </Col>
-                                      <Col>
-                                        <Button
-                                            id="stop_pomodoro_button"
-                                            onClick={this.StopModalShow}
-                                            variant="secondary"
-                                            disabled={!this.state.active}
-                                            className="col">
-                                            Stop current ongoing Pomodoro
+                                            </Col>
+                                            <Col>
+                                                <Button
+                                                    id="stop_pomodoro_button"
+                                                    onClick={this.StopModalShow}
+                                                    variant="secondary"
+                                                    disabled={!this.state.active}
+                                                    className="col">
+                                                    Stop current ongoing Pomodoro
                                         </Button>
                                       </Col>
                                   </Row>
+                                  
+                                  <div style={{paddingTop: 20}}>
+                                  <Row>
+                                    <Col>
+                                        <div style={!this.state.active ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
+                                            inactive
+                                        </div>
+                                    </Col>
+                                    <Col md={{offset: 1}}>
+                                        <div style={(this.state.active && !this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"}: {backgroundColor: "white", textAlign: "center"}}>
+                                            Working
+                                        </div>
+                                    </Col>
+                                    <Col md={{offset: 1}}>
+                                        <div style={(this.state.active && this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
+                                            Taking a break
+                                        </div>
+                                    </Col>
+                                  </Row>
+
+                                  </div>
                                   
                                   <div style={{fontSize: "64px", textAlign: "center"}}>
                                     {("0" + this.state.hours.toString()).slice(-2)} : {("0" + this.state.minutes.toString()).slice(-2)} : {("0" + this.state.seconds.toString()).slice(-2)}

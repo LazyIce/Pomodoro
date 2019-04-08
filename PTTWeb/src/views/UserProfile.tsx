@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
+import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { fetchAllUsers, postUser, putUser, removeUser, clearErrorMessage } from '../redux/actionCreators/user.action';
 import UserList from '../components/List/UserList';
@@ -54,6 +55,10 @@ interface State {
    edit_id: number;
    edit_user_first_name: string;
    edit_user_last_name: string;
+
+   currentUsers: any;
+   currentPage: number;
+   pageLimit: number;
 }
 
 class UserProfile extends React.Component<Props, State> {
@@ -75,6 +80,8 @@ class UserProfile extends React.Component<Props, State> {
       this.EditModalShow = this.EditModalShow.bind(this);
       this.EditModal = this.EditModal.bind(this);
 
+      this.onPageChange = this.onPageChange.bind(this);
+
       this.state = {
          delete_show: false,
          delete_index: 0,
@@ -88,12 +95,22 @@ class UserProfile extends React.Component<Props, State> {
          edit_index: 0,
          edit_id: 0,
          edit_user_first_name: '',
-         edit_user_last_name: ''
+         edit_user_last_name: '',
+
+         //@ts-ignore
+         currentUsers: null,
+         currentPage: 0,
+         pageLimit: 5
       };
    }
 
    componentDidMount() {
       this.props.fetchAllUsers();
+      setTimeout(() => {
+         this.setState({
+            currentUsers: this.props.userlist.slice(this.state.currentPage, this.state.pageLimit)
+         });
+      }, 1000)
    }
 
    // Error modal
@@ -341,55 +358,133 @@ class UserProfile extends React.Component<Props, State> {
       }
    }
 
+   onPageChange (data) {
+      let selected = data.selected;
+      let offset = selected * this.state.pageLimit;
+      this.setState({
+         currentPage: selected,
+         currentUsers: this.props.userlist.slice(offset, offset+this.state.pageLimit)
+      });
+   }
+
    render() {
       //@ts-ignore
 
       return (
-         <div>
+         <div className="content">
             <Container fluid>
                <Row>
                   <Col md={12}>
                      <Card
-                        title="User Profiles"
-                        category="Here is list of users for admin"
+                        title="User Profiles Table"
+                        icon="pe-7s-graph3"
+                        hCenter={true}
                         ctTableFullWidth
                         ctTableResponsive
                         content={
-                           <div>
-                              <Button
-                                 id = "create_new_user_button"
-                                 className="col"
-                                 variant="primary"
-                                 onClick={() => this.CreateModalShow()}
-                              >
-                                 Create New User
-                              </Button>
-                              <Table striped hover>
-                                 <thead>
-                                    <tr>
-                                       <th>S No.</th>
-                                       <th>First Name</th>
-                                       <th>Last Name</th>
-                                       <th>Email</th>
-                                       <th>Related Projects</th>
-                                       <th>operations</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    {this.props.userlist &&
-                                       this.props.userlist.map((user: any, index: number) => {
-                                          return (
-                                             <UserList
-                                                user={user}
-                                                key={index}
-                                                index={index}
-                                                delete_button={() => this.DelButton(user, index)}
-                                                edit_button={() => this.EditButton(user, index)}
-                                             />
-                                          );
-                                       })}
-                                 </tbody>
-                              </Table>
+                           <div className="card-content">
+                              <div className="widget-row">
+                                 <div className="input-container col-md-4">
+                                    <input type="text" placeholder="Search..." id="general-search"/>
+                                    <span className="input-icon">
+                                       <span><i className="pe-7s-search" /></span>
+                                    </span>
+                                 </div>
+                                 <div className="btn-container col-md-3">
+                                    <Button
+                                       id="create_new_user_button"
+                                       className="col"
+                                       variant="primary"
+                                       onClick={() => this.CreateModalShow()}
+                                    >
+                                       Create New User
+                                    </Button>
+                                 </div>
+                              </div>
+                              <div className="table-container">
+                                 <Table striped hover>
+                                    <thead>
+                                       <tr>
+                                          <th>No.</th>
+                                          <th>First Name</th>
+                                          <th>Last Name</th>
+                                          <th>Email</th>
+                                          <th>Related Projects</th>
+                                          <th>operations</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       {
+                                          this.state.currentUsers &&
+                                          this.state.currentUsers.map((user: any, index: number) => {
+                                             return (
+                                                <UserList
+                                                   user={user}
+                                                   key={index}
+                                                   index={index}
+                                                   delete_button={() => this.DelButton(user, index)}
+                                                   edit_button={() => this.EditButton(user, index)}
+                                                />
+                                             );
+                                          })
+                                       }
+                                    </tbody>
+                                 </Table>
+                              </div>
+                              <div className="pagination-container">
+                                 <ReactPaginate
+                                    previousLabel={'previous'}
+                                    nextLabel={'next'}
+                                    breakLabel={'...'}
+                                    pageCount={Math.ceil(this.props.userlist.length / this.state.pageLimit)}
+                                    initialPage={0}
+                                    marginPagesDisplayed={1}
+                                    pageRangeDisplayed={3}
+                                    containerClassName={'pagination'}
+                                    activeClassName={'active'}
+                                    onPageChange={this.onPageChange}
+                                 />
+                                 <div className="page-info">
+                                       <div className="page-dropdown">
+                                          <button className="dropdown-toggle">
+                                             <div className="filter-option">
+                                                <div className="filter-option-inner">
+                                                   <div className="filter-option-inner-inner">5</div>
+                                                </div>
+                                             </div>
+                                          </button>
+                                          <div className="dropdown-menu">
+                                             <div className="inner">
+                                                <ul>
+                                                   <li className="selected active">
+                                                      <a role="option" className="dropdown-item selected active">
+                                                         <span className="text">5</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item">
+                                                         <span className="text">10</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item">
+                                                         <span className="text">20</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item">
+                                                         <span className="text">30</span>
+                                                      </a>
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <span className="page-detail">
+                                          Showing {this.state.currentPage*this.state.pageLimit+1} - {this.state.currentPage*this.state.pageLimit+this.state.pageLimit > this.props.userlist.length? this.props.userlist.length : this.state.currentPage*this.state.pageLimit+this.state.pageLimit} of {this.props.userlist.length}     
+                                       </span>
+                                 </div>
+                              </div>
                            </div>
                         }
                      />

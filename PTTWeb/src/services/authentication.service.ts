@@ -16,11 +16,11 @@ function login(username: string, type: string) {
             localStorage.setItem('user', user.name);
             resolve(user);
          } else {
-            let msg = "Admin name is wrong!";
+            let msg = "Enter 'admin' as the username";
             resolve(msg);
          }
       });
-
+      
       return p;
    } else {
       return axios.get(BASE_URL + '/users').then(res => {
@@ -30,7 +30,7 @@ function login(username: string, type: string) {
          });
          console.log(filterUser);
          if (filterUser.length == 0) {
-            let msg = 'User does not exist!';
+            let msg = 'Incorrect email entered or user does not exist!';
             return msg;
          } else {
             let user = filterUser[0];

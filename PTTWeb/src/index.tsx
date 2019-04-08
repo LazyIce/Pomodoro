@@ -19,6 +19,7 @@ render(
                 <PrivateRoute exact path="/" component={IndexPage} />
                 <PrivateRoute path="/dashboard" component={IndexPage} />
                 <PrivateRoute path="/pomodoro" component={IndexPage} />
+                <PrivateRoute path="/report" component={IndexPage} />
                 <Route path="/login" component={Bootstrap} />
             </div>
         </Router>

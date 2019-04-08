@@ -21,7 +21,7 @@ class HeaderLinks extends React.Component {
             <div>
                 <Nav className="justify-content-end">
                     <Nav.Item>
-                        <Nav.Link href="#"><span id="username">{localStorage.getItem("user")}</span></Nav.Link>
+                        <Nav.Link disabled><span id="username">{localStorage.getItem("user")}</span></Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link href="#" onClick={this.handleClick}><span id="logout">Logout</span></Nav.Link>

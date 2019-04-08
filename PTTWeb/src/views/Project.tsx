@@ -74,6 +74,8 @@ class Project extends React.Component<Props, State> {
       this.EditModalClose = this.EditModalClose.bind(this);
       this.EditModal = this.EditModal.bind(this);
 
+      this.onPageChanged = this.onPageChanged.bind(this);
+
 
       this.state = {
          delete_show: false,
@@ -289,52 +291,75 @@ class Project extends React.Component<Props, State> {
       }
    }
 
+   onPageChanged = data => {
+      // const { allCountries } = this.state;
+      // const { currentPage, totalPages, pageLimit } = data;
+  
+      // const offset = (currentPage - 1) * pageLimit;
+      // const currentCountries = allCountries.slice(offset, offset + pageLimit);
+  
+      // this.setState({ currentPage, currentCountries, totalPages });
+   };
+
 
    render() {
       return (
-         <div>
+         <div className="content">
             <Container fluid>
                <Row>
                   <Col md={12}>
                      <Card
-                        title="Projects"
-                        category="Here are all your projects"
+                        title="Projects Table"
+                        icon="pe-7s-graph3"
+                        hCenter={true}
                         ctTableFullWidth
                         ctTableResponsive
                         content={
-                           <div>
-                              <Button
-                                 id="create_project_button"
-                                 className="col"
-                                 variant="primary"
-                                 onClick={() => this.CreateModalShow()}
-                              >
-                                 Create New Project
-                              </Button>
-                              <Table striped hover>
-                                 <thead>
-                                    <tr>
-                                       <th>Id</th>
-                                       <th>Project Name</th>
-                                       <th>Sessions</th>
-                                       <th>Total Pomodoros</th>
-                                       <th>Operations</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    {this.props.projectlist.map((project: any, index: number) => {
-                                       return (
-                                          <ProjectList
-                                             project={project}
-                                             key={index}
-                                             index={index}
-                                             delete_button={() => this.DelButton(project, index)}
-                                             edit_button={() => this.EditButton(project, index)}
-                                          />
-                                       );
-                                    })}
-                                 </tbody>
-                              </Table>
+                           <div className="card-content">
+                              <div className="widget-row">
+                                 <div className="input-container col-md-4">
+                                    <input type="text" placeholder="Search..." id="general-search"/>
+                                    <span className="input-icon">
+                                       <span><i className="pe-7s-search" /></span>
+                                    </span>
+                                 </div>
+                                 <div className="btn-container col-md-3">
+                                    <Button
+                                       id="create_project_button"
+                                       className="col"
+                                       variant="primary"
+                                       onClick={() => this.CreateModalShow()}
+                                    >
+                                       Create New Project
+                                    </Button>
+                                 </div>
+                              </div>
+                              <div className="table-container">
+                                 <Table striped hover>
+                                    <thead>
+                                       <tr>
+                                          <th>Id</th>
+                                          <th>Project Name</th>
+                                          <th>Sessions</th>
+                                          <th>Total Pomodoros</th>
+                                          <th>Operations</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       {this.props.projectlist.map((project: any, index: number) => {
+                                          return (
+                                             <ProjectList
+                                                project={project}
+                                                key={index}
+                                                index={index}
+                                                delete_button={() => this.DelButton(project, index)}
+                                                edit_button={() => this.EditButton(project, index)}
+                                             />
+                                          );
+                                       })}
+                                    </tbody>
+                                 </Table>
+                              </div>
                            </div>
                         }
                      />

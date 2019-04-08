@@ -1,18 +1,24 @@
 import { projectConstants } from '../actionTypes/project.constant';
 import { projectService } from '../../services/project.service';
 
-export const fetchAllProjects = function(userId: number) {
-   return async function(dispatch) {
+export const fetchAllProjects = function (userId: number) {
+   return async function (dispatch) {
       try {
+         let body = {
+            from: new Date('1960-01-01T03:24:00'),
+            to: new Date(),
+            completedPomo: true,
+            hoursWorked: true
+         }
          let res: any = await projectService.getUserAllProjects(userId);
          let projectlist = res.data;
-   
+
          let project_ids = projectlist.map(project => project.id);
          for (const id of project_ids) {
-            let p = await projectService.getProjectReport(userId, id);
-            projectlist.forEach(function(project) {
+            let p = await projectService.getProjectReport(userId, id, body);
+            projectlist.forEach(function (project) {
                if (project.id == id) {
-               project.report = p.data;
+                  project.report = p.data;
                }
             });
          }
@@ -50,19 +56,19 @@ export const addProjectHelper = project => {
 export const addProjectFail = status => ({
    type: projectConstants.PROJECT_CREATE_FAILED,
    payload: status
- });
+});
 
 
-export const putProject = ({projectname, userId, projectId}) => dispatch => {
+export const putProject = ({ projectname, userId, projectId }) => dispatch => {
    return projectService
-   .putUserProject(userId, projectId, projectname)
-   .then((res: any) => {
-      dispatch(updateProject(res.data));
-   })
-   .catch(error => {
-      console.log(error.message)
-      dispatch(updateProjectFailed(error.message))
-   })
+      .putUserProject(userId, projectId, projectname)
+      .then((res: any) => {
+         dispatch(updateProject(res.data));
+      })
+      .catch(error => {
+         console.log(error.message)
+         dispatch(updateProjectFailed(error.message))
+      })
 }
 
 export const updateProject = project => ({
@@ -91,21 +97,21 @@ export const deleteProjectHelper = project => {
    };
 };
 
-export const clearErrorMessage = function() {
-   return async function(dispatch) {
-     try {
-       return dispatch({
-         type: projectConstants.PROJECT_CLEAR_ERROR_MESSAGE
-       });
-     } catch (e) {
-       console.log(e);
-     }
+export const clearErrorMessage = function () {
+   return async function (dispatch) {
+      try {
+         return dispatch({
+            type: projectConstants.PROJECT_CLEAR_ERROR_MESSAGE
+         });
+      } catch (e) {
+         console.log(e);
+      }
    };
- };
+};
 
- export const fetchProjectReport = (userId: number, projectId: number) => async dispatch => {
+export const fetchProjectReport = (userId: number, projectId: number, body: any) => async dispatch => {
    try {
-      let res = await projectService.getProjectReport(userId, projectId);
+      let res = await projectService.getProjectReport(userId, projectId, body);
       return dispatch(fetchProjectReportHelper(res.data));
    } catch (e) {
       console.log(e);

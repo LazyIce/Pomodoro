@@ -10,12 +10,12 @@ function UserList(props: any) {
       <td>{props.user.email}</td>
       <td>{props.user.related_projects ? props.user.related_projects.length : 0}</td>
       <td>
-        <Button onClick={props.edit_button} variant="warning">
-          Edit
-        </Button>
-        <Button onClick={props.delete_button} variant="secondary">
-          Delete
-        </Button>
+        <div className="operation-btn" onClick={props.edit_button}>
+          <i className="pe-7s-note" />
+        </div>
+        <div className="operation-btn" onClick={props.delete_button}>
+          <i className="pe-7s-trash" />
+        </div>
       </td>
     </tr>
   );

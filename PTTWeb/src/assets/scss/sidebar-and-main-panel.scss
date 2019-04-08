@@ -13,15 +13,14 @@
 
     .sidebar-wrapper{
         position: relative;
-        height: calc(100vh - 75px);
+        height: 100vh;
         overflow: auto;
         width: 260px;
         z-index: 4;
-        padding-bottom: 30px;
     }
 
     .logo{
-        padding: 10px 30px;
+        padding: 10px 30px 9px 30px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         position: relative;
         z-index: 4;
@@ -42,10 +41,8 @@
             margin-right: 15px;
 
             img{
-                width: 30px;
-                margin-left: -3px;
+                width: 34px;
                 display: block;
-                margin-top: 2px;
             }
         }
 
@@ -117,7 +114,7 @@
 .sidebar,
 body > .navbar-collapse{
     .logo{
-        padding: 10px 30px;
+        padding: 10px 30px 9px 30px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
         p{
@@ -133,25 +130,10 @@ body > .navbar-collapse{
             text-transform: uppercase;
             padding: $padding-small-vertical $padding-zero;
             display: block;
-            font-size: $font-size-large;
+            font-size: $font-size-h4;
             color: $white-color;
             font-weight: $font-weight-normal;
             line-height: 30px;
-        }
-    }
-
-    .logo-tim{
-        border-radius: 50%;
-        border: 1px solid #333;
-        display: block;
-        height: 61px;
-        width: 61px;
-        float: left;
-        overflow: hidden;
-
-        img{
-            width: 60px;
-            height: 60px;
         }
     }
 
@@ -177,30 +159,6 @@ body > .navbar-collapse{
        z-index: 3;
        opacity: 1;
     }
-
-    &[data-image]:after,
-    &.has-image:after{
-        opacity: .77;
-    }
-
-    &[data-color="blue"]:after{
-        @include icon-gradient($new-dark-blue, $blue-color-bottom);
-    }
-    &[data-color="azure"]:after{
-        @include icon-gradient($new-blue, $azure-color-bottom);
-    }
-    &[data-color="green"]:after{
-        @include icon-gradient($new-green, $green-color-bottom);
-    }
-    &[data-color="orange"]:after{
-        @include icon-gradient($new-orange, $orange-color-bottom);
-    }
-    &[data-color="red"]:after{
-        @include icon-gradient($new-red, $red-color-bottom);
-    }
-    &[data-color="purple"]:after{
-        @include icon-gradient($new-purple, $purple-color-bottom);
-    }
 }
 
 
@@ -209,30 +167,28 @@ body > .navbar-collapse{
     position: relative;
     float: right;
     width: $sidebar-width;
+    min-height: 100vh;
 
     > .content{
         padding: 30px 15px;
-        min-height: calc(100% - 123px);
-    }
-
-    > .footer{
-        border-top: 1px solid #e7e7e7;
+        min-height: calc(100vh - 120px);
     }
 
     .navbar{
-        margin-bottom: 0;
         background-color: hsla(0,0%,100%,.96);
         border-bottom: 1px solid rgba(0,0,0,.1);
-    }
-}
 
-.sidebar,
-.main-panel{
-    -webkit-transition-property: top,bottom;
-    transition-property: top,bottom;
-    -webkit-transition-duration: .2s,.2s;
-    transition-duration: .2s,.2s;
-    -webkit-transition-timing-function: linear,linear;
-    transition-timing-function: linear,linear;
-    -webkit-overflow-scrolling: touch;
+        .navbar-brand {
+            font-weight: $font-weight-normal;
+            font-size: $font-size-h4;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(0,0,0,.6);
+        }
+
+        .navbar-nav .nav-item:first-child {
+            margin-right: 25px;
+        }
+    }
 }

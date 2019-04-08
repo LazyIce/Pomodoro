@@ -9,12 +9,12 @@ function ProjectList(props: any) {
          <td>{props.project.report.sessions ? props.project.report.sessions.length : 0}</td>
          <td>{props.project.report.completedPomodoros ? props.project.report.completedPomodoros : 0}</td>
          <td>
-            <Button id={"edit_"+props.index} onClick={props.edit_button} variant="warning">
-               Edit
-            </Button>
-            <Button id={"delete_"+props.index} onClick={props.delete_button} variant="secondary">
-               Delete
-            </Button>
+            <div className="operation-btn" onClick={props.edit_button}>
+               <i className="pe-7s-note" />
+            </div>
+            <div className="operation-btn" onClick={props.delete_button}>
+               <i className="pe-7s-trash" />
+            </div>
          </td>
       </tr>
    );
