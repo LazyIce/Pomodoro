@@ -577,13 +577,15 @@ class Pomodoro extends React.Component<Props, State>{
                     <Row>
                         <Col md={12}>
                             <Card
-                                title="Pomodoros"
+                                title="Pomodoro Timer"
+                                icon="pe-7s-stopwatch"
+                                hCenter={true}
                                 ctTableFullWidth
                                 ctTableResponsive
                                 content={
-                                    <div>
-                                        <Row>
-                                            <Col>
+                                    <div className="card-content">
+                                        <div className="widget-row">
+                                            <div className="btn-container col-md-4">
                                                 <Button
                                                     id="create_pomodoro_button"
                                                     variant="primary"
@@ -591,9 +593,9 @@ class Pomodoro extends React.Component<Props, State>{
                                                     disabled={this.state.active}
                                                     className="col">
                                                     Create a New Pomodoro
-                                            </Button>
-                                            </Col>
-                                            <Col>
+                                                </Button>
+                                            </div>
+                                            <div className="btn-container col-md-4">
                                                 <Button
                                                     id="stop_pomodoro_button"
                                                     onClick={this.StopModalShow}
@@ -601,46 +603,35 @@ class Pomodoro extends React.Component<Props, State>{
                                                     disabled={!this.state.active}
                                                     className="col">
                                                     Stop current ongoing Pomodoro
-                                        </Button>
-                                      </Col>
-                                  </Row>
-                                  
-                                  <div style={{paddingTop: 20}}>
-                                  <Row>
-                                    <Col>
-                                        <div style={!this.state.active ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
-                                            inactive
+                                                </Button>
+                                            </div>
                                         </div>
-                                    </Col>
-                                    <Col md={{offset: 1}}>
-                                        <div style={(this.state.active && !this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"}: {backgroundColor: "white", textAlign: "center"}}>
-                                            Working
+                                        <div className="table-container">
+                                            <div style={!this.state.active ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
+                                                inactive
+                                            </div>
+                                            <div style={(this.state.active && !this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"}: {backgroundColor: "white", textAlign: "center"}}>
+                                                Working
+                                            </div>
+                                            <div style={(this.state.active && this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
+                                                Taking a break
+                                            </div>
+                                            <div style={{fontSize: "64px", textAlign: "center"}}>
+                                                {("0" + this.state.hours.toString()).slice(-2)} : {("0" + this.state.minutes.toString()).slice(-2)} : {("0" + this.state.seconds.toString()).slice(-2)}
+                                                {this.state.active}
+                                            </div>
                                         </div>
-                                    </Col>
-                                    <Col md={{offset: 1}}>
-                                        <div style={(this.state.active && this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
-                                            Taking a break
-                                        </div>
-                                    </Col>
-                                  </Row>
-
-                                  </div>
-                                  
-                                  <div style={{fontSize: "64px", textAlign: "center"}}>
-                                    {("0" + this.state.hours.toString()).slice(-2)} : {("0" + this.state.minutes.toString()).slice(-2)} : {("0" + this.state.seconds.toString()).slice(-2)}
-                                    {this.state.active}
-                                  </div>
-                              </div>
-                           }
-                        />
-                     </Col>
-                  </Row>
-               </Container>
-               <this.CreateModal></this.CreateModal>
-               <this.ContinueModal></this.ContinueModal>
-               <this.StopModal></this.StopModal>
-               <this.ProjectErrorModal></this.ProjectErrorModal>
-               <this.PomodoroErrorModal></this.PomodoroErrorModal>
+                                    </div>
+                                }
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+                <this.CreateModal></this.CreateModal>
+                <this.ContinueModal></this.ContinueModal>
+                <this.StopModal></this.StopModal>
+                <this.ProjectErrorModal></this.ProjectErrorModal>
+                <this.PomodoroErrorModal></this.PomodoroErrorModal>
             </div>
         )
     }

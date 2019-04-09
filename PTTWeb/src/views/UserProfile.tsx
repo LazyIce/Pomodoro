@@ -56,9 +56,10 @@ interface State {
    edit_user_first_name: string;
    edit_user_last_name: string;
 
-   currentUsers: any;
    currentPage: number;
    pageLimit: number;
+   droplist: boolean;
+   keyword: string;
 }
 
 class UserProfile extends React.Component<Props, State> {
@@ -81,6 +82,9 @@ class UserProfile extends React.Component<Props, State> {
       this.EditModal = this.EditModal.bind(this);
 
       this.onPageChange = this.onPageChange.bind(this);
+      this.clickDropdown = this.clickDropdown.bind(this);
+      this.clickOption = this.clickOption.bind(this);
+      this.handleTextUpdate = this.handleTextUpdate.bind(this);
 
       this.state = {
          delete_show: false,
@@ -97,20 +101,15 @@ class UserProfile extends React.Component<Props, State> {
          edit_user_first_name: '',
          edit_user_last_name: '',
 
-         //@ts-ignore
-         currentUsers: null,
          currentPage: 0,
-         pageLimit: 5
+         pageLimit: 5,
+         droplist: false,
+         keyword: ""
       };
    }
 
    componentDidMount() {
       this.props.fetchAllUsers();
-      setTimeout(() => {
-         this.setState({
-            currentUsers: this.props.userlist.slice(this.state.currentPage, this.state.pageLimit)
-         });
-      }, 1000)
    }
 
    // Error modal
@@ -358,18 +357,35 @@ class UserProfile extends React.Component<Props, State> {
       }
    }
 
-   onPageChange (data) {
+   onPageChange(data) {
       let selected = data.selected;
-      let offset = selected * this.state.pageLimit;
       this.setState({
-         currentPage: selected,
-         currentUsers: this.props.userlist.slice(offset, offset+this.state.pageLimit)
+         currentPage: selected
+      });
+   }
+
+   clickDropdown() {
+      const {droplist } = this.state;
+      this.setState({
+         droplist: !droplist
+      });
+   }
+
+   clickOption(e) {
+      let pageLimit = e.target.text;
+      this.setState({
+         pageLimit: pageLimit
+      });
+   }
+
+   handleTextUpdate(e) {
+      let keyword = e.target.value;
+      this.setState({
+         keyword: keyword
       });
    }
 
    render() {
-      //@ts-ignore
-
       return (
          <div className="content">
             <Container fluid>
@@ -385,7 +401,7 @@ class UserProfile extends React.Component<Props, State> {
                            <div className="card-content">
                               <div className="widget-row">
                                  <div className="input-container col-md-4">
-                                    <input type="text" placeholder="Search..." id="general-search"/>
+                                    <input type="text" placeholder="Search on email..." id="general-search" onChange={this.handleTextUpdate} />
                                     <span className="input-icon">
                                        <span><i className="pe-7s-search" /></span>
                                     </span>
@@ -415,8 +431,9 @@ class UserProfile extends React.Component<Props, State> {
                                     </thead>
                                     <tbody>
                                        {
-                                          this.state.currentUsers &&
-                                          this.state.currentUsers.map((user: any, index: number) => {
+                                          this.props.userlist.filter(user => {return user.email.includes(this.state.keyword)})
+                                          .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage*this.state.pageLimit + this.state.pageLimit)
+                                          .map((user: any, index: number) => {
                                              return (
                                                 <UserList
                                                    user={user}
@@ -436,7 +453,7 @@ class UserProfile extends React.Component<Props, State> {
                                     previousLabel={'previous'}
                                     nextLabel={'next'}
                                     breakLabel={'...'}
-                                    pageCount={Math.ceil(this.props.userlist.length / this.state.pageLimit)}
+                                    pageCount={Math.ceil(this.props.userlist.filter(user => {return user.email.includes(this.state.keyword)}).length / this.state.pageLimit)}
                                     initialPage={0}
                                     marginPagesDisplayed={1}
                                     pageRangeDisplayed={3}
@@ -445,34 +462,34 @@ class UserProfile extends React.Component<Props, State> {
                                     onPageChange={this.onPageChange}
                                  />
                                  <div className="page-info">
-                                       <div className="page-dropdown">
+                                       <div className="page-dropdown" onClick={this.clickDropdown}>
                                           <button className="dropdown-toggle">
                                              <div className="filter-option">
                                                 <div className="filter-option-inner">
-                                                   <div className="filter-option-inner-inner">5</div>
+                                                   <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
                                                 </div>
                                              </div>
                                           </button>
-                                          <div className="dropdown-menu">
+                                          <div className={this.state.droplist? "dropdown-menu show" : "dropdown-menu"}>
                                              <div className="inner">
                                                 <ul>
-                                                   <li className="selected active">
-                                                      <a role="option" className="dropdown-item selected active">
+                                                   <li>
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
                                                          <span className="text">5</span>
                                                       </a>
                                                    </li>
                                                    <li>
-                                                      <a role="option" className="dropdown-item">
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
                                                          <span className="text">10</span>
                                                       </a>
                                                    </li>
                                                    <li>
-                                                      <a role="option" className="dropdown-item">
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
                                                          <span className="text">20</span>
                                                       </a>
                                                    </li>
                                                    <li>
-                                                      <a role="option" className="dropdown-item">
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
                                                          <span className="text">30</span>
                                                       </a>
                                                    </li>
@@ -481,7 +498,7 @@ class UserProfile extends React.Component<Props, State> {
                                           </div>
                                        </div>
                                        <span className="page-detail">
-                                          Showing {this.state.currentPage*this.state.pageLimit+1} - {this.state.currentPage*this.state.pageLimit+this.state.pageLimit > this.props.userlist.length? this.props.userlist.length : this.state.currentPage*this.state.pageLimit+this.state.pageLimit} of {this.props.userlist.length}     
+                                          Showing {this.state.currentPage*this.state.pageLimit+1} - {(this.state.currentPage*this.state.pageLimit+this.state.pageLimit > this.props.userlist.filter(user => {return user.email.includes(this.state.keyword)}).length) ? this.props.userlist.filter(user => {return user.email.includes(this.state.keyword)}).length : Number(this.state.currentPage*this.state.pageLimit+this.state.pageLimit)} of {this.props.userlist.filter(user => {return user.email.includes(this.state.keyword)}).length}     
                                        </span>
                                  </div>
                               </div>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
+import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { fetchAllProjects, addProject, putProject, deleteProject, clearErrorMessage} from '../redux/actionCreators/project.action';
 
@@ -53,6 +54,11 @@ interface State {
    edit_user_id: number,
    edit_project_id: number,
    edit_project_name: string;
+
+   currentPage: number;
+   pageLimit: number;
+   droplist: boolean;
+   keyword: string;
 }
 
 class Project extends React.Component<Props, State> {
@@ -74,8 +80,10 @@ class Project extends React.Component<Props, State> {
       this.EditModalClose = this.EditModalClose.bind(this);
       this.EditModal = this.EditModal.bind(this);
 
-      this.onPageChanged = this.onPageChanged.bind(this);
-
+      this.onPageChange = this.onPageChange.bind(this);
+      this.clickDropdown = this.clickDropdown.bind(this);
+      this.clickOption = this.clickOption.bind(this);
+      this.handleTextUpdate = this.handleTextUpdate.bind(this);
 
       this.state = {
          delete_show: false,
@@ -88,9 +96,15 @@ class Project extends React.Component<Props, State> {
          edit_index: 0,
          edit_user_id: 0,
          edit_project_id: 0,
-         edit_project_name: ''
+         edit_project_name: '',
+
+         currentPage: 0,
+         pageLimit: 5,
+         droplist: false,
+         keyword: ""
       };
    }
+
    componentDidMount() {
       this.props.fetchAllProjects(Number(localStorage.getItem('id')));
    }
@@ -291,16 +305,33 @@ class Project extends React.Component<Props, State> {
       }
    }
 
-   onPageChanged = data => {
-      // const { allCountries } = this.state;
-      // const { currentPage, totalPages, pageLimit } = data;
-  
-      // const offset = (currentPage - 1) * pageLimit;
-      // const currentCountries = allCountries.slice(offset, offset + pageLimit);
-  
-      // this.setState({ currentPage, currentCountries, totalPages });
-   };
+   onPageChange (data) {
+      let selected = data.selected;
+      this.setState({
+         currentPage: selected
+      });
+   }
 
+   clickDropdown() {
+      const {droplist } = this.state;
+      this.setState({
+         droplist: !droplist
+      });
+   }
+
+   clickOption(e) {
+      let pageLimit = e.target.text;
+      this.setState({
+         pageLimit: pageLimit
+      });
+   }
+
+   handleTextUpdate(e) {
+      let keyword = e.target.value;
+      this.setState({
+         keyword: keyword
+      });
+   }
 
    render() {
       return (
@@ -318,7 +349,7 @@ class Project extends React.Component<Props, State> {
                            <div className="card-content">
                               <div className="widget-row">
                                  <div className="input-container col-md-4">
-                                    <input type="text" placeholder="Search..." id="general-search"/>
+                                    <input type="text" placeholder="Search on name..." id="general-search" onChange={this.handleTextUpdate}/>
                                     <span className="input-icon">
                                        <span><i className="pe-7s-search" /></span>
                                     </span>
@@ -346,19 +377,76 @@ class Project extends React.Component<Props, State> {
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       {this.props.projectlist.map((project: any, index: number) => {
-                                          return (
-                                             <ProjectList
-                                                project={project}
-                                                key={index}
-                                                index={index}
-                                                delete_button={() => this.DelButton(project, index)}
-                                                edit_button={() => this.EditButton(project, index)}
-                                             />
-                                          );
+                                       {
+                                          this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)})
+                                          .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage*this.state.pageLimit + this.state.pageLimit)
+                                          .map((project: any, index: number) => {
+                                             return (
+                                                <ProjectList
+                                                   project={project}
+                                                   key={index}
+                                                   index={index}
+                                                   delete_button={() => this.DelButton(project, index)}
+                                                   edit_button={() => this.EditButton(project, index)}
+                                                />
+                                             );
                                        })}
                                     </tbody>
                                  </Table>
+                              </div>
+                              <div className="pagination-container">
+                                 <ReactPaginate
+                                    previousLabel={'previous'}
+                                    nextLabel={'next'}
+                                    breakLabel={'...'}
+                                    pageCount={Math.ceil(this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length / this.state.pageLimit)}
+                                    initialPage={0}
+                                    marginPagesDisplayed={1}
+                                    pageRangeDisplayed={3}
+                                    containerClassName={'pagination'}
+                                    activeClassName={'active'}
+                                    onPageChange={this.onPageChange}
+                                 />
+                                 <div className="page-info">
+                                       <div className="page-dropdown" onClick={this.clickDropdown}>
+                                          <button className="dropdown-toggle">
+                                             <div className="filter-option">
+                                                <div className="filter-option-inner">
+                                                   <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
+                                                </div>
+                                             </div>
+                                          </button>
+                                          <div className={this.state.droplist? "dropdown-menu show" : "dropdown-menu"}>
+                                             <div className="inner">
+                                             <ul>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                         <span className="text">5</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                         <span className="text">10</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                         <span className="text">20</span>
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                         <span className="text">30</span>
+                                                      </a>
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <span className="page-detail">
+                                          Showing {this.state.currentPage*this.state.pageLimit+1} - {(this.state.currentPage*this.state.pageLimit+this.state.pageLimit > this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length) ? this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length : Number(this.state.currentPage*this.state.pageLimit+this.state.pageLimit)} of {this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length}     
+                                       </span>
+                                 </div>
                               </div>
                            </div>
                         }

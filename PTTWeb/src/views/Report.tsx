@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Modal, Alert } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import { fetchAllProjects, fetchProjectReport } from '../redux/actionCreators/project.action';
 import OptionList from '../components/List/OptionList';
@@ -42,7 +42,8 @@ interface State {
    userId: number
    includeCP: boolean,
    includeHW: boolean,
-   showModal: boolean
+   showModal: boolean,
+   showWarning: boolean
 };
 
 class Report extends React.Component<Props, State>{
@@ -57,7 +58,8 @@ class Report extends React.Component<Props, State>{
          userId: Number(localStorage.getItem('id')),
          includeCP: true,
          includeHW: true,
-         showModal: false
+         showModal: false,
+         showWarning: false
       };
 
    }
@@ -80,39 +82,41 @@ class Report extends React.Component<Props, State>{
                   <Modal.Title>Report</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  {this.state.includeCP
+                  {this.state.includeCP && this.props.report.sessions.length > 0
                      ? <p><strong>Total Pomodoros Completed</strong>: {this.props.report.completedPomodoros}</p>
                      : null
                   }
 
-                  {this.state.includeHW
+                  {this.state.includeHW && this.props.report.sessions.length > 0
                      ? <p><strong>Total Hours Worked</strong>: {this.props.report.totalHoursWorkedOnProject}</p>
                      : null
                   }
+                  {this.props.report.sessions.length > 0
+                     ?
+                     <Table striped>
+                        <thead>
+                           <tr>
+                              <th>No.</th>
+                              <th>Start Time</th>
+                              <th>End Time</th>
+                              <th>Count</th>
+                           </tr>
+                        </thead>
+                        <tbody>
 
-                  <Table striped>
-                     <thead>
-                        <tr>
-                           <th>No.</th>
-                           <th>Start Time</th>
-                           <th>End Time</th>
-                           <th>Count</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        {this.props.report.sessions.map((r: any, index: number) => {
-                           return (
-                              <tr key={index + 1}>
-                                 <td>{index + 1}</td>
-                                 <td>{r.startingTime}</td>
-                                 <td>{r.endingTime}</td>
-                                 <td>{r.hoursWorked}</td>
-                              </tr>
-                           );
-                        })}
-                     </tbody>
-                  </Table>
+                           {this.props.report.sessions.map((r: any, index: number) => {
+                              return (
+                                 <tr key={index + 1}>
+                                    <td>{index + 1}</td>
+                                    <td>{r.startingTime}</td>
+                                    <td>{r.endingTime}</td>
+                                    <td>{r.hoursWorked}</td>
+                                 </tr>
+                              );
+                           })}
+                        </tbody>
+                     </Table>
+                     : <p><strong>No sessions found for the project in the provided timeframe. Please try a different time range.</strong></p>}
                </Modal.Body>
                <Modal.Footer>
                   <Button variant="secondary" onClick={() => this.setState({ showModal: !this.state.showModal })}>
@@ -120,6 +124,7 @@ class Report extends React.Component<Props, State>{
                   </Button>
                </Modal.Footer>
             </Modal>
+
          );
       } else {
          return <div />;
@@ -135,8 +140,14 @@ class Report extends React.Component<Props, State>{
          completedPomo: this.state.includeCP,
          hoursWorked: this.state.includeHW
       }
-      this.props.fetchProjectReport(this.state.userId, this.state.selected_projectId, body);
-      this.setState({ showModal: true })
+      if (this.state.selected_projectId != -1) {
+         this.props.fetchProjectReport(this.state.userId, this.state.selected_projectId, body);
+         this.setState({ showModal: true })
+         this.setState({ showWarning: false })
+      } else {
+         this.setState({ showWarning: true })
+      }
+
    }
    render() {
       return (
@@ -145,12 +156,13 @@ class Report extends React.Component<Props, State>{
                <Row>
                   <Col md={12}>
                      <Card
-                        title="Report"
+                        title="Get Report"
+                        icon="pe-7s-display1"
+                        hCenter={true}
                         ctTableFullWidth
                         ctTableResponsive
                         content={
-                           <div>
-                              <hr></hr>
+                           <div className="card-content">
                               <div>
                                  <h4>Please fill out the report details below.</h4>
                                  <Form>
@@ -199,10 +211,15 @@ class Report extends React.Component<Props, State>{
                                           }} />
                                     </Form.Group>
 
-                                    <Button variant="primary" onClick={() => this.getReport()} disabled={this.state.selected_projectId == -1}>
+                                    <Button variant="primary" onClick={() => this.getReport()}>
                                        Get Report
                                  </Button>
                                  </Form>
+                                 <br></br>
+                                 <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                                    You need to select a project to view report!
+                                 </Alert>
+
                               </div>
 
                            </div>
