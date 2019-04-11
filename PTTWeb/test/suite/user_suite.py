@@ -17,9 +17,8 @@ def userSuite():
         TestUserEditProject('test_user_edit_project_with_non_exist_name'),
         TestUserEditProject('test_user_edit_project_with_exist_name'),
         TestUserDeleteProject('test_user_delete_project_without_sessions'),
-        # # Thses two cases involves some user stories in set2. We have implemented the test case and is waiting for front end implementation
-        # TestUserDeleteProject('test_user_delete_project_with_sessions_confirm'),
-        # TestUserDeleteProject('test_user_delete_project_with_sessions_not_confirm')
+        TestUserDeleteProject('test_user_delete_project_with_sessions_confirm'),
+        TestUserDeleteProject('test_user_delete_project_with_sessions_not_confirm')
     ]
     suite.addTests(tests)
 

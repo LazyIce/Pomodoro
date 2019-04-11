@@ -26,7 +26,7 @@ class Sidebar extends React.Component<Props, State> {
         return (
             <div id="sidebar" className="sidebar" data-color="black">
                 <div className="logo">
-                    <a href="#" className="simple-text logo-mini">
+                    <a href="/" className="simple-text logo-mini">
                         <div className="logo-img">
                             <img src={logo} alt="logo_image" />
                         </div>
@@ -43,7 +43,7 @@ class Sidebar extends React.Component<Props, State> {
                                 if (!prop.redirect)
                                     return (
                                         <li className={this.activeRoute(prop.path)} key={key}>
-                                            <NavLink to={prop.path} className="nav-link" activeClassName="active">
+                                            <NavLink id={"sidebar_admin_"+prop.name} to={prop.path} className="nav-link" activeClassName="active">
                                                 <i className={prop.icon} />
                                                 <p>{prop.name}</p>
                                             </NavLink>
@@ -55,7 +55,7 @@ class Sidebar extends React.Component<Props, State> {
                                 if (!prop.redirect)
                                     return (
                                         <li className={this.activeRoute(prop.path)} key={key}>
-                                            <NavLink to={prop.path} className="nav-link" activeClassName="active">
+                                            <NavLink id={"sidebar_user_"+prop.name} to={prop.path} className="nav-link" activeClassName="active">
                                                 <i className={prop.icon} />
                                                 <p>{prop.name}</p>
                                             </NavLink>

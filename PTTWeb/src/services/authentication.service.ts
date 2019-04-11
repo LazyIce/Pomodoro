@@ -16,7 +16,7 @@ function login(username: string, type: string) {
             localStorage.setItem('user', user.name);
             resolve(user);
          } else {
-            let msg = "Enter 'admin' as the username";
+            let msg = "Admin name is wrong!";
             resolve(msg);
          }
       });
@@ -30,7 +30,7 @@ function login(username: string, type: string) {
          });
          console.log(filterUser);
          if (filterUser.length == 0) {
-            let msg = 'Incorrect email entered or user does not exist!';
+            let msg = 'User does not exist!';
             return msg;
          } else {
             let user = filterUser[0];

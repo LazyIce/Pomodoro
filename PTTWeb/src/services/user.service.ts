@@ -41,11 +41,13 @@ function getUserByUserId(userId: number) {
     })
 }
 
-function putUserByUserId(firstName: string, lastName: string, userId: number) {
+function putUserByUserId(firstName: string, lastName: string, userId: number, email: string) {
     // update user firstname and lastname
     return axios.put(BASE_URL + '/users/' + userId, {
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
+        id: userId,
+        email: email
     }).then(res => {
         return res;
     })

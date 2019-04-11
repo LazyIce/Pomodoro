@@ -10,6 +10,12 @@ import { sessionService } from '../services/session.service';
 
 import OptionList from '../components/List/OptionList';
 
+import working1 from './../assets/img/working1.svg';
+import working2 from './../assets/img/working2.svg';
+import chill1 from './../assets/img/chill1.svg';
+import chill2 from './../assets/img/chill2.svg';
+
+const imgs = [working1, working2, chill1, chill2];
 
 const mapStateToProps = (state: any) => {
     return {
@@ -42,6 +48,14 @@ interface State {
     associated_id: number,
     active_session_id: number,
 
+    set_minutes: number,
+    set_seconds: number,
+    set_hours: number,
+
+    break_minutes: number,
+    break_seconds: number,
+    break_hours: number,
+
     start_time: String,
     end_time: String,
     total_hours: number,
@@ -57,39 +71,68 @@ interface State {
 };
 
 class Pomodoro extends React.Component<Props, State>{
-
+    private curImg: React.RefObject<HTMLImageElement>;
     //-----------------------------------
     //Three functions for modals to create new pomodoro
     CreateModal() {
         return <Modal id="create_modal" show={this.state.create_show} onHide={this.CreateModalClose}>
             <Modal.Header>
-                <Modal.Title>Remaining time in current Active Pomodoro</Modal.Title>
+                <Modal.Title>Set duration for your pomodoro and break</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <Row>Set duration for your pomodoro</Row>
                 <Row>
                     <input
                         id="create_hours"
-                        value={this.state.hours}
+                        value={this.state.set_hours}
                         onChange={(e: any) => {
-                            this.setState({ hours: e.target.value % 100 });
+                            this.setState({set_hours:e.target.value % 100, hours: e.target.value % 100 });
                         }} />
                     hour(s)
                 </Row>
                 <Row>
                     <input
                         id="create_minutes"
-                        value={this.state.minutes}
+                        value={this.state.set_minutes}
                         onChange={(e: any) => {
-                            this.setState({ minutes: e.target.value % 100 });
+                            this.setState({set_minutes: e.target.value % 100, minutes: e.target.value % 100 });
                         }} />
                     minute(s)
                 </Row>
                 <Row>
                     <input
                         id="create_second"
-                        value={this.state.seconds}
+                        value={this.state.set_seconds}
                         onChange={(e: any) => {
-                            this.setState({ seconds: e.target.value % 100 });
+                            this.setState({set_seconds: e.target.value % 100, seconds: e.target.value % 100 });
+                        }} />
+                    second(s)
+                </Row>
+                <Row>Set duration for your break</Row>
+                <Row>
+                    <input
+                        id="break_hours"
+                        value={this.state.break_hours}
+                        onChange={(e: any) => {
+                            this.setState({break_hours:e.target.value % 100});
+                        }} />
+                    hour(s)
+                </Row>
+                <Row>
+                    <input
+                        id="break_minutes"
+                        value={this.state.break_minutes}
+                        onChange={(e: any) => {
+                            this.setState({break_minutes: e.target.value % 100});
+                        }} />
+                    minute(s)
+                </Row>
+                <Row>
+                    <input
+                        id="break_seconds"
+                        value={this.state.break_seconds}
+                        onChange={(e: any) => {
+                            this.setState({break_seconds: e.target.value % 100});
                         }} />
                     second(s)
                 </Row>
@@ -156,37 +199,68 @@ class Pomodoro extends React.Component<Props, State>{
         return (
             <Modal id="continue_modal" show={this.state.continue_show} onHide={this.ContinueOver}>
                 <Modal.Header>
-                    Are you going to append a new pomodoro. If so, set time and click Yes. If not, click No
+                    Are you going to append a new pomodoro. If so, click Yes. If not, click No
                 </Modal.Header>
                 <Modal.Body>
+                    <Row>Pomodoro</Row>
                     <Row>
                         <input
                             id="continue_hours"
-                            value={this.state.hours}
-                            onChange={(e: any) => {
-                                this.setState({ hours: e.target.value % 100 });
-                            }} />
+                            disabled={true}
+                            value={this.state.set_hours}
+                            // onChange={(e: any) => {
+                            //     this.setState({ hours: e.target.value % 100 });
+                            // }} 
+                            />
                         hour(s)
-                </Row>
+                    </Row>
                     <Row>
                         <input
                             id="continue_minutes"
-                            value={this.state.minutes}
-                            onChange={(e: any) => {
-                                this.setState({ minutes: e.target.value % 100 });
-                            }} />
+                            disabled={true}
+                            value={this.state.set_minutes}
+                            // onChange={(e: any) => {
+                            //     this.setState({ minutes: e.target.value % 100 });
+                            // }} 
+                            />
                         minute(s)
-                </Row>
+                    </Row>
                     <Row>
                         <input
                             id="continue_second"
-                            value={this.state.seconds}
-                            onChange={(e: any) => {
-                                this.setState({ seconds: e.target.value % 100 });
-                            }} />
+                            disabled={true}
+                            value={this.state.set_seconds}
+                            // onChange={(e: any) => {
+                            //     this.setState({ seconds: e.target.value % 100 });
+                            // }} 
+                            />
                         second(s)
-                </Row>
-
+                    </Row>
+                    <Row>Break</Row>
+                    <Row>
+                        <input
+                            id="continue_break_hours"
+                            disabled={true}
+                            value={this.state.break_hours}
+                            />
+                        hour(s)
+                    </Row>
+                    <Row>
+                        <input
+                            id="continue_break_minutes"
+                            disabled={true}
+                            value={this.state.break_minutes}
+                            />
+                        minute(s)
+                    </Row>
+                    <Row>
+                        <input
+                            id="continue_break_seconds"
+                            disabled={true}
+                            value={this.state.break_seconds}
+                            />
+                        second(s)
+                    </Row>
                     <Row>
                         <Col># of pomodoro completed</Col>
                         <Col>{this.state.counter}</Col>
@@ -198,12 +272,12 @@ class Pomodoro extends React.Component<Props, State>{
                 </Modal.Body>
                 <Modal.Footer>
                     <Button id="continue_take_a_break" variant="outline-primary" onClick={this.ContinueBreak}>
-                        Take a 5min break
+                        Take a break
                     </Button>
                     <Button id="continue_cancel_button" variant="secondary" onClick={(this.ContinueOver)}>
                         No
                     </Button>
-                    <Button id="continue_confirm_button" variant="primary" onClick={this.Continue} disabled={this.state.hours == 0 && this.state.minutes == 0 && this.state.seconds == 0}>
+                    <Button id="continue_confirm_button" variant="primary" onClick={this.Continue} disabled={this.state.set_hours == 0 && this.state.set_minutes == 0 && this.state.set_seconds == 0}>
                         Yes
                     </Button>
                 </Modal.Footer>
@@ -310,24 +384,25 @@ class Pomodoro extends React.Component<Props, State>{
             counter: 0
         })
     }
+
     StopConfirm() {
         this.StopModalClose();
         var time = moment().format('YYYY-MM-DDTHH:mmZ');
         this.setState({
-            end_time: time
+            end_time: time,
+            counter: this.state.counter + 1
+        }, ()=>{
+            if (this.state.associated_id != -1) {
+                this.UpdateSession();
+            }
+            this.TimeClear();
+            //@ts-ignore
+            clearInterval(this.interval);
+            this.setState({
+                active: false,
+                counter: 0
+            })    
         });
-
-        if (this.state.associated_id != -1) {
-            this.UpdateSession();
-        }
-        this.TimeClear();
-
-        //@ts-ignore
-        clearInterval(this.interval);
-        this.setState({
-            active: false,
-            counter: 0
-        })
     }
 
     //-----------------------------------
@@ -391,18 +466,27 @@ class Pomodoro extends React.Component<Props, State>{
             hours: 0,
             minutes: 0,
             seconds: 0,
+
+            set_hours: 0,
+            set_minutes: 0,
+            set_seconds: 0,
+            
+            break_hours: 0,
+            break_minutes: 0,
+            break_seconds: 0,
+
             total_seconds: 0,
         });
     }
 
     CreatePomodoro(something: boolean){
-        var temp_seconds = this.state.seconds;
-        var temp_minutes = this.state.minutes;
-        var temp_hours = this.state.hours;
+        var temp_seconds = this.state.set_seconds;
+        var temp_minutes = this.state.set_minutes;
+        var temp_hours = this.state.set_hours;
         if(something){
-            temp_hours = 0;
-            temp_minutes = 5;
-            temp_seconds = 0;
+            temp_hours = this.state.break_hours;
+            temp_minutes = this.state.break_minutes;
+            temp_seconds = this.state.break_seconds;
         }
         else{
             if(temp_seconds >= 60){
@@ -479,7 +563,8 @@ class Pomodoro extends React.Component<Props, State>{
         sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.start_time).then((res) => {
             console.log(res.data);
             this.setState({
-                active_session_id: res.data.id
+                active_session_id: res.data.id,
+                counter: 0
             });
         })
             .catch((error) => {
@@ -502,6 +587,21 @@ class Pomodoro extends React.Component<Props, State>{
                     error_message: error.message
                 })
             });
+    }
+
+    dance() {
+        if (this.curImg.current) {
+            let paths = this.curImg.current.src.split('/');
+            let image = paths[paths.length - 1];
+            if (image === imgs[0].split('/')[imgs[0].split('/').length - 1])
+                this.curImg.current.src = imgs[1]
+            if (image === imgs[1].split('/')[imgs[1].split('/').length - 1])
+                this.curImg.current.src = imgs[0]
+            if (image === imgs[2].split('/')[imgs[2].split('/').length - 1])
+                this.curImg.current.src = imgs[3]
+            if (image === imgs[3].split('/')[imgs[3].split('/').length - 1])
+                this.curImg.current.src = imgs[2]
+        }
     }
 
     constructor(props: Props) {
@@ -540,6 +640,8 @@ class Pomodoro extends React.Component<Props, State>{
         this.PomodoroErrorModal = this.PomodoroErrorModal.bind(this);
         this.PomodoroErrorModalClose = this.PomodoroErrorModalClose.bind(this);
 
+        this.dance = this.dance.bind(this)
+
         this.state = {
             seconds: 0,
             minutes: 0,
@@ -547,6 +649,14 @@ class Pomodoro extends React.Component<Props, State>{
             total_seconds: 0,
             associated_id: -1,
             active_session_id: -1,
+
+            set_seconds: 0,
+            set_minutes: 0,
+            set_hours: 0,
+
+            break_seconds: 0,
+            break_minutes: 0,
+            break_hours: 0,
 
             start_time: "",
             end_time: "",
@@ -564,10 +674,13 @@ class Pomodoro extends React.Component<Props, State>{
         //@ts-ignore
         this.interval;
 
+        this.curImg = React.createRef();
+
     }
 
     componentDidMount() {
         this.props.fetchAllProjects(Number(localStorage.getItem('id')));
+        setInterval(this.dance, 1000)
     }
 
     render() {
@@ -584,7 +697,7 @@ class Pomodoro extends React.Component<Props, State>{
                                 ctTableResponsive
                                 content={
                                     <div className="card-content">
-                                        <div className="widget-row">
+                                        <div className="button-row">
                                             <div className="btn-container col-md-4">
                                                 <Button
                                                     id="create_pomodoro_button"
@@ -599,23 +712,21 @@ class Pomodoro extends React.Component<Props, State>{
                                                 <Button
                                                     id="stop_pomodoro_button"
                                                     onClick={this.StopModalShow}
-                                                    variant="secondary"
+                                                    variant="danger"
                                                     disabled={!this.state.active}
                                                     className="col">
                                                     Stop current ongoing Pomodoro
                                                 </Button>
                                             </div>
                                         </div>
-                                        <div className="table-container">
-                                            <div style={!this.state.active ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
-                                                inactive
-                                            </div>
-                                            <div style={(this.state.active && !this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"}: {backgroundColor: "white", textAlign: "center"}}>
-                                                Working
-                                            </div>
-                                            <div style={(this.state.active && this.state.is_break) ? {backgroundColor: "lightblue", textAlign: "center"} : {backgroundColor: "white", textAlign: "center"}}>
-                                                Taking a break
-                                            </div>
+                                        <div className="img-container">
+                                            {
+                                                !this.state.active || this.state.active && !this.state.is_break ?
+                                                <img src={imgs[0]} ref={this.curImg} />:
+                                                <img src={imgs[2]} ref={this.curImg} />
+                                            }
+                                        </div>
+                                        <div className="timer-container">
                                             <div style={{fontSize: "64px", textAlign: "center"}}>
                                                 {("0" + this.state.hours.toString()).slice(-2)} : {("0" + this.state.minutes.toString()).slice(-2)} : {("0" + this.state.seconds.toString()).slice(-2)}
                                                 {this.state.active}

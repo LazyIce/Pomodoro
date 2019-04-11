@@ -4,6 +4,8 @@
 """
 
 import time
+from selenium.webdriver.support.ui import Select
+
 
 def admin_create_new_user_logout(obj):
     """
@@ -68,3 +70,85 @@ def user_add_project(obj, another_project_name=None):
     confirm_create_project_button = driver.find_element_by_id("confirm_create_project_button")
     confirm_create_project_button.click()
     time.sleep(1)
+
+
+def pull_out_create_pomodoro_modal(obj):
+    """
+        The name tells it
+    """
+    driver = obj.driver
+    # Click on "Pomodoro" tab
+    driver.find_element_by_id("sidebar_user_Pomodoro").click()
+    # Click on "Create a new pomodoro" button
+    driver.find_element_by_id("create_pomodoro_button").click()
+
+def create_session_for_project(obj):
+    """
+        Make a trivial session for given project
+    """
+    # driver = obj.driver
+    # # Click on "Pomodoro" tab
+    # driver.find_element_by_id("sidebar_user_Pomodoro").click()
+    # # Click on "Create a new pomodoro" button
+    # driver.find_element_by_id("create_pomodoro_button").click()
+    # # Type in 1 second pomodoro
+    driver.find_element_by_id("create_second").send_keys(1)
+    pull_out_create_pomodoro_modal(obj)
+    # Select given project
+    Select(driver.find_element_by_id("project_select_box")).select_by_visible_text(obj.project_name)
+    # Confirm create pomodoro
+    driver.find_element_by_id("create_confirm_button").click()
+    # Wait for continue modal then click "No"
+    obj.selenium.element_wait("id", "continue_cancel_button")
+    driver.find_element_by_id("continue_cancel_button").click()
+    time.sleep(1)
+    # Go back to project tab
+    driver.find_element_by_id("sidebar_user_Projects").click()
+
+def start_associated_pomodoro(obj):
+    """
+        The name tells it.
+    """
+    pull_out_create_pomodoro_modal(obj)
+
+    driver = obj.driver
+    # # Type in 10 second pomodoro
+    driver.find_element_by_id("create_second").send_keys(10)
+    # Select given project
+    Select(driver.find_element_by_id("project_select_box")).select_by_visible_text(obj.project_name)
+    # Confirm create pomodoro
+    driver.find_element_by_id("create_confirm_button").click()
+
+def start_not_associated_pomodoro(obj):
+    """
+        The name tells it.
+    """
+    pull_out_create_pomodoro_modal(obj)
+
+    driver = obj.driver
+    # Type in 10 second pomodoro
+    driver.find_element_by_id("create_second").send_keys(10)
+    # Select given project
+    Select(driver.find_element_by_id("project_select_box")).select_by_visible_text('No association')
+    # Confirm create pomodoro
+    driver.find_element_by_id("create_confirm_button").click()
+
+
+def make_a_session_switch_to_report(obj):
+    """
+        Create a session related to a project with just 1 pomodoro
+    """
+    pull_out_create_pomodoro_modal(obj)
+
+    driver = obj.driver
+    driver.find_element_by_id("create_second").send_keys(1)
+    Select(driver.find_element_by_id("project_select_box")).select_by_visible_text(obj.project_name)
+    driver.find_element_by_id("create_confirm_button").click()
+    st = time.time()
+
+    obj.selenium.element_wait("id", "continue_cancel_button")
+    driver.find_element_by_id("continue_cancel_button").click()
+    et = time.time()
+
+    time.sleep(1)
+    driver.find_element_by_id("sidebar_user_Report").click()

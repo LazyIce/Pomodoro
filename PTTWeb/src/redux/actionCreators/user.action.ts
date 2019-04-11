@@ -2,15 +2,15 @@ import { userConstants } from '../actionTypes/user.constants';
 import { userService } from '../../services/user.service';
 import { projectService } from '../../services/project.service';
 
-export const fetchAllUsers = function() {
-  return async function(dispatch) {
+export const fetchAllUsers = function () {
+  return async function (dispatch) {
     try {
       let res: any = await userService.getUsers();
       let userlist = res.data;
       let user_ids = userlist.map(user => user.id);
       for (const id of user_ids) {
         let p = await projectService.getUserAllProjects(id);
-        userlist.forEach(function(user) {
+        userlist.forEach(function (user) {
           if (user.id == id) {
             user.related_projects = p.data;
           }
@@ -32,7 +32,6 @@ export const postUser = ({ firstName, lastName, email }) => dispatch => {
   return userService
     .postUser(firstName, lastName, email)
     .then((res: any) => {
-      console.log(firstName, lastName, email);
       dispatch(addUser(res.data));
     })
     .catch(error => {
@@ -43,7 +42,7 @@ export const postUser = ({ firstName, lastName, email }) => dispatch => {
 
 export const addUser = user => ({
   type: userConstants.USER_CREATE_SUCCESS,
-  payload: user
+  payload: { ...user, related_projects: 0 }
 });
 
 export const addUserFail = status => ({
@@ -51,9 +50,9 @@ export const addUserFail = status => ({
   payload: status
 });
 
-export const putUser = ({ firstName, lastName, id }) => dispatch => {
+export const putUser = ({ firstName, lastName, id, email }) => dispatch => {
   return userService
-    .putUserByUserId(firstName, lastName, id)
+    .putUserByUserId(firstName, lastName, id, email)
     .then((res: any) => {
       dispatch(updateUser(res.data));
     })
@@ -84,8 +83,8 @@ export const deleteUser = user => ({
 });
 
 
-export const clearErrorMessage = function() {
-  return async function(dispatch) {
+export const clearErrorMessage = function () {
+  return async function (dispatch) {
     try {
       return dispatch({
         type: userConstants.USER_CLEAR_ERROR_MESSAGE

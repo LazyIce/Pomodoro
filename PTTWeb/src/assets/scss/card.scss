@@ -27,6 +27,7 @@
     }
 
     .card-content {
+        // project and userprofile
         .widget-row {
             display: flex;
             justify-content: space-between;
@@ -293,6 +294,53 @@
                 .page-detail {
                     font-size: 14px;
                     color: #007bff;
+                }
+            }
+        }
+
+        //pomodoro
+        .button-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 1.5rem 0 1rem 0;
+
+            button:focus {
+                box-shadow: none;
+            }
+        }
+
+        .img-container {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            img {
+                width: 40vh;
+                height: 40vh;
+            }
+        }
+
+        .timer-container {
+            font-weight: 550;
+        }
+
+        // report
+        .report-title {
+            text-align: center;
+        }
+
+        .form-container {
+            padding: 1rem 2rem;
+
+            .btn-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 1rem;
+
+                button {
+                    width: 15rem;
+                    &:focus{
+                        box-shadow: none;
+                    }
                 }
             }
         }

@@ -21,6 +21,31 @@ module.exports = server => {
    });
 
    server.route({
+      method: 'POST',
+      path: '/users',
+      config: {
+         handler: (request, h) => {
+            try {
+               let new_user = request.payload;
+               let user_exist = _.findIndex(users, function (u) {
+                  return u.email == new_user.email;
+               });
+               if (user_exist == -1) {
+                  new_user.id = Math.floor(Math.random() * (10000, 99999) + 10000);
+                  users.push(new_user);
+                  return h.response(new_user).code(201);
+               } else {
+                  return h.response('Resource Conflict').code(409);
+               }
+            } catch (e) {
+               console.log(e);
+               return h.response('Invalid Request').code(400);
+            }
+         }
+      }
+   });
+
+   server.route({
       method: 'GET',
       path: '/users/{userId}',
       config: {
@@ -41,31 +66,6 @@ module.exports = server => {
                   return h.response(result).code(200);
                } else {
                   return h.response('Not Found').code(404);
-               }
-            } catch (e) {
-               console.log(e);
-               return h.response('Invalid Request').code(400);
-            }
-         }
-      }
-   });
-
-   server.route({
-      method: 'POST',
-      path: '/users',
-      config: {
-         handler: (request, h) => {
-            try {
-               let new_user = request.payload;
-               let user_exist = _.findIndex(users, function (u) {
-                  return u.email == new_user.email;
-               });
-               if (user_exist == -1) {
-                  new_user.id = Math.floor(Math.random()*(10000, 99999)+10000);
-                  users.push(new_user);
-                  return h.response(new_user).code(201);
-               } else {
-                  return h.response('Resource Conflict').code(409);
                }
             } catch (e) {
                console.log(e);
@@ -190,7 +190,7 @@ module.exports = server => {
                });
 
                if (project_exist == -1) {
-                  new_project.id = Math.floor(Math.random()*(10000, 99999)+10000);
+                  new_project.id = Math.floor(Math.random() * (10000, 99999) + 10000);
                   projects.push(new_project);
                   return h.response(new_project).code(201);
                } else {
@@ -246,6 +246,7 @@ module.exports = server => {
                let result = {};
                let project_found = false;
                let updated_project = request.payload;
+               let conflict = false;
 
                projects.forEach(function (project, index) {
                   if (project.id == projectId && project.userId == userId) {
@@ -254,9 +255,13 @@ module.exports = server => {
                      projects[index] = project;
                      result = project;
                   }
+                  if (project.userId == userId && project.id != projectId && project.projectname == updated_project.projectname) {
+                     conflict = true;
+                  }
                });
-
-               if (project_found) {
+               if (conflict) {
+                  return h.response("Conflict project name").code(409);
+               } else if (project_found) {
                   return h.response(result).code(200);
                } else {
                   return h.response('Project or User not found').code(404);
@@ -301,6 +306,7 @@ module.exports = server => {
          }
       }
    });
+
    server.route({
       method: 'POST',
       path: '/users/{userId}/projects/{projectId}/sessions',
@@ -321,9 +327,8 @@ module.exports = server => {
                if (!project_found) {
                   return h.response('User or Project not found').code(404);
                } else {
-                  new_session.id = Math.floor(Math.random()*(10000, 99999)+10000);
+                  new_session.id = Math.floor(Math.random() * (10000, 99999) + 10000);
                   sessions.push({ ...new_session, userId: parseInt(userId), projectId: parseInt(projectId) });
-                  console.log(sessions)
                   return h.response(new_session).code(200);
                }
             } catch (e) {
@@ -371,4 +376,52 @@ module.exports = server => {
          }
       }
    });
+
+   server.route({
+      method: 'GET',
+      path: '/users/{userId}/projects/{projectId}/report',
+      config: {
+         handler: (request, h) => {
+            try {
+               let userId = request.params.userId;
+               let projectId = request.params.projectId;
+               let result = {
+                  "sessions": [
+                  ],
+                  "completedPomodoros": 0,
+                  "totalHoursWorkedOnProject": 0
+               }
+
+               let project_found = false
+               sessions.forEach(function (s, index) {
+                  project_found = true;
+                  if (s.userId == userId && s.projectId == projectId) {
+                     hoursWorked = getRandomInt(5) + 1
+                     result.sessions.push({
+                        "startingTime": s.startTime,
+                        "endingTime": s.endTime,
+                        "hoursWorked": hoursWorked
+                     });
+                     result.completedPomodoros += s.counter;
+                     result.totalHoursWorkedOnProject += hoursWorked;
+                  }
+               });
+
+               if (project_found) {
+                  return h.response(result).code(200);
+               } else {
+                  return h.response('User or Project or session not found').code(404);
+               }
+
+            } catch (e) {
+               console.log(e);
+               return h.response('Invalid Request').code(400);
+            }
+         }
+      }
+   });
 };
+
+function getRandomInt(max) {
+   return Math.floor(Math.random() * Math.floor(max));
+}

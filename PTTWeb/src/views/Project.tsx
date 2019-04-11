@@ -166,23 +166,30 @@ class Project extends React.Component<Props, State> {
    DelModal() {
       if (this.props.projectlist && this.state.delete_index < this.props.projectlist.length) {
          return (
-            <Modal show={this.state.delete_show} onHide={this.DelModalClose}>
+            <Modal id="delete_modal" show={this.state.delete_show} onHide={this.DelModalClose}>
                <Modal.Header closeButton>
-                  <Modal.Title>Confirmation</Modal.Title>
+                  <Modal.Title>Delete Confirmation</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  This project {this.props.projectlist[this.state.delete_index].projectname} has sessions
-                  associate with it. Are you sure to delete the project?
+                  Project name: {this.props.projectlist[this.state.delete_index].projectname}
+                  <br />
+                  <div className="confirm-msg">
+                     <p style={{color:'red'}}>
+                        This project has sessions associate with it.
+                     </p>
+                     <p>Are you sure to delete the user?</p>
+                  </div>
                </Modal.Body>
                <Modal.Footer>
-                  <Button variant="secondary" onClick={this.DelModalClose}>
-                     No
+                  <Button variant="secondary" id="cancel_delete" onClick={this.DelModalClose}>
+                     Cancel
                   </Button>
                   <Button
                      variant="primary"
+                     id="confirm_delete"
                      onClick={() => this.DelProject(this.props.projectlist[this.state.delete_index])}
                   >
-                     Yes
+                     Confirm
                   </Button>
                </Modal.Footer>
             </Modal>
@@ -208,7 +215,9 @@ class Project extends React.Component<Props, State> {
             </Modal.Header>
             <Modal.Body>
                <Row>
-                  <Col> Projoect Name</Col>
+                  <Col>
+                     <span>Project Name:</span>
+                  </Col>
                   <Col>
                      <input
                         id="create_project_name"
@@ -233,7 +242,7 @@ class Project extends React.Component<Props, State> {
                      this.setState({ new_project_name: '' });
                   }}
                >
-                  Create
+                  Confirm
                </Button>
             </Modal.Footer>
          </Modal>
@@ -267,7 +276,9 @@ class Project extends React.Component<Props, State> {
                </Modal.Header>
                <Modal.Body>
                   <Row>
-                     <Col>Project Name</Col>
+                     <Col>
+                        <span>Project Name:</span>
+                     </Col>
                      <Col>
                         <input
                            id="edit_project_name"
@@ -295,7 +306,7 @@ class Project extends React.Component<Props, State> {
                         this.EditModalClose();
                      }}
                   >
-                     Edit
+                     Confirm
                   </Button>
                </Modal.Footer>
             </Modal>

@@ -119,8 +119,8 @@ class Report extends React.Component<Props, State>{
                      : <p><strong>No sessions found for the project in the provided timeframe. Please try a different time range.</strong></p>}
                </Modal.Body>
                <Modal.Footer>
-                  <Button variant="secondary" onClick={() => this.setState({ showModal: !this.state.showModal })}>
-                     Okay
+                  <Button variant="primary" onClick={() => this.setState({ showModal: !this.state.showModal })}>
+                     Ok
                   </Button>
                </Modal.Footer>
             </Modal>
@@ -163,8 +163,10 @@ class Report extends React.Component<Props, State>{
                         ctTableResponsive
                         content={
                            <div className="card-content">
-                              <div>
+                              <div className="report-title">
                                  <h4>Please fill out the report details below.</h4>
+                              </div>
+                              <div className="form-container">
                                  <Form>
                                     <Form.Row>
                                        <Form.Group as={Col} controlId="from_date">
@@ -189,7 +191,7 @@ class Report extends React.Component<Props, State>{
                                     </Form.Row>
                                     <Form.Group controlId="exampleForm.ControlSelect1">
                                        <Form.Label>Select Project</Form.Label>
-                                       <Form.Control as="select" onChange={this.ChangeSelect}>
+                                       <Form.Control id="select_project" as="select" onChange={this.ChangeSelect}>
                                           <option value={-1}>Select Project</option>
                                           {this.props.projectlist.map((project: any, index: number) => {
                                              return (
@@ -205,23 +207,20 @@ class Report extends React.Component<Props, State>{
                                     <Form.Group as={Col} controlId="completedpomo">
                                        <Form.Check type="checkbox" label="Included completed pomodoros" checked={this.state.includeCP}
                                           onChange={() => {
-
                                              this.setState({ includeCP: !this.state.includeCP })
-
                                           }} />
                                     </Form.Group>
-
-                                    <Button variant="primary" onClick={() => this.getReport()}>
-                                       Get Report
-                                 </Button>
+                                    <Form.Row className="btn-container">
+                                       <Button variant="primary" onClick={() => this.getReport()}>
+                                          Get Report
+                                       </Button>
+                                    </Form.Row>
                                  </Form>
                                  <br></br>
                                  <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
                                     You need to select a project to view report!
                                  </Alert>
-
                               </div>
-
                            </div>
                         }
                      />
