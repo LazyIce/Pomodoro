@@ -173,17 +173,23 @@ class UserProfile extends React.Component<Props, State> {
                   <Modal.Title>Delete Confirmation</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  First name: {this.props.userlist[this.state.delete_index].firstName}
-                  <br />
-                  Last name: {this.props.userlist[this.state.delete_index].lastName}
-                  <br />
-                  Email: {this.props.userlist[this.state.delete_index].email}
-                  <br />
+                  <Row>
+                     <Col><strong>First name: </strong></Col>
+                     <Col>{this.props.userlist[this.state.delete_index].firstName}</Col>
+                  </Row>
+                  <Row>
+                     <Col><strong>Last name: </strong></Col>
+                     <Col>{this.props.userlist[this.state.delete_index].lastName}</Col>
+                  </Row>
+                  <Row>
+                     <Col><strong>Email: </strong></Col>
+                     <Col>{this.props.userlist[this.state.delete_index].email}</Col>
+                  </Row>
                   <div className="confirm-msg">
-                     <p style={{color:'red'}}>
+                     <p style={{ color: 'red' }}>
                         {`This user has ${
                            this.props.userlist[this.state.delete_index].related_projects.length
-                        } related projects.`}
+                           } related projects.`}
                      </p>
                      <p>Are you sure to delete the user?</p>
                   </div>
@@ -224,7 +230,7 @@ class UserProfile extends React.Component<Props, State> {
             <Modal.Body>
                <Row>
                   <Col>
-                     <span>First name:</span>
+                     <span><strong>First name:</strong></span>
                   </Col>
                   <Col>
                      <input
@@ -238,7 +244,7 @@ class UserProfile extends React.Component<Props, State> {
                </Row>
                <Row>
                   <Col>
-                     <span>Last name:</span>
+                     <span><strong>Last name:</strong></span>
                   </Col>
                   <Col>
                      <input
@@ -252,7 +258,7 @@ class UserProfile extends React.Component<Props, State> {
                </Row>
                <Row>
                   <Col>
-                     <span>Email:</span>
+                     <span><strong>Email:</strong></span>
                   </Col>
                   <Col>
                      <input
@@ -320,7 +326,7 @@ class UserProfile extends React.Component<Props, State> {
                <Modal.Body>
                   <Row>
                      <Col>
-                        <span>First name: </span>
+                        <span><strong>First name: </strong></span>
                      </Col>
                      <Col>
                         <input
@@ -334,7 +340,7 @@ class UserProfile extends React.Component<Props, State> {
                   </Row>
                   <Row>
                      <Col>
-                        <span>Last name: </span>
+                        <span><strong>Last name: </strong></span>
                      </Col>
                      <Col>
                         <input
@@ -407,124 +413,120 @@ class UserProfile extends React.Component<Props, State> {
       return (
          <div className="content">
             <Container fluid>
-               <Row>
-                  <Col md={12}>
-                     <Card
-                        title="User Profiles Table"
-                        icon="pe-7s-graph3"
-                        hCenter={true}
-                        ctTableFullWidth
-                        ctTableResponsive
-                        content={
-                           <div className="card-content">
-                              <div className="widget-row">
-                                 <div className="input-container col-md-4">
-                                    <input type="text" placeholder="Search on email..." id="general-search" onChange={this.handleTextUpdate} />
-                                    <span className="input-icon">
-                                       <span><i className="pe-7s-search" /></span>
-                                    </span>
-                                 </div>
-                                 <div className="btn-container col-md-3">
-                                    <Button
-                                       id="create_new_user_button"
-                                       className="col"
-                                       variant="primary"
-                                       onClick={() => this.CreateModalShow()}
-                                    >
-                                       Create New User
+               <Card
+                  title="User Profiles Table"
+                  icon="pe-7s-graph3"
+                  hCenter={true}
+                  ctTableFullWidth
+                  ctTableResponsive
+                  content={
+                     <div className="card-content">
+                        <div className="widget-row">
+                           <div className="input-container col-md-4">
+                              <input type="text" placeholder="Search on email..." id="general-search" onChange={this.handleTextUpdate} />
+                              <span className="input-icon">
+                                 <span><i className="pe-7s-search" /></span>
+                              </span>
+                           </div>
+                           <div className="btn-container col-md-3">
+                              <Button
+                                 id="create_new_user_button"
+                                 className="col"
+                                 variant="primary"
+                                 onClick={() => this.CreateModalShow()}
+                              >
+                                 Create New User
                                     </Button>
-                                 </div>
-                              </div>
-                              <div className="table-container">
-                                 <Table striped hover>
-                                    <thead>
-                                       <tr>
-                                          <th>No.</th>
-                                          <th>First Name</th>
-                                          <th>Last Name</th>
-                                          <th>Email</th>
-                                          <th>Related Projects</th>
-                                          <th>operations</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       {
-                                          this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) })
-                                             .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)
-                                             .map((user: any, index: number) => {
-                                                return (
-                                                   <UserList
-                                                      user={user}
-                                                      key={index}
-                                                      index={index}
-                                                      delete_button={() => this.DelButton(user, index)}
-                                                      edit_button={() => this.EditButton(user, index)}
-                                                   />
-                                                );
-                                             })
-                                       }
-                                    </tbody>
-                                 </Table>
-                              </div>
-                              <div className="pagination-container">
-                                 <ReactPaginate
-                                    previousLabel={'previous'}
-                                    nextLabel={'next'}
-                                    breakLabel={'...'}
-                                    pageCount={Math.ceil(this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length / this.state.pageLimit)}
-                                    initialPage={0}
-                                    marginPagesDisplayed={1}
-                                    pageRangeDisplayed={3}
-                                    containerClassName={'pagination'}
-                                    activeClassName={'active'}
-                                    onPageChange={this.onPageChange}
-                                 />
-                                 <div className="page-info">
-                                    <div className="page-dropdown" onClick={this.clickDropdown}>
-                                       <button className="dropdown-toggle">
-                                          <div className="filter-option">
-                                             <div className="filter-option-inner">
-                                                <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
-                                             </div>
-                                          </div>
-                                       </button>
-                                       <div className={this.state.droplist ? "dropdown-menu show" : "dropdown-menu"}>
-                                          <div className="inner">
-                                             <ul>
-                                                <li>
-                                                   <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                      <span className="text">5</span>
-                                                   </a>
-                                                </li>
-                                                <li>
-                                                   <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                      <span className="text">10</span>
-                                                   </a>
-                                                </li>
-                                                <li>
-                                                   <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                      <span className="text">20</span>
-                                                   </a>
-                                                </li>
-                                                <li>
-                                                   <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                      <span className="text">30</span>
-                                                   </a>
-                                                </li>
-                                             </ul>
-                                          </div>
+                           </div>
+                        </div>
+                        <div className="table-container">
+                           <Table striped hover>
+                              <thead>
+                                 <tr>
+                                    <th>No.</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Related Projects</th>
+                                    <th>operations</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 {
+                                    this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) })
+                                       .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)
+                                       .map((user: any, index: number) => {
+                                          return (
+                                             <UserList
+                                                user={user}
+                                                key={index}
+                                                index={index}
+                                                delete_button={() => this.DelButton(user, index)}
+                                                edit_button={() => this.EditButton(user, index)}
+                                             />
+                                          );
+                                       })
+                                 }
+                              </tbody>
+                           </Table>
+                        </div>
+                        <div className="pagination-container">
+                           <ReactPaginate
+                              previousLabel={'previous'}
+                              nextLabel={'next'}
+                              breakLabel={'...'}
+                              pageCount={Math.ceil(this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length / this.state.pageLimit)}
+                              initialPage={0}
+                              marginPagesDisplayed={1}
+                              pageRangeDisplayed={3}
+                              containerClassName={'pagination'}
+                              activeClassName={'active'}
+                              onPageChange={this.onPageChange}
+                           />
+                           <div className="page-info">
+                              <div className="page-dropdown" onClick={this.clickDropdown}>
+                                 <button className="dropdown-toggle">
+                                    <div className="filter-option">
+                                       <div className="filter-option-inner">
+                                          <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
                                        </div>
                                     </div>
-                                    <span className="page-detail">
-                                       Showing {this.state.currentPage * this.state.pageLimit + 1} - {(this.state.currentPage * this.state.pageLimit + this.state.pageLimit > this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length) ? this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length : Number(this.state.currentPage * this.state.pageLimit + this.state.pageLimit)} of {this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length}
-                                    </span>
+                                 </button>
+                                 <div className={this.state.droplist ? "dropdown-menu show" : "dropdown-menu"}>
+                                    <div className="inner">
+                                       <ul>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">5</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">10</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">20</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">30</span>
+                                             </a>
+                                          </li>
+                                       </ul>
+                                    </div>
                                  </div>
                               </div>
+                              <span className="page-detail">
+                                 Showing {this.state.currentPage * this.state.pageLimit + 1} - {(this.state.currentPage * this.state.pageLimit + this.state.pageLimit > this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length) ? this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length : Number(this.state.currentPage * this.state.pageLimit + this.state.pageLimit)} of {this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length}
+                              </span>
                            </div>
-                        }
-                     />
-                  </Col>
-               </Row>
+                        </div>
+                     </div>
+                  }
+               />
             </Container>
             <this.DelModal />
             <this.CreateModal />

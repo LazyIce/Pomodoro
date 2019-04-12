@@ -153,79 +153,75 @@ class Report extends React.Component<Props, State>{
       return (
          <div className="content">
             <Container fluid>
-               <Row>
-                  <Col md={12}>
-                     <Card
-                        title="Get Report"
-                        icon="pe-7s-display1"
-                        hCenter={true}
-                        ctTableFullWidth
-                        ctTableResponsive
-                        content={
-                           <div className="card-content">
-                              <div className="report-title">
-                                 <h4>Please fill out the report details below.</h4>
-                              </div>
-                              <div className="form-container">
-                                 <Form>
-                                    <Form.Row>
-                                       <Form.Group as={Col} controlId="from_date">
-                                          <Form.Label>From</Form.Label>
-                                          <DateTimePicker
-                                             value={this.state.from}
-                                             max={new Date()}
-                                             onChange={value => {
-                                                this.setState({ from: value })
-                                             }}
-                                          />
-                                       </Form.Group>
-                                       <Form.Group as={Col} controlId="to_date">
-                                          <Form.Label>To</Form.Label>
-                                          <DateTimePicker
-                                             value={this.state.to}
-                                             max={new Date()}
-                                             min={this.state.from}
-                                             onChange={value => this.setState({ to: value })}
-                                          />
-                                       </Form.Group>
-                                    </Form.Row>
-                                    <Form.Group controlId="exampleForm.ControlSelect1">
-                                       <Form.Label>Select Project</Form.Label>
-                                       <Form.Control id="select_project" as="select" onChange={this.ChangeSelect}>
-                                          <option value={-1}>Select Project</option>
-                                          {this.props.projectlist.map((project: any, index: number) => {
-                                             return (
-                                                <OptionList key={index} project={project} />
-                                             );
-                                          })}
-                                       </Form.Control>
-                                    </Form.Group>
-                                    <Form.Group as={Col} controlId="hourswoked">
-                                       <Form.Check type="checkbox" label="Included total hours worked" checked={this.state.includeHW}
-                                          onChange={() => this.setState({ includeHW: !this.state.includeHW })} />
-                                    </Form.Group>
-                                    <Form.Group as={Col} controlId="completedpomo">
-                                       <Form.Check type="checkbox" label="Included completed pomodoros" checked={this.state.includeCP}
-                                          onChange={() => {
-                                             this.setState({ includeCP: !this.state.includeCP })
-                                          }} />
-                                    </Form.Group>
-                                    <Form.Row className="btn-container">
-                                       <Button variant="primary" onClick={() => this.getReport()}>
-                                          Get Report
+               <Card
+                  title="Get Report"
+                  icon="pe-7s-display1"
+                  hCenter={true}
+                  ctTableFullWidth
+                  ctTableResponsive
+                  content={
+                     <div className="card-content">
+                        <div className="report-title">
+                           <h4>Please fill out the report details below.</h4>
+                        </div>
+                        <div className="form-container">
+                           <Form>
+                              <Form.Row>
+                                 <Form.Group as={Col} controlId="from_date">
+                                    <Form.Label>From</Form.Label>
+                                    <DateTimePicker
+                                       value={this.state.from}
+                                       max={new Date()}
+                                       onChange={value => {
+                                          this.setState({ from: value })
+                                       }}
+                                    />
+                                 </Form.Group>
+                                 <Form.Group as={Col} controlId="to_date">
+                                    <Form.Label>To</Form.Label>
+                                    <DateTimePicker
+                                       value={this.state.to}
+                                       max={new Date()}
+                                       min={this.state.from}
+                                       onChange={value => this.setState({ to: value })}
+                                    />
+                                 </Form.Group>
+                              </Form.Row>
+                              <Form.Group controlId="exampleForm.ControlSelect1">
+                                 <Form.Label>Select Project</Form.Label>
+                                 <Form.Control id="select_project" as="select" onChange={this.ChangeSelect}>
+                                    <option value={-1}>Select Project</option>
+                                    {this.props.projectlist.map((project: any, index: number) => {
+                                       return (
+                                          <OptionList key={index} project={project} />
+                                       );
+                                    })}
+                                 </Form.Control>
+                              </Form.Group>
+                              <Form.Group as={Col} controlId="hourswoked">
+                                 <Form.Check type="checkbox" label="Included total hours worked" checked={this.state.includeHW}
+                                    onChange={() => this.setState({ includeHW: !this.state.includeHW })} />
+                              </Form.Group>
+                              <Form.Group as={Col} controlId="completedpomo">
+                                 <Form.Check type="checkbox" label="Included completed pomodoros" checked={this.state.includeCP}
+                                    onChange={() => {
+                                       this.setState({ includeCP: !this.state.includeCP })
+                                    }} />
+                              </Form.Group>
+                              <Form.Row className="btn-container">
+                                 <Button variant="primary" onClick={() => this.getReport()}>
+                                    Get Report
                                        </Button>
-                                    </Form.Row>
-                                 </Form>
-                                 <br></br>
-                                 <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
-                                    You need to select a project to view report!
+                              </Form.Row>
+                           </Form>
+                           <br></br>
+                           <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                              You need to select a project to view report!
                                  </Alert>
-                              </div>
-                           </div>
-                        }
-                     />
-                  </Col>
-               </Row>
+                        </div>
+                     </div>
+                  }
+               />
             </Container>
 
             < this.ReportModal />

@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
-import { fetchAllProjects, addProject, putProject, deleteProject, clearErrorMessage} from '../redux/actionCreators/project.action';
+import { fetchAllProjects, addProject, putProject, deleteProject, clearErrorMessage } from '../redux/actionCreators/project.action';
 
 import ProjectList from '../components/List/ProjectList';
 
@@ -21,8 +21,8 @@ const mapDispatchToProps = dispatch => ({
    addProject: (userId, projectname) => {
       dispatch(addProject(userId, projectname));
    },
-   putProject: ({projectname, userId, projectId}) => {
-      dispatch(putProject({projectname, userId, projectId}));
+   putProject: ({ projectname, userId, projectId }) => {
+      dispatch(putProject({ projectname, userId, projectId }));
    },
    deleteProject: (userId, projectId) => {
       dispatch(deleteProject(userId, projectId));
@@ -145,13 +145,13 @@ class Project extends React.Component<Props, State> {
    }
 
    DelButton(project: any, key: number) {
-      
+
       if (project.report.sessions && project.report.sessions.length != 0) {
          //if there is pomodoro, popup the confirmation for user
          this.setState({ delete_index: key });
          this.DelModalShow();
       } else {
-      this.props.deleteProject(project.userId, project.id);
+         this.props.deleteProject(project.userId, project.id);
       }
    }
 
@@ -171,10 +171,12 @@ class Project extends React.Component<Props, State> {
                   <Modal.Title>Delete Confirmation</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  Project name: {this.props.projectlist[this.state.delete_index].projectname}
-                  <br />
+                  <Row>
+                     <Col><strong>Project name: </strong></Col>
+                     <Col>{this.props.projectlist[this.state.delete_index].projectname}</Col>
+                  </Row>
                   <div className="confirm-msg">
-                     <p style={{color:'red'}}>
+                     <p style={{ color: 'red' }}>
                         This project has sessions associate with it.
                      </p>
                      <p>Are you sure to delete the user?</p>
@@ -216,7 +218,7 @@ class Project extends React.Component<Props, State> {
             <Modal.Body>
                <Row>
                   <Col>
-                     <span>Project Name:</span>
+                     <span><strong>Project Name:</strong></span>
                   </Col>
                   <Col>
                      <input
@@ -277,7 +279,7 @@ class Project extends React.Component<Props, State> {
                <Modal.Body>
                   <Row>
                      <Col>
-                        <span>Project Name:</span>
+                        <span><strong>Project Name:</strong></span>
                      </Col>
                      <Col>
                         <input
@@ -316,7 +318,7 @@ class Project extends React.Component<Props, State> {
       }
    }
 
-   onPageChange (data) {
+   onPageChange(data) {
       let selected = data.selected;
       this.setState({
          currentPage: selected
@@ -324,7 +326,7 @@ class Project extends React.Component<Props, State> {
    }
 
    clickDropdown() {
-      const {droplist } = this.state;
+      const { droplist } = this.state;
       this.setState({
          droplist: !droplist
       });
@@ -348,122 +350,118 @@ class Project extends React.Component<Props, State> {
       return (
          <div className="content">
             <Container fluid>
-               <Row>
-                  <Col md={12}>
-                     <Card
-                        title="Projects Table"
-                        icon="pe-7s-graph3"
-                        hCenter={true}
-                        ctTableFullWidth
-                        ctTableResponsive
-                        content={
-                           <div className="card-content">
-                              <div className="widget-row">
-                                 <div className="input-container col-md-4">
-                                    <input type="text" placeholder="Search on name..." id="general-search" onChange={this.handleTextUpdate}/>
-                                    <span className="input-icon">
-                                       <span><i className="pe-7s-search" /></span>
-                                    </span>
-                                 </div>
-                                 <div className="btn-container col-md-3">
-                                    <Button
-                                       id="create_project_button"
-                                       className="col"
-                                       variant="primary"
-                                       onClick={() => this.CreateModalShow()}
-                                    >
-                                       Create New Project
-                                    </Button>
-                                 </div>
-                              </div>
-                              <div className="table-container">
-                                 <Table striped hover>
-                                    <thead>
-                                       <tr>
-                                          <th>Id</th>
-                                          <th>Project Name</th>
-                                          <th>Sessions</th>
-                                          <th>Total Pomodoros</th>
-                                          <th>Operations</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       {
-                                          this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)})
-                                          .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage*this.state.pageLimit + this.state.pageLimit)
-                                          .map((project: any, index: number) => {
-                                             return (
-                                                <ProjectList
-                                                   project={project}
-                                                   key={index}
-                                                   index={index}
-                                                   delete_button={() => this.DelButton(project, index)}
-                                                   edit_button={() => this.EditButton(project, index)}
-                                                />
-                                             );
-                                       })}
-                                    </tbody>
-                                 </Table>
-                              </div>
-                              <div className="pagination-container">
-                                 <ReactPaginate
-                                    previousLabel={'previous'}
-                                    nextLabel={'next'}
-                                    breakLabel={'...'}
-                                    pageCount={Math.ceil(this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length / this.state.pageLimit)}
-                                    initialPage={0}
-                                    marginPagesDisplayed={1}
-                                    pageRangeDisplayed={3}
-                                    containerClassName={'pagination'}
-                                    activeClassName={'active'}
-                                    onPageChange={this.onPageChange}
-                                 />
-                                 <div className="page-info">
-                                       <div className="page-dropdown" onClick={this.clickDropdown}>
-                                          <button className="dropdown-toggle">
-                                             <div className="filter-option">
-                                                <div className="filter-option-inner">
-                                                   <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
-                                                </div>
-                                             </div>
-                                          </button>
-                                          <div className={this.state.droplist? "dropdown-menu show" : "dropdown-menu"}>
-                                             <div className="inner">
-                                             <ul>
-                                                   <li>
-                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                         <span className="text">5</span>
-                                                      </a>
-                                                   </li>
-                                                   <li>
-                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                         <span className="text">10</span>
-                                                      </a>
-                                                   </li>
-                                                   <li>
-                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                         <span className="text">20</span>
-                                                      </a>
-                                                   </li>
-                                                   <li>
-                                                      <a role="option" className="dropdown-item" onClick={this.clickOption}>
-                                                         <span className="text">30</span>
-                                                      </a>
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <span className="page-detail">
-                                          Showing {this.state.currentPage*this.state.pageLimit+1} - {(this.state.currentPage*this.state.pageLimit+this.state.pageLimit > this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length) ? this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length : Number(this.state.currentPage*this.state.pageLimit+this.state.pageLimit)} of {this.props.projectlist.filter(project => {return project.projectname.includes(this.state.keyword)}).length}     
-                                       </span>
-                                 </div>
-                              </div>
+               <Card
+                  title="Projects Table"
+                  icon="pe-7s-graph3"
+                  hCenter={true}
+                  ctTableFullWidth
+                  ctTableResponsive
+                  content={
+                     <div className="card-content">
+                        <div className="widget-row">
+                           <div className="input-container col-md-4">
+                              <input type="text" placeholder="Search on name..." id="general-search" onChange={this.handleTextUpdate} />
+                              <span className="input-icon">
+                                 <span><i className="pe-7s-search" /></span>
+                              </span>
                            </div>
-                        }
-                     />
-                  </Col>
-               </Row>
+                           <div className="btn-container col-md-3">
+                              <Button
+                                 id="create_project_button"
+                                 className="col"
+                                 variant="primary"
+                                 onClick={() => this.CreateModalShow()}
+                              >
+                                 Create New Project
+                                    </Button>
+                           </div>
+                        </div>
+                        <div className="table-container">
+                           <Table striped hover>
+                              <thead>
+                                 <tr>
+                                    <th>Id</th>
+                                    <th>Project Name</th>
+                                    <th>Sessions</th>
+                                    <th>Total Pomodoros</th>
+                                    <th>Operations</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 {
+                                    this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) })
+                                       .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)
+                                       .map((project: any, index: number) => {
+                                          return (
+                                             <ProjectList
+                                                project={project}
+                                                key={index}
+                                                index={index}
+                                                delete_button={() => this.DelButton(project, index)}
+                                                edit_button={() => this.EditButton(project, index)}
+                                             />
+                                          );
+                                       })}
+                              </tbody>
+                           </Table>
+                        </div>
+                        <div className="pagination-container">
+                           <ReactPaginate
+                              previousLabel={'previous'}
+                              nextLabel={'next'}
+                              breakLabel={'...'}
+                              pageCount={Math.ceil(this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length / this.state.pageLimit)}
+                              initialPage={0}
+                              marginPagesDisplayed={1}
+                              pageRangeDisplayed={3}
+                              containerClassName={'pagination'}
+                              activeClassName={'active'}
+                              onPageChange={this.onPageChange}
+                           />
+                           <div className="page-info">
+                              <div className="page-dropdown" onClick={this.clickDropdown}>
+                                 <button className="dropdown-toggle">
+                                    <div className="filter-option">
+                                       <div className="filter-option-inner">
+                                          <div className="filter-option-inner-inner">{this.state.pageLimit}</div>
+                                       </div>
+                                    </div>
+                                 </button>
+                                 <div className={this.state.droplist ? "dropdown-menu show" : "dropdown-menu"}>
+                                    <div className="inner">
+                                       <ul>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">5</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">10</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">20</span>
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a role="option" className="dropdown-item" onClick={this.clickOption}>
+                                                <span className="text">30</span>
+                                             </a>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                              <span className="page-detail">
+                                 Showing {this.state.currentPage * this.state.pageLimit + 1} - {(this.state.currentPage * this.state.pageLimit + this.state.pageLimit > this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length) ? this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length : Number(this.state.currentPage * this.state.pageLimit + this.state.pageLimit)} of {this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length}
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                  }
+               />
             </Container>
             <this.DelModal />
             <this.CreateModal />
