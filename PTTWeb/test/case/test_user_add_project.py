@@ -20,8 +20,10 @@ class TestUserAddProject(unittest.TestCase):
         # Scripts
         admin_create_new_user_logout(self)
         login_as_user(self)
+        time.sleep(1)
             
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_user_add_new_project_with_non_exist_name(self):
@@ -29,6 +31,7 @@ class TestUserAddProject(unittest.TestCase):
             Test add a new project
         """
         driver = self.driver
+
 
         # Click create new user button to show modal
         create_project_button = driver.find_element_by_id("create_project_button")

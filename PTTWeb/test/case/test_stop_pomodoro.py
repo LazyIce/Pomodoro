@@ -26,6 +26,7 @@ class TestStopPomodoro(unittest.TestCase):
         time.sleep(1)
 
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_stop_pomodoro_associate_no_log(self):
@@ -36,22 +37,14 @@ class TestStopPomodoro(unittest.TestCase):
         # Click "Stop current ongoing Pomodoro"
         driver.find_element_by_id("stop_pomodoro_button").click()
         # Make sure stop modal pops up
-        self.assertTrue(self.selenium.is_element_exist("id", "stop_pomodoro_button"))
+        self.assertTrue(self.selenium.is_element_exist("id", "stop_cancel_button"))
 
         # Click no, go to project, check session incremented but total pomodoro not incremented
         driver.find_element_by_id("stop_cancel_button").click()
         time.sleep(1)
 
-        # Check for states
-        div_inactive = driver.find_element_by_xpath("//div[contains(text(), 'inactive')]")
-        div_working = driver.find_element_by_xpath("//div[contains(text(), 'Working')]")
-        div_break = driver.find_element_by_xpath("//div[contains(text(), 'Taking a break')]")
-
-        self.assertEqual(div_inactive.value_of_css_property('background-color'), 'rgba(173, 216, 230, 1)')
-        self.assertEqual(div_working.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-        self.assertEqual(div_break.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-
         driver.find_element_by_id("sidebar_user_Projects").click()
+        time.sleep(1)
         project_entry = driver.find_element_by_xpath("//tr[td[contains(text(), '{}')]]".format(self.project_name))
         self.assertEqual(project_entry.find_element_by_xpath("td[3]").text, '1')
         self.assertEqual(project_entry.find_element_by_xpath("td[4]").text, '0')
@@ -64,23 +57,15 @@ class TestStopPomodoro(unittest.TestCase):
         # Click "Stop current ongoing Pomodoro"
         driver.find_element_by_id("stop_pomodoro_button").click()
         # Make sure stop modal pops up
-        self.assertTrue(self.selenium.is_element_exist("id", "stop_pomodoro_button"))
+        self.assertTrue(self.selenium.is_element_exist("id", "stop_confirm_button"))
 
         # Click no, go to project, check session incremented but total pomodoro not incremented
         driver.find_element_by_id("stop_confirm_button").click()
         time.sleep(1)
 
-        # Check for states
-        div_inactive = driver.find_element_by_xpath("//div[contains(text(), 'inactive')]")
-        div_working = driver.find_element_by_xpath("//div[contains(text(), 'Working')]")
-        div_break = driver.find_element_by_xpath("//div[contains(text(), 'Taking a break')]")
-
-        self.assertEqual(div_inactive.value_of_css_property('background-color'), 'rgba(173, 216, 230, 1)')
-        self.assertEqual(div_working.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-        self.assertEqual(div_break.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-
         # Click yes, go to project, check both session and total pomodoros imcremented
         driver.find_element_by_id("sidebar_user_Projects").click()
+        time.sleep(1)
         project_entry = driver.find_element_by_xpath("//tr[td[contains(text(), '{}')]]".format(self.project_name))
         self.assertEqual(project_entry.find_element_by_xpath("td[3]").text, '1')
         self.assertEqual(project_entry.find_element_by_xpath("td[4]").text, '1')
@@ -93,23 +78,14 @@ class TestStopPomodoro(unittest.TestCase):
          # Click "Stop current ongoing Pomodoro"
         driver.find_element_by_id("stop_pomodoro_button").click()
         # Make sure stop modal pops up
-        self.assertTrue(self.selenium.is_element_exist("id", "stop_pomodoro_button"))
+        self.assertTrue(self.selenium.is_element_exist("id", "stop_confirm_button"))
 
-        # Click no, go to project, check session incremented but total pomodoro not incremented
         driver.find_element_by_id("stop_confirm_button").click()
         time.sleep(1)
 
-        # Check for states
-        div_inactive = driver.find_element_by_xpath("//div[contains(text(), 'inactive')]")
-        div_working = driver.find_element_by_xpath("//div[contains(text(), 'Working')]")
-        div_break = driver.find_element_by_xpath("//div[contains(text(), 'Taking a break')]")
-
-        self.assertEqual(div_inactive.value_of_css_property('background-color'), 'rgba(173, 216, 230, 1)')
-        self.assertEqual(div_working.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-        self.assertEqual(div_break.value_of_css_property('background-color'), 'rgba(255, 255, 255, 1)')
-
         # Click yes, go to project, check both session and total pomodoros not imcremented
         driver.find_element_by_id("sidebar_user_Projects").click()
+        time.sleep(1)
         project_entry = driver.find_element_by_xpath("//tr[td[contains(text(), '{}')]]".format(self.project_name))
         self.assertEqual(project_entry.find_element_by_xpath("td[3]").text, '0')
         self.assertEqual(project_entry.find_element_by_xpath("td[4]").text, '0')

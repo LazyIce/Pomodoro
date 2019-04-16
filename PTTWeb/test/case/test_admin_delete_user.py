@@ -4,7 +4,7 @@ from utils.myselenium import MySelenium
 from utils.config import Config
 from utils.log import logger
 from utils.generator import *
-
+from utils.scripts import *
 
 class TestAdminDeleteUser(unittest.TestCase):
 
@@ -22,6 +22,7 @@ class TestAdminDeleteUser(unittest.TestCase):
         time.sleep(1)
 
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_admin_delete_user_without_projects(self):
@@ -44,8 +45,10 @@ class TestAdminDeleteUser(unittest.TestCase):
         time.sleep(1)
         logger.info("create a user for deleting")
 
+        search_user(self)
+
         # delete the created user
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[6]/button[2]".format(self.email))
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.email))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)
@@ -97,11 +100,14 @@ class TestAdminDeleteUser(unittest.TestCase):
         driver.find_element_by_id("logout").click()
         time.sleep(1)
 
+
         # delete the created user
         driver.find_element("xpath", "//div[@id='login-tabpane-admin']/form/div/input").send_keys("admin")
         driver.find_element("xpath", "//div[@id='login-tabpane-admin']/form/button").click()
         time.sleep(1)
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[6]/button[2]".format(self.email))
+        
+        search_user(self)
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.email))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)
@@ -159,11 +165,14 @@ class TestAdminDeleteUser(unittest.TestCase):
         driver.find_element_by_id("logout").click()
         time.sleep(1)
 
+
         # delete the created user
         driver.find_element("xpath", "//div[@id='login-tabpane-admin']/form/div/input").send_keys("admin")
         driver.find_element("xpath", "//div[@id='login-tabpane-admin']/form/button").click()
         time.sleep(1)
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[6]/button[2]".format(self.email))
+
+        search_user(self)
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.email))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)

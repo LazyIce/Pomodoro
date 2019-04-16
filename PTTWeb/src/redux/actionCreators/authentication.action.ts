@@ -9,8 +9,6 @@ export const authenticationActions = {
 };
 
 function login(username: string, type: string) {
-   console.log('---------------------------------');
-   console.log(username, type);
    return dispatch => {
       authenticationService.login(username, type).then(res => {
          if (typeof res == 'object') {

@@ -6,7 +6,9 @@ from utils.log import logger
 from utils.generator import *
 from utils.scripts import *
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 import re
+import datetime
 
 class TestReport(unittest.TestCase):
 
@@ -34,17 +36,18 @@ class TestReport(unittest.TestCase):
         to_input = driver.find_element_by_xpath("//div[label[contains(text(), 'To')]]/div/div/input")
 
         to_time = to_input.get_attribute('value')
-        pattern = "\s(.*),"
-        day = re.search(pattern, to_time).group(1)
-        prev_day = ' '+str(int(day)-1)
-        from_time = re.sub(pattern, prev_day, to_time)
-        
-        from_input.send_keys("1")
-        from_input.clear()
 
-        from_input.send_keys(from_time)
+        from_time = datetime.datetime.strptime(to_time, '%b %d, %Y %I:%M %p') - datetime.timedelta(days=1)
+        from_day = from_time.strftime("%B") + ' ' + str(from_time.day) + ', ' + str(from_time.year)
+
+        driver.find_element_by_xpath("//button[contains(@title, 'Select date')]").click()
+        time.sleep(1)
+        from_day_grid = driver.find_element_by_xpath("//td[contains(@title, '{}')]".format(from_day))
+        from_day_grid.click()
+        time.sleep(1)       
 
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_both_checked(self):

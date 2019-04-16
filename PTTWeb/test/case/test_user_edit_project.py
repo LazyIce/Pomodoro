@@ -20,6 +20,7 @@ class TestUserEditProject(unittest.TestCase):
         self.new_project_name = random_project_name()
             
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_user_edit_project_with_non_exist_name(self):
@@ -62,7 +63,7 @@ class TestUserEditProject(unittest.TestCase):
         time.sleep(1)
 
         # edit the created project
-        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[5]/button[1]".format(self.project_name))
+        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-note')]".format(self.project_name))
         edit_button.click()
         logger.info("click edit button")
         time.sleep(1)
@@ -138,7 +139,7 @@ class TestUserEditProject(unittest.TestCase):
         time.sleep(1)
 
         # edit the first project with the second project name
-        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[5]/button[1]".format(self.project_name))
+        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-note')]".format(self.project_name))
         edit_button.click()
         logger.info("click edit button")
         time.sleep(1)

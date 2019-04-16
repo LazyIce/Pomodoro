@@ -57,8 +57,8 @@ interface State {
     break_hours: number,
     */
 
-    start_time: String,
-    end_time: String,
+    start_time: string,
+    end_time: string,
     //total_hours: number,
 
     create_show: boolean,
@@ -174,9 +174,9 @@ class Pomodoro extends React.Component<Props, State>{
     //Three functions representing the action of user on create modal
     CreateSubmit() {
         var time = moment().format('YYYY-MM-DDTHH:mmZ');
-        console.log(time);
         this.setState({
-            start_time: time
+            start_time: time,
+            end_time: time
         })
         if (this.state.associated_id != -1) {
             this.CreateSession(time);
@@ -208,7 +208,7 @@ class Pomodoro extends React.Component<Props, State>{
                     </Row>
                     <Row>
                         <Col><strong>Session Start time:</strong></Col>
-                        <Col>{this.state.start_time}</Col>
+                        <Col>{moment(this.state.start_time).format('YYYY-MM-DD HH:mm')}</Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
@@ -313,10 +313,10 @@ class Pomodoro extends React.Component<Props, State>{
                 </Modal.Body>
                 <Modal.Footer>
                     <Button id="continue_cancel_button" variant="secondary" onClick={(this.ContinueOver)}>
-                        No
+                        Cancel
                     </Button>
                     <Button id="continue_confirm_button" variant="primary" onClick={this.Continue} disabled={this.state.hours == 0 && this.state.minutes == 0 && this.state.seconds == 0}>
-                        Yes
+                        Start
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -366,14 +366,14 @@ class Pomodoro extends React.Component<Props, State>{
                     </Row>
                     <Row>
                         <Col><strong>Session Start time: </strong></Col>
-                        <Col>{this.state.start_time}</Col>
+                        <Col>{moment(this.state.start_time).format('YYYY-MM-DD HH:mm')}</Col>
                     </Row>
                     <div className="confirm-msg">
                         <p style={{ color: 'red' }}>
                             You can going to end the session.
                         </p>
                         <p>Are you going to include the runtime of current incomplete pomodoro?</p>
-                  </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -664,7 +664,6 @@ class Pomodoro extends React.Component<Props, State>{
     //Two actions that will deal with API
     CreateSession(time: any) {
         sessionService.addUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, time).then((res) => {
-            console.log(res.data);
             this.setState({
                 active_session_id: res.data.id,
                 counter: 0
@@ -679,7 +678,6 @@ class Pomodoro extends React.Component<Props, State>{
     }
 
     UpdateSession() {
-        console.log(this.state.counter);
         sessionService.updateUserProjectSession(Number(localStorage.getItem('id')), this.state.associated_id, this.state.active_session_id, this.state.start_time, this.state.end_time, this.state.counter)
             .then((res) => {
                 console.log(res.data);

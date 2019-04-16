@@ -25,14 +25,14 @@ class TestUserDeleteProject(unittest.TestCase):
         time.sleep(1)
 
     def tearDown(self):
-        # time.sleep(1000)
+        clean_up(self)
         self.driver.close()
 
     def test_user_delete_project_without_sessions(self):
         driver = self.driver
 
         # delete the created project
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[5]/button[2]".format(self.project_name))
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.project_name))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)
@@ -52,7 +52,7 @@ class TestUserDeleteProject(unittest.TestCase):
         create_session_for_project(self)
 
         # delete the created project
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[5]/button[2]".format(self.project_name))
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.project_name))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)
@@ -60,7 +60,7 @@ class TestUserDeleteProject(unittest.TestCase):
         # Check delete modal pops up
         is_delete_modal = self.selenium.is_element_exist("id", "delete_modal")
         self.assertTrue(is_delete_modal)
-        logger.info("delete modal doesn't pop up")
+        logger.info("delete modal pop up")
         time.sleep(1)
 
         # click confirm
@@ -79,7 +79,7 @@ class TestUserDeleteProject(unittest.TestCase):
         create_session_for_project(self)
 
         # delete the created project
-        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[5]/button[2]".format(self.project_name))
+        delete_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-trash')]".format(self.project_name))
         delete_button.click()
         logger.info("click the delete button")
         time.sleep(1)

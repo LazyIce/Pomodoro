@@ -1,12 +1,15 @@
 import { projectConstants } from '../actionTypes/project.constant';
 import { projectService } from '../../services/project.service';
+import moment from 'moment';
 
 export const fetchAllProjects = function (userId: number) {
    return async function (dispatch) {
       try {
          let body = {
-            from: new Date('1960-01-01T03:24:00'),
-            to: new Date(),
+            from: moment("1960-01-01T03:24:00").format('YYYY-MM-DDTHH:mmZ'),
+            to: moment().format('YYYY-MM-DDTHH:mmZ'),
+            // from: new Date('1960-01-01T03:24:00'),
+            // to: new Date(),
             completedPomo: true,
             hoursWorked: true
          }

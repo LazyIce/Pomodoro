@@ -4,6 +4,7 @@ from utils.myselenium import MySelenium
 from utils.config import Config
 from utils.log import logger
 from utils.generator import *
+from utils.scripts import *
 
 class TestAdminAddUser(unittest.TestCase):
 
@@ -20,6 +21,7 @@ class TestAdminAddUser(unittest.TestCase):
         time.sleep(1)
     
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_admin_add_new_user_with_non_exist_user(self):
@@ -55,6 +57,8 @@ class TestAdminAddUser(unittest.TestCase):
         logger.info("click submit button")
         time.sleep(1)
 
+        search_user(self)
+        
         # check whether the user is created successfully
         new_user_email = self.selenium.is_element_exist("xpath", "//tr[td[contains(text(), '{}')]]".format(self.email))
         self.assertTrue(new_user_email)

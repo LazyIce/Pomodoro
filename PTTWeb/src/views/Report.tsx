@@ -8,6 +8,7 @@ import moment from 'moment'
 import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import "react-widgets/dist/css/react-widgets.css"
+import { start } from 'repl';
 moment.locale('en')
 momentLocalizer()
 
@@ -88,6 +89,7 @@ class Report extends React.Component<Props, State>{
                   }
 
                   {this.state.includeHW && this.props.report.sessions.length > 0
+
                      ? <p><strong>Total Hours Worked</strong>: {this.props.report.totalHoursWorkedOnProject}</p>
                      : null
                   }
@@ -99,7 +101,7 @@ class Report extends React.Component<Props, State>{
                               <th>No.</th>
                               <th>Start Time</th>
                               <th>End Time</th>
-                              <th>Count</th>
+                              <th>Hours Worked</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -108,8 +110,8 @@ class Report extends React.Component<Props, State>{
                               return (
                                  <tr key={index + 1}>
                                     <td>{index + 1}</td>
-                                    <td>{r.startingTime}</td>
-                                    <td>{r.endingTime}</td>
+                                    <td>{moment(r.startingTime).format('YYYY-MM-DD HH:mm')}</td>
+                                    <td>{moment(r.endingTime).format('YYYY-MM-DD HH:mm')}</td>
                                     <td>{r.hoursWorked}</td>
                                  </tr>
                               );
@@ -132,11 +134,10 @@ class Report extends React.Component<Props, State>{
 
    }
 
-
    getReport() {
       let body = {
-         from: this.state.from,
-         to: this.state.to,
+         from: moment(this.state.from).format("YYYY-MM-DDTHH:mmZ"),
+         to: moment(this.state.to).format("YYYY-MM-DDTHH:mmZ"),
          completedPomo: this.state.includeCP,
          hoursWorked: this.state.includeHW
       }
@@ -149,6 +150,7 @@ class Report extends React.Component<Props, State>{
       }
 
    }
+
    render() {
       return (
          <div className="content">
@@ -187,7 +189,7 @@ class Report extends React.Component<Props, State>{
                                     />
                                  </Form.Group>
                               </Form.Row>
-                              <Form.Group controlId="exampleForm.ControlSelect1">
+                              <Form.Group>
                                  <Form.Label>Select Project</Form.Label>
                                  <Form.Control id="select_project" as="select" onChange={this.ChangeSelect}>
                                     <option value={-1}>Select Project</option>
@@ -209,7 +211,7 @@ class Report extends React.Component<Props, State>{
                                     }} />
                               </Form.Group>
                               <Form.Row className="btn-container">
-                                 <Button variant="primary" onClick={() => this.getReport()}>
+                                 <Button id="get_report" variant="primary" onClick={() => this.getReport()}>
                                     Get Report
                                        </Button>
                               </Form.Row>

@@ -4,7 +4,7 @@ from utils.myselenium import MySelenium
 from utils.config import Config
 from utils.log import logger
 from utils.generator import *
-from utils.scripts import admin_create_new_user_logout
+from utils.scripts import *
 
 
 class TestUserLogin(unittest.TestCase):
@@ -18,6 +18,7 @@ class TestUserLogin(unittest.TestCase):
         self.user_email = random_email()
 
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_admin_login_with_existing_user(self):

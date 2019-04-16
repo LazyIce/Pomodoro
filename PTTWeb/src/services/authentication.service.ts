@@ -11,7 +11,7 @@ function login(username: string, type: string) {
       let user = {
          name: 'admin'
       };
-      let p = new Promise(function(resolve, reject) {
+      let p = new Promise(function (resolve, reject) {
          if (username == 'admin') {
             localStorage.setItem('user', user.name);
             resolve(user);
@@ -20,7 +20,7 @@ function login(username: string, type: string) {
             resolve(msg);
          }
       });
-      
+
       return p;
    } else {
       return axios.get(BASE_URL + '/users').then(res => {
@@ -28,7 +28,6 @@ function login(username: string, type: string) {
          let filterUser = userlist.filter(u => {
             return username == u.email;
          });
-         console.log(filterUser);
          if (filterUser.length == 0) {
             let msg = 'User does not exist!';
             return msg;

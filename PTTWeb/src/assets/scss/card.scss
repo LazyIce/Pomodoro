@@ -145,11 +145,34 @@
             }
         }
 
+        .empty-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(27,31,35,.075);
+            border-radius: .5rem;
+
+            h4{
+                margin: 5rem 0;
+                font-weight: 500;
+                color: $blue-color-top;
+            }
+
+            &.hide {
+                display: none;
+            }
+
+        }
+
         .pagination-container {
             padding: 1rem 1rem 2rem 1rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+
+            &.hide {
+                display: none;
+            }
 
             .pagination {
                 margin: 0;

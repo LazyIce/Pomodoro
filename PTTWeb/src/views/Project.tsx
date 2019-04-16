@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Button, Table, Modal, Alert } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
@@ -59,6 +59,7 @@ interface State {
    pageLimit: number;
    droplist: boolean;
    keyword: string;
+   showWarning: boolean;
 }
 
 class Project extends React.Component<Props, State> {
@@ -101,7 +102,8 @@ class Project extends React.Component<Props, State> {
          currentPage: 0,
          pageLimit: 5,
          droplist: false,
-         keyword: ""
+         keyword: "",
+         showWarning: false
       };
    }
 
@@ -151,6 +153,13 @@ class Project extends React.Component<Props, State> {
          this.setState({ delete_index: key });
          this.DelModalShow();
       } else {
+         if (this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) })
+         .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit).length == 1) {
+            let curPage = this.state.currentPage;
+            this.setState({
+               currentPage: curPage - 1
+            })
+         }
          this.props.deleteProject(project.userId, project.id);
       }
    }
@@ -159,6 +168,13 @@ class Project extends React.Component<Props, State> {
       //Delete the projects
       if (this.state.delete_show) {
          this.DelModalClose();
+      }
+      if (this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) })
+      .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit).length == 1) {
+         let curPage = this.state.currentPage;
+         this.setState({
+            currentPage: curPage - 1
+         })
       }
       this.props.deleteProject(project.userId, project.id);
    }
@@ -173,7 +189,12 @@ class Project extends React.Component<Props, State> {
                <Modal.Body>
                   <Row>
                      <Col><strong>Project name: </strong></Col>
-                     <Col>{this.props.projectlist[this.state.delete_index].projectname}</Col>
+                     <Col>
+                        {
+                           this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index]?
+                           this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index].projectname:""
+                        }
+                     </Col>
                   </Row>
                   <div className="confirm-msg">
                      <p style={{ color: 'red' }}>
@@ -189,7 +210,8 @@ class Project extends React.Component<Props, State> {
                   <Button
                      variant="primary"
                      id="confirm_delete"
-                     onClick={() => this.DelProject(this.props.projectlist[this.state.delete_index])}
+                     onClick={() => this.DelProject(this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) })
+                     .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index])}
                   >
                      Confirm
                   </Button>
@@ -202,6 +224,7 @@ class Project extends React.Component<Props, State> {
    }
 
    CreateModalClose() {
+      this.setState({ showWarning: false })
       this.setState({ create_show: false });
    }
 
@@ -230,6 +253,14 @@ class Project extends React.Component<Props, State> {
                      />
                   </Col>
                </Row>
+
+               <br></br>
+
+               <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                  You must provide a valid project name!
+               </Alert>
+
+
             </Modal.Body>
             <Modal.Footer>
                <Button variant="secondary" onClick={this.CreateModalClose}>
@@ -239,19 +270,28 @@ class Project extends React.Component<Props, State> {
                   id="confirm_create_project_button"
                   variant="primary"
                   onClick={() => {
-                     this.props.addProject(Number(localStorage.getItem('id')), this.state.new_project_name);
-                     this.CreateModalClose();
-                     this.setState({ new_project_name: '' });
+                     if (this.state.new_project_name.length > 0) {
+                        this.props.addProject(Number(localStorage.getItem('id')), this.state.new_project_name);
+                        this.CreateModalClose();
+                        this.setState({ new_project_name: '' });
+                        this.setState({ showWarning: false })
+                     } else {
+                        this.setState({ showWarning: true })
+                     }
+
                   }}
                >
                   Confirm
                </Button>
+
+
             </Modal.Footer>
          </Modal>
       );
    }
 
    EditModalClose() {
+      this.setState({ showWarning: false })
       this.setState({ edit_show: false });
    }
 
@@ -291,6 +331,11 @@ class Project extends React.Component<Props, State> {
                         />
                      </Col>
                   </Row>
+                  <br></br>
+
+                  <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                     You must provide a valid project name!
+               </Alert>
                </Modal.Body>
                <Modal.Footer>
                   <Button variant="secondary" onClick={this.EditModalClose}>
@@ -300,12 +345,17 @@ class Project extends React.Component<Props, State> {
                      id="confirm_edit"
                      variant="primary"
                      onClick={() => {
-                        this.props.putProject({
-                           projectname: this.state.edit_project_name,
-                           userId: this.state.edit_user_id,
-                           projectId: this.state.edit_project_id
-                        });
-                        this.EditModalClose();
+                        if (this.state.edit_project_name.length > 0) {
+                           this.props.putProject({
+                              projectname: this.state.edit_project_name,
+                              userId: this.state.edit_user_id,
+                              projectId: this.state.edit_project_id
+                           });
+                           this.EditModalClose();
+                        } else {
+                           this.setState({ showWarning: true })
+                        }
+
                      }}
                   >
                      Confirm
@@ -401,11 +451,15 @@ class Project extends React.Component<Props, State> {
                                                 edit_button={() => this.EditButton(project, index)}
                                              />
                                           );
-                                       })}
+                                       })
+                                 }
                               </tbody>
                            </Table>
+                           <div className={this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length != 0 ? "empty-container hide" : "empty-container"}>
+                              <h4>There is no project currently.</h4>
+                           </div>
                         </div>
-                        <div className="pagination-container">
+                        <div className={this.props.projectlist.filter(project => { return project.projectname.includes(this.state.keyword) }).length != 0 ? "pagination-container" : "pagination-container hide"}>
                            <ReactPaginate
                               previousLabel={'previous'}
                               nextLabel={'next'}

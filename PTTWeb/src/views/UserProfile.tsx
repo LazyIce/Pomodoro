@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Button, Table, Modal, Alert } from 'react-bootstrap';
 import Card from '../components/Card/Card';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
@@ -61,6 +61,7 @@ interface State {
    pageLimit: number;
    droplist: boolean;
    keyword: string;
+   showWarning: boolean;
 }
 
 class UserProfile extends React.Component<Props, State> {
@@ -106,7 +107,8 @@ class UserProfile extends React.Component<Props, State> {
          currentPage: 0,
          pageLimit: 5,
          droplist: false,
-         keyword: ""
+         keyword: "",
+         showWarning: false
       };
    }
 
@@ -154,6 +156,13 @@ class UserProfile extends React.Component<Props, State> {
          this.setState({ delete_index: key });
          this.DelModalShow();
       } else {
+         if (this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) })
+         .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit).length == 1) {
+            let curPage = this.state.currentPage;
+            this.setState({
+               currentPage: curPage - 1
+            })
+         }
          this.props.removeUser(user.id);
       }
    }
@@ -161,6 +170,13 @@ class UserProfile extends React.Component<Props, State> {
    DelUser(userId: number) {
       if (this.state.delete_show) {
          this.DelModalClose();
+      }
+      if (this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) })
+      .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit).length == 1) {
+         let curPage = this.state.currentPage;
+         this.setState({
+            currentPage: curPage - 1
+         })
       }
       this.props.removeUser(userId);
    }
@@ -175,21 +191,34 @@ class UserProfile extends React.Component<Props, State> {
                <Modal.Body>
                   <Row>
                      <Col><strong>First name: </strong></Col>
-                     <Col>{this.props.userlist[this.state.delete_index].firstName}</Col>
+                     <Col>
+                        {
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index]?
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index].firstName:""
+                        }
+                     </Col>
                   </Row>
                   <Row>
                      <Col><strong>Last name: </strong></Col>
-                     <Col>{this.props.userlist[this.state.delete_index].lastName}</Col>
+                     <Col>
+                        {
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index]?
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index].lastName:""
+                        }
+                     </Col>
                   </Row>
                   <Row>
                      <Col><strong>Email: </strong></Col>
-                     <Col>{this.props.userlist[this.state.delete_index].email}</Col>
+                     <Col>
+                        {
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index]?
+                           this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index].email:""
+                        }
+                     </Col>
                   </Row>
                   <div className="confirm-msg">
                      <p style={{ color: 'red' }}>
-                        {`This user has ${
-                           this.props.userlist[this.state.delete_index].related_projects.length
-                           } related projects.`}
+                        {`This user has related projects.`}
                      </p>
                      <p>Are you sure to delete the user?</p>
                   </div>
@@ -201,7 +230,8 @@ class UserProfile extends React.Component<Props, State> {
                   <Button
                      id="confirm_delete"
                      variant="primary"
-                     onClick={() => this.DelUser(this.props.userlist[this.state.delete_index].id)}
+                     onClick={() => this.DelUser(this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) })
+                     .slice(this.state.currentPage * this.state.pageLimit, this.state.currentPage * this.state.pageLimit + this.state.pageLimit)[this.state.delete_index].id)}
                   >
                      Confirm
                   </Button>
@@ -214,6 +244,10 @@ class UserProfile extends React.Component<Props, State> {
    }
 
    CreateModalClose() {
+      this.setState({ new_user_first_name: '' });
+      this.setState({ new_user_last_name: '' });
+      this.setState({ new_user_email: '' });
+      this.setState({ showWarning: false })
       this.setState({ create_show: false });
    }
 
@@ -270,6 +304,11 @@ class UserProfile extends React.Component<Props, State> {
                      />
                   </Col>
                </Row>
+               <br></br>
+
+               <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                  You must provide a valid name and email address!
+               </Alert>
             </Modal.Body>
             <Modal.Footer>
                <Button variant="secondary" onClick={this.CreateModalClose}>
@@ -279,15 +318,18 @@ class UserProfile extends React.Component<Props, State> {
                   id="confirm_create_new_user_button"
                   variant="primary"
                   onClick={() => {
-                     this.props.postUser({
-                        firstName: this.state.new_user_first_name,
-                        lastName: this.state.new_user_last_name,
-                        email: this.state.new_user_email
-                     });
-                     this.CreateModalClose();
-                     this.setState({ new_user_first_name: '' });
-                     this.setState({ new_user_last_name: '' });
-                     this.setState({ new_user_email: '' });
+                     if (this.state.new_user_first_name.length > 0 && this.state.new_user_last_name.length > 0 && this.validateEmail(this.state.new_user_email)) {
+                        this.props.postUser({
+                           firstName: this.state.new_user_first_name,
+                           lastName: this.state.new_user_last_name,
+                           email: this.state.new_user_email
+                        });
+                        this.CreateModalClose();
+
+                     } else {
+                        this.setState({ showWarning: true })
+                     }
+
                   }}
                >
                   Confirm
@@ -298,6 +340,7 @@ class UserProfile extends React.Component<Props, State> {
    }
 
    EditModalClose() {
+      this.setState({ showWarning: false })
       this.setState({ edit_show: false });
    }
 
@@ -316,6 +359,10 @@ class UserProfile extends React.Component<Props, State> {
       this.EditModalShow();
    }
 
+   validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+   }
    EditModal() {
       if (this.props.userlist && this.state.edit_index < this.props.userlist.length) {
          return (
@@ -352,6 +399,11 @@ class UserProfile extends React.Component<Props, State> {
                         />
                      </Col>
                   </Row>
+                  <br></br>
+
+                  <Alert variant="warning" show={this.state.showWarning} onClose={() => this.setState({ showWarning: !this.state.showWarning })}>
+                     You must provide a valid name!
+               </Alert>
                </Modal.Body>
                <Modal.Footer>
                   <Button variant="secondary" onClick={this.EditModalClose}>
@@ -361,13 +413,18 @@ class UserProfile extends React.Component<Props, State> {
                      id="confirm_edit"
                      variant="primary"
                      onClick={() => {
-                        this.props.putUser({
-                           firstName: this.state.edit_user_first_name,
-                           lastName: this.state.edit_user_last_name,
-                           id: this.state.edit_id,
-                           email: this.state.edit_user_email
-                        });
-                        this.EditModalClose();
+                        if (this.state.edit_user_first_name.length > 0 && this.state.edit_user_last_name.length > 0) {
+                           this.props.putUser({
+                              firstName: this.state.edit_user_first_name,
+                              lastName: this.state.edit_user_last_name,
+                              id: this.state.edit_id,
+                              email: this.state.edit_user_email
+                           });
+                           this.EditModalClose();
+                        } else {
+                           this.setState({ showWarning: true })
+                        }
+
                      }}
                   >
                      Confirm
@@ -469,8 +526,11 @@ class UserProfile extends React.Component<Props, State> {
                                  }
                               </tbody>
                            </Table>
+                           <div className={this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length != 0 ? "empty-container hide" : "empty-container"}>
+                              <h4>There is no user currently.</h4>
+                           </div>
                         </div>
-                        <div className="pagination-container">
+                        <div className={this.props.userlist.filter(user => { return user.email.includes(this.state.keyword) }).length != 0 ? "pagination-container" : "pagination-container hide"}>
                            <ReactPaginate
                               previousLabel={'previous'}
                               nextLabel={'next'}

@@ -4,6 +4,7 @@ from utils.myselenium import MySelenium
 from utils.config import Config
 from utils.log import logger
 from utils.generator import *
+from utils.scripts import *
 
 class TestAdminEditUser(unittest.TestCase):
     def setUp(self):
@@ -17,6 +18,7 @@ class TestAdminEditUser(unittest.TestCase):
         self.new_last_name = random_last_name()
 
     def tearDown(self):
+        clean_up(self)
         self.driver.close()
 
     def test_admin_edit_user(self):
@@ -45,8 +47,10 @@ class TestAdminEditUser(unittest.TestCase):
         time.sleep(1)
         logger.info("create a user for editting")
 
+        search_user(self)
+
         # edit the created user
-        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]/td[6]/button[1]".format(self.email))
+        edit_button = driver.find_element("xpath", "//tr[td[contains(text(), '{}')]]//i[contains(@class, 'pe-7s-note')]".format(self.email))
         edit_button.click()
         logger.info("click edit button")
         time.sleep(1)
