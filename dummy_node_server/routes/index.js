@@ -396,7 +396,7 @@ module.exports = server => {
                sessions.forEach(function (s, index) {
                   project_found = true;
                   if (s.userId == userId && s.projectId == projectId) {
-                     hoursWorked = getRandomInt(5) + 1
+                     hoursWorked = (new Date(s.endTime).getTime() - new Date(s.startTime).getTime()) / 1000.0 / 3600.0
                      result.sessions.push({
                         "startingTime": s.startTime,
                         "endingTime": s.endTime,

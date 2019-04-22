@@ -1,25 +1,97 @@
-# PTTWeb1
+# Pomodoro Time Tracker
+> This is a web app of the pomodoro time tracker.
 
-### Run Dummy server
 
-The server lives in the dummy_node_server folder. Go to this folder and use the following commands to run the server:
+## Architecture
+The front end is devloped by React, redux, axios and bootstrap.
 
-1. Install node modules `npm install`
-2. Run `node app.js`
+The back end is implemented by Node.js and hapi.js.
 
-### Run PTT Application
+The front end and back end communicate with each other on REST APIs.
 
-Go to PTTWeb1 to run the application
+I use the automated testing based on selenium and unittest in python.
 
-1. Install node modules by running `npm install`
-2. Modify BASE URL in shared/baseUrl.js
-3. Run the dummy server as explained above
-4. Run `npm start` to start the application
+## Installation and Development
 
-### Note to Developers about PTT app
 
-All the code related to redux, which we use to manage state, lives in `src/redux`. To create new a action, define action in `redux/actionTypes/[action.file.name]`, create methods related to action in `redux/actionCreator/[action.file.name]` and define the reducer for the action in `redux/reducer/[action.file.name]`. For each action, you need to define its corresponding states in `redux/actionCreator/[action.file.name]`.
+### Prerequisite:
 
-To call actions in the view, used mapToDispatch to map actions to component property.
+- npm or yarn
 
-These are some standard and we should follow them.
+### Installation
+
+Clone the repository to you local or download the repository.
+
+#### Backend
+
+In the root directory, go to the 'dummy\_node\_server' directory, run the command to install the dependencies.
+
+```sh
+npm install
+```
+
+Then run the backend on the local server.
+
+```sh
+npm start
+```
+You can change the configuration like port number of the back end in 'app.js'.
+
+#### Frontend
+
+In the root directory, go to the 'PTTWeb' directory, run the command to install the dependencies.
+
+```sh
+npm install
+```
+
+Then run the application on the local server.
+
+```sh
+npm start
+```
+
+### Testing
+For automated testing, go into the 'PTTWeb/test' directory, run the command to install the packages:
+
+```sh
+pip3 install requirements.txt
+```
+
+Then run the command to do the automated testing:
+
+```sh
+python3 runtests.py
+```
+
+After the automated testing, it will generate the log file and testing reports.
+
+## Usage example
+
+The demo of this web app is shown in the video.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JO7ZQrm9zBQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+The results of automated testing are shown in the following screenshots.
+
+Test results:
+![](screenshots/test1.png)
+
+Test log:
+![](screenshots/test2.png)
+
+Test reports:
+![](screenshots/test3.png)
+
+
+## Meta
+- Bin Xie - bin_shieh@outlook.com
+
+## Acknowledge
+- react
+- redux
+- axios
+- bootstrap
+- momoent
+- lodash
+- hapi.js

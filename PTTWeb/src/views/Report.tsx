@@ -90,7 +90,7 @@ class Report extends React.Component<Props, State>{
 
                   {this.state.includeHW && this.props.report.sessions.length > 0
 
-                     ? <p><strong>Total Hours Worked</strong>: {this.props.report.totalHoursWorkedOnProject}</p>
+                     ? <p><strong>Total Hours Worked</strong>: {this.props.report.totalHoursWorkedOnProject.toFixed(5)}</p>
                      : null
                   }
                   {this.props.report.sessions.length > 0
@@ -112,7 +112,7 @@ class Report extends React.Component<Props, State>{
                                     <td>{index + 1}</td>
                                     <td>{moment(r.startingTime).format('YYYY-MM-DD HH:mm')}</td>
                                     <td>{moment(r.endingTime).format('YYYY-MM-DD HH:mm')}</td>
-                                    <td>{r.hoursWorked}</td>
+                                    <td>{r.hoursWorked.toFixed(5)}</td>
                                  </tr>
                               );
                            })}
