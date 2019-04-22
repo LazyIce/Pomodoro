@@ -70,7 +70,7 @@ After the automated testing, it will generate the log file and testing reports.
 
 The demo of this web app is shown in the video.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JO7ZQrm9zBQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![cover](screenshots/cover.jpg)](https://www.youtube.com/embed/JO7ZQrm9zBQ)
 
 The results of automated testing are shown in the following screenshots.
 
